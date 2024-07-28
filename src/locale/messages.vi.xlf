@@ -2,10 +2,15 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en-US" datatype="plaintext" original="ng2.template">
     <body>
-    <trans-unit id="newSession">
-    <source>New session</source>
-    <target>Chơi ván mới</target>
-    </trans-unit>
+      <trans-unit id="newSession">
+        <source>New session</source>
+        <target>Chơi ván mới</target>
+      </trans-unit>
+
+      <trans-unit id="manageSession">
+        <source>Manage session</source>
+        <target>Tiếp tục chơi</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
