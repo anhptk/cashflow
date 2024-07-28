@@ -13,6 +13,12 @@
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "vi": "src/locale/messages.vi.xlf"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
@@ -21,7 +27,8 @@
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
-              "zone.js"
+              "zone.js",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -34,7 +41,8 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "localize": true
           },
           "configurations": {
             "production": {
@@ -56,6 +64,11 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "vi": {
+              "localize": [
+                "vi"
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -68,6 +81,9 @@
             },
             "development": {
               "buildTarget": "cashflow:build:development"
+            },
+            "vi": {
+              "buildTarget": "cashflow:build:vi"
             }
           },
           "defaultConfiguration": "development"
@@ -80,7 +96,8 @@
           "options": {
             "polyfills": [
               "zone.js",
-              "zone.js/testing"
+              "zone.js/testing",
+              "@angular/localize/init"
             ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
@@ -98,5 +115,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
