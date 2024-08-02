@@ -8,18 +8,28 @@ import { CreateNewProfessionComponent } from './features/professions/create-new-
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    data: {
+      title: 'Home',
+      hideBackButton: true
+    }
   },
   {
     path: 'sessions',
     children: [
       {
         path: '',
-        component: SessionsListComponent
+        component: SessionsListComponent,
+        data: {
+          title: 'Sessions'
+        }
       },
       {
         path: 'new',
-        component: CreateNewSessionComponent
+        component: CreateNewSessionComponent,
+        data: {
+          title: 'Create New Session'
+        }
       }
     ]
   },
@@ -28,11 +38,17 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: ProfessionsListComponent
+        component: ProfessionsListComponent,
+        data: {
+          title: 'Professions'
+        }
       },
       {
         path: 'new',
-        component: CreateNewProfessionComponent
+        component: CreateNewProfessionComponent,
+        data: {
+          title: 'Create New Profession'
+        }
       }
     ]
   }
