@@ -11,7 +11,7 @@ export class ProfessionService {
         private indexedDbService: IndexedDbService
     ) {}
 
-    public add(profession: Omit<Profession, 'id'>): Observable<void> {
+    public add(profession: Omit<Profession, 'id'>): Observable<number> {
         return from(this.indexedDbService.addData("professions", profession));
     }
 
@@ -21,6 +21,10 @@ export class ProfessionService {
 
     public query(): Observable<Profession[]> {
         return from(this.indexedDbService.getAllData("professions")) as Observable<Profession[]>;
+    }
+
+    public update(profession: Profession): Observable<number> {
+        return from(this.indexedDbService.updateData("professions", profession));
     }
 
     public delete(id: number): Observable<void> {

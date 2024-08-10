@@ -27,39 +27,32 @@ export class IndexedDbService {
 
   async addData(storeName: DatabaseTable, data: any) {
     const db = await this.dbPromise;
-    const tx = db.transaction(storeName, 'readwrite');
-    const store = tx.objectStore(storeName);
-    await store.add(data);
-    await tx.done;
+    return db.add(storeName, data);
   }
 
   async getData(storeName: DatabaseTable, key: number) {
     const db = await this.dbPromise;
-    const tx = db.transaction(storeName, 'readonly');
-    const store = tx.objectStore(storeName);
-    return store.get(key);
+    console.log(db);
+    return db.get(storeName, key);
   }
 
   async getAllData(storeName: DatabaseTable) {
     const db = await this.dbPromise;
-    const tx = db.transaction(storeName, 'readonly');
-    const store = tx.objectStore(storeName);
-    return store.getAll();
+    return db.getAll(storeName);
   }
 
   async deleteData(storeName: DatabaseTable, key: number) {
     const db = await this.dbPromise;
-    const tx = db.transaction(storeName, 'readwrite');
-    const store = tx.objectStore(storeName);
-    await store.delete(key);
-    await tx.done;
+    return db.delete(storeName, key);
+  }
+
+  async updateData(storeName: DatabaseTable, data: any) {
+    const db = await this.dbPromise;
+    return db.put(storeName, data);
   }
 
   async clearData(storeName: DatabaseTable) {
     const db = await this.dbPromise;
-    const tx = db.transaction(storeName, 'readwrite');
-    const store = tx.objectStore(storeName);
-    await store.clear();
-    await tx.done;
+    return db.clear(storeName);
   }
 }
