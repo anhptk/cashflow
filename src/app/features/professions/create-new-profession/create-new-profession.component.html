@@ -1,5 +1,5 @@
 <form [formGroup]="professionForm" class="mt-4 space-y-4">
-  <input type="text" id="profession" placeholder="Enter profession name" formControlName="professionName" class="w-full p-2 rounded outline outline-1">
+  <input type="text" id="profession" placeholder="Enter profession name" formControlName="name" class="w-full p-2 rounded outline outline-1">
 
   <div class="bg-blue-800 p-2 font-bold text-white">Income</div>
   <div formGroupName="income">
@@ -127,7 +127,7 @@
   <app-profession-summary [form]="professionForm"></app-profession-summary>
 
   <div class="my-4">
-    <app-button>Save</app-button>
+    <app-button (click)="submit()">Save</app-button>
   </div>
 
   <div class="my-4">

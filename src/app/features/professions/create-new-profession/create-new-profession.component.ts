@@ -3,6 +3,8 @@ import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProfessionForm } from '../../../shared/models/profession-form';
 import { ProfessionSummaryComponent } from './profession-summary/profession-summary.component';
+import { ProfessionService } from '../../../shared/services/profession.service';
+import { Profession } from '../../../shared/models/database/cashflow.db';
 
 @Component({
   selector: 'app-create-new-profession',
@@ -19,13 +21,15 @@ export class CreateNewProfessionComponent {
 
   professionForm: FormGroup<ProfessionForm>;
 
-  constructor() {
+  constructor(
+    private _professionService: ProfessionService
+  ) {
     this.professionForm = this._buildForm();
   }
 
   private _buildForm(): FormGroup {
     return new FormGroup(<ProfessionForm>{
-      professionName: new FormControl<string>('', [Validators.required]),
+      name: new FormControl<string>('', [Validators.required]),
       income: new FormGroup({
         salary: new FormControl<number>(0, [Validators.min(1)])
       }),
@@ -49,6 +53,19 @@ export class CreateNewProfessionComponent {
         creditCard: new FormControl<number>(0),
         retail: new FormControl<number>(0)
       }),
+    });
+  }
+
+  public submit(): void {
+    if (!this.professionForm.valid) {
+      alert('Please fill out all required fields');
+      return;
+    }
+
+    const profession = this.professionForm.value as Profession;
+
+    this._professionService.add(profession).subscribe(() => {
+      console.log('Profession added');
     });
   }
 

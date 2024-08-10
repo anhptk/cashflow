@@ -1,7 +1,7 @@
 import { FormControl, FormGroup } from '@angular/forms';
 
 export interface ProfessionForm {
-  professionName: FormControl<string>;
+  name: FormControl<string>;
   income: FormGroup<ProfessionIncomeForm>;
   expenses: FormGroup<ProfessionExpensesForm>;
   assets: FormGroup<ProfessionAssetsForm>;
