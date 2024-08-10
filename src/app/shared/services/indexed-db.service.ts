@@ -32,7 +32,6 @@ export class IndexedDbService {
 
   async getData(storeName: DatabaseTable, key: number) {
     const db = await this.dbPromise;
-    console.log(db);
     return db.get(storeName, key);
   }
 

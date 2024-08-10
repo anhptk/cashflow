@@ -2,6 +2,8 @@ import { DBSchema } from "idb";
 import { TypedFormValue } from "../typed-fom-value";
 import { FormGroup } from "@angular/forms";
 import { ProfessionForm } from "../profession-form";
+import { SessionType } from "../../constants/session-type.enum";
+import { SessionLog } from "../session-details";
 
 export interface CashflowDB extends DBSchema {
     professions: {
@@ -21,5 +23,7 @@ export interface Profession extends TypedFormValue<FormGroup<ProfessionForm>> {
 export interface Session {
     id: number;
     professionId: number;
-    date: string;
+    profession: Profession;
+    type: SessionType;
+    logs: SessionLog[];
 }

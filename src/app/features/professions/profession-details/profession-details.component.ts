@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Profession } from '../../../shared/models/database/cashflow.db';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProfessionService } from '../../../shared/services/profession.service';
 import { CreateNewProfessionComponent } from '../create-new-profession/create-new-profession.component';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
+import { SessionService } from '../../../shared/services/session.service';
 
 @Component({
   selector: 'app-profession-details',
@@ -22,7 +23,9 @@ export class ProfessionDetailsComponent {
 
   constructor(
     private _activatedRoute: ActivatedRoute,
-    private _professionService: ProfessionService
+    private _professionService: ProfessionService,
+    private _sessionService: SessionService,
+    private _router: Router
   ) {
     this._professionId = this._activatedRoute.snapshot.params['professionId'];
   }
@@ -43,5 +46,13 @@ export class ProfessionDetailsComponent {
   }
 
   public createSession(): void {
+    if (!this.profession.id) {
+      return;
+    }
+
+    this._sessionService.add(this.profession.id)
+      .subscribe(sessionId => {
+        this._router.navigate(['/sessions', sessionId]);
+      });
   }
 }
