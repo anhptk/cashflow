@@ -4,6 +4,7 @@ import { CreateNewSessionComponent } from './features/sessions/new/create-new-se
 import { SessionsListComponent } from './features/sessions/sessions-list/sessions-list.component';
 import { ProfessionsListComponent } from './features/professions/professions-list/professions-list.component';
 import { CreateNewProfessionComponent } from './features/professions/create-new-profession/create-new-profession.component';
+import { ProfessionDetailsComponent } from './features/professions/profession-details/profession-details.component';
 
 export const routes: Routes = [
   {
@@ -48,6 +49,13 @@ export const routes: Routes = [
         component: CreateNewProfessionComponent,
         data: {
           title: 'Create New Profession'
+        }
+      },
+      {
+        path: ':professionId',
+        component: ProfessionDetailsComponent,
+        data: {
+          title: 'Profession Details'
         }
       }
     ]

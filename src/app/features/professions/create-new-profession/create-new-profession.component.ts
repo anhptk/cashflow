@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input, SimpleChanges } from '@angular/core';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProfessionForm } from '../../../shared/models/profession-form';
 import { ProfessionSummaryComponent } from './profession-summary/profession-summary.component';
 import { ProfessionService } from '../../../shared/services/profession.service';
 import { TypedFormValue } from '../../../shared/models/typed-fom-value';
+import { Profession } from '../../../shared/models/database/cashflow.db';
 
 @Component({
   selector: 'app-create-new-profession',
@@ -19,12 +20,20 @@ import { TypedFormValue } from '../../../shared/models/typed-fom-value';
 })
 export class CreateNewProfessionComponent {
 
+  @Input() profession?: Profession;
+
   professionForm: FormGroup<ProfessionForm>;
 
   constructor(
     private _professionService: ProfessionService
   ) {
     this.professionForm = this._buildForm();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['profession'].currentValue) {
+      this.professionForm.patchValue(this.profession!);
+    }
   }
 
   private _buildForm(): FormGroup {
