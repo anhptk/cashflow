@@ -4,7 +4,7 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { ProfessionForm } from '../../../shared/models/profession-form';
 import { ProfessionSummaryComponent } from './profession-summary/profession-summary.component';
 import { ProfessionService } from '../../../shared/services/profession.service';
-import { Profession } from '../../../shared/models/database/cashflow.db';
+import { TypedFormValue } from '../../../shared/models/typed-fom-value';
 
 @Component({
   selector: 'app-create-new-profession',
@@ -62,7 +62,7 @@ export class CreateNewProfessionComponent {
       return;
     }
 
-    const profession = this.professionForm.value as Profession;
+    const profession: TypedFormValue<FormGroup<ProfessionForm>> = this.professionForm.value;
 
     this._professionService.add(profession).subscribe(() => {
       console.log('Profession added');

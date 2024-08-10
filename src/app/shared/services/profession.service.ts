@@ -11,7 +11,7 @@ export class ProfessionService {
         private indexedDbService: IndexedDbService
     ) {}
 
-    public add(profession: Profession): Observable<void> {
+    public add(profession: Omit<Profession, 'id'>): Observable<void> {
         return from(this.indexedDbService.addData("professions", profession));
     }
 
