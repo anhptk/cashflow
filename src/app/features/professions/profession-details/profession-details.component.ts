@@ -27,7 +27,7 @@ export class ProfessionDetailsComponent {
     private _sessionService: SessionService,
     private _router: Router
   ) {
-    this._professionId = this._activatedRoute.snapshot.params['professionId'];
+    this._professionId = Number(this._activatedRoute.snapshot.params['professionId']);
   }
 
   ngOnInit(): void {
@@ -35,11 +35,11 @@ export class ProfessionDetailsComponent {
   }
 
   private _loadProfession(): void {
-    if (!this._professionId || isNaN(Number(this._professionId))) {
+    if (!this._professionId || isNaN(this._professionId)) {
       return;
     }
 
-    this._professionService.get(Number(this._professionId))
+    this._professionService.get(this._professionId)
       .subscribe(profession => {
         this.profession = profession;
       });

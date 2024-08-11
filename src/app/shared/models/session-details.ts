@@ -6,7 +6,7 @@ export interface SessionLog {
     id: number;
     sessionId: number;
     message: string;
-    date: Date;
+    dateTime: Date;
 }
 
 export class RatRaceSession {
@@ -41,7 +41,7 @@ export class RatRaceSession {
     }
 
     private _calculateMonthlyCashFlow(): number {
-        return this.profession.income.salary - this._calculateTotalExpenses();
+        return this.profession.income.salary + this.data.totalPassiveIncome - this._calculateTotalExpenses();
     }
 
     private _calculateTotalExpenses(): number {
@@ -49,8 +49,7 @@ export class RatRaceSession {
     }
 
     private _calculateSessionExpenses(): number {
-        // TODO: implement all session expenses
-        return this.data.numberOfChildren * this.profession.expenses.childSupport;
+        return this.data.numberOfChildren * this.profession.expenses.childSupport + this.data.totalAdditionalExpenses;
     }
 
     private _calculateProfessionExpenses(): number {

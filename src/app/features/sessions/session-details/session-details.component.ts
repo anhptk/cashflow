@@ -19,7 +19,7 @@ export class SessionDetailsComponent {
     private sessionService: SessionService,
     private route: ActivatedRoute
   ) {
-    this._sessionId = this.route.snapshot.params['sessionId'];
+    this._sessionId = Number(this.route.snapshot.params['sessionId']);
   }
   
   ngOnInit() {
@@ -27,11 +27,11 @@ export class SessionDetailsComponent {
   }
 
   private _loadSession(): void {
-    if (!this._sessionId || isNaN(Number(this._sessionId))) {
+    if (!this._sessionId || isNaN(this._sessionId)) {
       return;
     }
 
-    this.sessionService.get(Number(this._sessionId))
+    this.sessionService.get(this._sessionId)
       .subscribe(session => {
         this.session = new RatRaceSession(session);
       });
