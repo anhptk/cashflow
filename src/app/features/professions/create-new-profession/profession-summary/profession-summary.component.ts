@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ProfessionSummary, ProfessionForm } from '../../../../shared/models/profession-form';
+import { ProfessionSummary, ProfessionForm } from '../../../../shared/models/forms/profession-form';
 import { FormGroup } from '@angular/forms';
 
 @Component({

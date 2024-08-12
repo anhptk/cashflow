@@ -1,7 +1,7 @@
 import { DBSchema } from "idb";
 import { TypedFormValue } from "../typed-fom-value";
 import { FormGroup } from "@angular/forms";
-import { ProfessionForm } from "../profession-form";
+import { ProfessionForm } from "../forms/profession-form";
 import { SessionType } from "../../constants/session-type.enum";
 import { SessionLog } from "../session-details";
 
