@@ -32,10 +32,6 @@ export class RatRaceSession {
         this.data.cash += this.monthlyCashFlow;
     }
 
-    public addChild() {
-        this.data.addChild();
-    }
-
     public get monthlyCashFlow(): number {
         return this._calculateMonthlyCashFlow();
     }

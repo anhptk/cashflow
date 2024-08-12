@@ -49,7 +49,7 @@ export class SessionService {
     }
 
     public update(session: Session): Observable<number> {
-        return from(this.indexedDbService.updateData("sessions", session));
+        return from(this.indexedDbService.updateData("sessions", session.id, session));
     }
 
     public delete(id: number): Observable<void> {

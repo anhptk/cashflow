@@ -10,30 +10,17 @@ interface SessionExpense {
 }
 
 export class RatRaceDetails {
-    numberOfChildren: number;
-    cash: number;
+    professionName: string;
+    salary: number;
+    
+    numberOfChildren: number = 0;
+    cash: number = 0;
     passiveIncome: SessionIncome[] = [];
     additionalExpenses: SessionExpense[] = [];
+    totalPassiveIncome: number = 0;
+    totalAdditionalExpenses: number = 0;
 
     constructor(data?: Partial<RatRaceDetails>) {
-        this.numberOfChildren = data?.numberOfChildren || 0;
-        this.cash = data?.cash || 0;
+        Object.assign(this, data);
     }
-
-    public addChild() {
-        if (this.numberOfChildren < 3) {
-            this.numberOfChildren++;
-        } else {
-            alert('You already reach the maximum number of children (3).');
-        }
-    }
-
-    public get totalPassiveIncome(): number {
-        return this.passiveIncome.reduce((total, income) => total + income.cashflow, 0);
-    }
-
-    public get totalAdditionalExpenses(): number {
-        return this.additionalExpenses.reduce((total, expense) => total + expense.cashflow, 0);
-    }
-    
 }
