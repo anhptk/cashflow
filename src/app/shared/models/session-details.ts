@@ -2,14 +2,8 @@ import { SessionType } from "../constants/session-type.enum";
 import { Profession, Session } from "./database/cashflow.db";
 import { RatRaceDetails } from "./rat-race-details";
 
-export interface SessionLog {
-    id: number;
-    sessionId: number;
-    message: string;
-    dateTime: Date;
-}
 
-export class RatRaceSession {
+export class RatRaceSession implements Session {
     id: number;
     professionId: number;
     profession: Profession;

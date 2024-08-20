@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { IndexedDbService } from "./indexed-db.service";
-import { Session } from "../models/database/cashflow.db";
 import { from, map, mergeMap, Observable, of } from "rxjs";
 import { ProfessionService } from "./profession.service";
+import { Session } from '../../models/database/session.db';
 
 @Injectable({
     providedIn: "root"
@@ -15,11 +15,7 @@ export class SessionService {
     ) {}
 
     public add(professionId: number): Observable<number> {
-        const session: Omit<Session, 'id' | 'profession'> = {
-            professionId,
-            type: 'ratRace',
-            logs: []
-        };
+        const session = new Session({professionId});
 
         return from(this.indexedDbService.addData("sessions", session));
     }
@@ -35,8 +31,7 @@ export class SessionService {
 
                 return this.professionService.get(session.professionId).pipe(
                     map(profession => {
-                        session.profession = profession;
-                        return session;
+                        return new Session({...session, profession});
                     })
                 );
             })
@@ -45,7 +40,8 @@ export class SessionService {
     }
 
     public query(): Observable<Session[]> {
-        return from(this.indexedDbService.getAllData("sessions")) as Observable<Session[]>;
+        return from(this.indexedDbService.getAllData("sessions"))
+          .pipe(map((sessions: Session[]) => sessions.map(session => new Session(session))));
     }
 
     public update(session: Session): Observable<number> {

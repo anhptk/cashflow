@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { IndexedDbService } from "./indexed-db.service";
-import { Profession } from "../models/database/cashflow.db";
 import { from, Observable } from "rxjs";
+import { Profession } from '../../models/database/cashflow.db';
 
 @Injectable({
     providedIn: "root"
