@@ -4,11 +4,16 @@ import { SessionStoreService } from '../../../shared/services/stores/session-sto
 import { SessionService } from '../../../shared/services/db/session.service';
 import { Observable } from 'rxjs';
 import { SessionState } from '../../../shared/models/sessions/session-state';
+import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../../../shared/ui/progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-session-details',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    ProgressBarComponent
+  ],
   templateUrl: './session-details.component.html',
   styleUrl: './session-details.component.scss',
   providers: [SessionStoreService]

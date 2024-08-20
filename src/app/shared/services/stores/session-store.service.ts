@@ -7,7 +7,15 @@ import { Session } from '../../models/database/session.db';
 export class SessionStoreService extends ComponentStore<SessionState> {
 
   constructor() {
-    super(null);
+    super({
+      profession: null,
+      session: null,
+      totalIncome: 0,
+      totalExpenses: 0,
+      cashflow: 0,
+      expenseLiabilities: [],
+      incomeLiabilities: []
+    });
   }
 
   readonly data$ = this.select({
@@ -15,7 +23,9 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     session: this.select(state => state.session),
     totalIncome: this.select(state => this._calculateIncome(state.session)),
     totalExpenses: this.select(state => this._calculateExpenses(state.session)),
-    cashflow: this.select(state => state.totalIncome - state.totalExpenses)
+    cashflow: this.select(state => this._calculateCashflow(state.session)),
+    expenseLiabilities: this.select(state => state.session?.liabilities.filter(liability => liability.cashflow < 0) || []),
+    incomeLiabilities: this.select(state => state.session?.liabilities.filter(liability => liability.cashflow > 0) || [])
   });
 
   public setSession(session: Session): void {
@@ -50,11 +60,27 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   private _calculateIncome(session: Session): number {
-    return session.income.reduce((acc, income) => acc + income.cashflow, 0);
+    if (!session) return 0;
+
+    const liabilities = session.liabilities.filter(liability => liability.cashflow > 0);
+    const totalLiabilities = liabilities.reduce((acc, liability) => acc + liability.cashflow, 0);
+
+    return session.income.reduce((acc, income) => acc + income.cashflow, totalLiabilities);
   }
 
   private _calculateExpenses(session: Session): number {
+    if (!session) return 0;
+
     const childSupport = session.profession.expenses.childSupport * session.children;
-    return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport);
+    const liabilities = session.liabilities.filter(liability => liability.cashflow < 0);
+    const liabilitiesTotal = liabilities.reduce((acc, liability) => acc + liability.cashflow, 0);
+
+    return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport - liabilitiesTotal);
+  }
+
+  private _calculateCashflow(session: Session): number {
+    if (!session) return 0;
+
+    return session.profession.income.salary + this._calculateIncome(session) - this._calculateExpenses(session);
   }
 }

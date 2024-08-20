@@ -50,7 +50,7 @@ export class ProfessionDetailsComponent {
       return;
     }
 
-    this._sessionService.add(this.profession.id)
+    this._sessionService.add(this.profession)
       .subscribe(sessionId => {
         this._router.navigate(['/sessions', sessionId]);
       });

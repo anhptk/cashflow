@@ -9,6 +9,9 @@ export interface AssetItem {
   name: string;
   value: number;
   downPayment?: number;
+  cashflow: number;
+  volume?: number;
+  unitPrice?: number;
 }
 
 export interface SessionLog {
@@ -31,7 +34,7 @@ export class Session {
   income: FinancialItem[] = [];
   expenses: FinancialItem[] = [];
   assets: AssetItem[] = [];
-  liabilities: FinancialItem[] = [];
+  liabilities: AssetItem[] = [];
 
   createdAt: Date;
 

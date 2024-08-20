@@ -1,11 +1,67 @@
-<div class="bg-blue-800 p-2 mt-4 font-bold text-white">Summary</div>
+<ng-container *ngIf="session$ | async as session">
+  <app-progress-bar [value]="session.totalIncome" [maxValue]="session.totalExpenses"></app-progress-bar>
 
-<div class="flex justify-between items-center my-4 mx-2">
-    <span>Passive income</span>
-    <span class="w-1/2">$ 0</span>
-</div>
+  <div class="flex justify-between items-center p-4">
+    <div class="flex items-center">
+      <span class="mr-2">$</span>
+      <span>{{ session.session.cash }}</span>
+      <span class="mx-2">👶</span>
+      <span>{{ session.session.children }}</span>
+    </div>
+    <div class="flex items-center">
+      <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2">History</button>
+      <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded">Action</button>
+    </div>
+  </div>
 
-<div class="flex justify-between items-center my-4 mx-2">
-    <span>Monthly cash flow</span>
-    <span class="w-1/2">$ 0</span>
-</div>
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Summary</div>
+
+  <div class="flex justify-between items-center my-4 mx-2">
+      <span>Passive income</span>
+      <span class="w-1/2">$ {{session.totalIncome}}</span>
+  </div>
+
+  <div class="flex justify-between items-center my-4 mx-2">
+      <span>Monthly cash flow</span>
+      <span class="w-1/2">$ {{session.cashflow}}</span>
+  </div>
+
+  <div class="bg-blue-800 p-2 font-bold text-white">Income</div>
+
+  <div class="flex justify-between items-center my-4 mx-2">
+    <span>Salary</span>
+    <span class="w-1/2">$ {{session.profession.income.salary}}</span>
+  </div>
+
+  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let income of session.incomeLiabilities">
+    <span>Salary</span>
+    <span class="w-1/2">$ {{income.cashflow}}</span>
+  </div>
+
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Expenses</div>
+
+  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let expense of session.session.expenses">
+    <span>{{expense.name}}</span>
+    <span class="w-1/2">$ {{expense.cashflow}}</span>
+  </div>
+
+  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let expense of session.expenseLiabilities">
+    <span>{{expense.name}}</span>
+    <span class="w-1/2">$ {{-expense.cashflow}}</span>
+  </div>
+
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Assets</div>
+
+<!--  <div class="flex justify-between items-center my-4 mx-2">-->
+<!--    <span>3Bd/2Ba</span>-->
+<!--    <span class="w-1/2">$2,000 / $50,000</span>-->
+<!--  </div>-->
+
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Liabilities</div>
+
+  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let liability of session.session.liabilities">
+    <span>{{liability.name}}</span>
+    <span class="w-1/2">$ {{liability.value}}</span>
+  </div>
+
+</ng-container>
