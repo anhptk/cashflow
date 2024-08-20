@@ -6,6 +6,7 @@ import { ProfessionsListComponent } from './features/professions/professions-lis
 import { CreateNewProfessionComponent } from './features/professions/create-new-profession/create-new-profession.component';
 import { ProfessionDetailsComponent } from './features/professions/profession-details/profession-details.component';
 import { SessionDetailsComponent } from './features/sessions/session-details/session-details.component';
+import { ActionsListComponent } from './features/actions/actions-list/actions-list.component';
 
 export const routes: Routes = [
   {
@@ -35,10 +36,22 @@ export const routes: Routes = [
       },
       {
         path: ':sessionId',
-        component: SessionDetailsComponent,
-        data: {
-          title: 'Session Details'
-        }
+        children: [
+          {
+            path: '',
+            component: SessionDetailsComponent,
+            data: {
+              title: 'Session Details'
+            }
+          },
+          {
+            path: 'action',
+            component: ActionsListComponent,
+            data: {
+              title: 'Actions'
+            }
+          }
+        ]
       }
     ]
   },

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { SessionService } from '../../../shared/services/db/session.service';
 import { Observable } from 'rxjs';
@@ -12,7 +12,8 @@ import { ProgressBarComponent } from '../../../shared/ui/progress-bar/progress-b
   standalone: true,
   imports: [
     CommonModule,
-    ProgressBarComponent
+    ProgressBarComponent,
+    RouterModule
   ],
   templateUrl: './session-details.component.html',
   styleUrl: './session-details.component.scss',
