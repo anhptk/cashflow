@@ -79,7 +79,7 @@ export class CreateNewProfessionComponent {
       confirm('Profession created successfully');
       setTimeout(() => {
         this._location.back();
-      }, 2000)
+      }, 200)
     });
   }
 

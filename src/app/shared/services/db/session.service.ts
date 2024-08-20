@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { IndexedDbService } from "./indexed-db.service";
 import { from, map, mergeMap, Observable, of } from "rxjs";
 import { ProfessionService } from "./profession.service";
-import { Session, FinancialItem, AssetItem } from '../../models/database/session.db';
+import { Session, ExpenseItem } from '../../models/database/session.db';
 import { Profession } from '../../models/database/cashflow.db';
 
 @Injectable({
@@ -22,22 +22,18 @@ export class SessionService {
     }
 
     private _constructNewSession(profession: Profession): Partial<Session> {
-        const expenses: FinancialItem[] = [
+        const expenses: ExpenseItem[] = [
             {name: 'Taxes', cashflow: profession.expenses.taxes},
-            {name: 'Other payment', cashflow: profession.expenses.other}
-        ];
-
-        const liabilities: AssetItem[] = [
-            {name: 'Home mortage', cashflow: -profession.expenses.homeMortgage, value: profession.liabilities.homeMortgage},
-            {name: 'School loans', cashflow: -profession.expenses.schoolLoan, value: profession.liabilities.schoolLoan},
-            {name: 'Car loans', cashflow: -profession.expenses.carLoan, value: profession.liabilities.carLoan},
-            {name: 'Credit cards', cashflow: -profession.expenses.creditCard, value: profession.liabilities.creditCard}
+            {name: 'Other payment', cashflow: profession.expenses.other},
+            {name: 'Home mortage', cashflow: profession.expenses.homeMortgage, value: profession.liabilities.homeMortgage, isLiability: true},
+            {name: 'School loans', cashflow: profession.expenses.schoolLoan, value: profession.liabilities.schoolLoan, isLiability: true},
+            {name: 'Car loans', cashflow: profession.expenses.carLoan, value: profession.liabilities.carLoan, isLiability: true},
+            {name: 'Credit cards', cashflow: profession.expenses.creditCard, value: profession.liabilities.creditCard, isLiability: true},
         ];
 
         return {
             professionId: profession.id,
             expenses,
-            liabilities,
             cash: profession.assets.savings,
             children: 0
         };

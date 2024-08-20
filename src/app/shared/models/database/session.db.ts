@@ -5,13 +5,17 @@ export interface FinancialItem {
   cashflow: number;
 }
 
-export interface AssetItem {
-  name: string;
+export interface ExpenseItem extends FinancialItem {
+  value?: number;
+  isLiability?: boolean;
+}
+
+export interface AssetItem extends FinancialItem {
   value: number;
   downPayment?: number;
-  cashflow: number;
   volume?: number;
   unitPrice?: number;
+  isLiability?: boolean;
 }
 
 export interface SessionLog {
@@ -32,9 +36,8 @@ export class Session {
   children: number;
 
   income: FinancialItem[] = [];
-  expenses: FinancialItem[] = [];
+  expenses: ExpenseItem[] = [];
   assets: AssetItem[] = [];
-  liabilities: AssetItem[] = [];
 
   createdAt: Date;
 

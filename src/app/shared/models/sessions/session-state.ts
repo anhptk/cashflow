@@ -1,12 +1,12 @@
 import { Profession } from '../database/cashflow.db';
-import { Session, AssetItem } from '../database/session.db';
+import { Session, AssetItem, ExpenseItem } from '../database/session.db';
 
 export interface SessionState {
   totalIncome: number;
   totalExpenses: number;
   cashflow: number;
 
-  expenseLiabilities: AssetItem[];
+  expenseLiabilities: ExpenseItem[];
   incomeLiabilities: AssetItem[];
 
   profession: Profession;

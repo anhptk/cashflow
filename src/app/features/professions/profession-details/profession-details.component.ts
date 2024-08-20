@@ -52,6 +52,7 @@ export class ProfessionDetailsComponent {
 
     this._sessionService.add(this.profession)
       .subscribe(sessionId => {
+        confirm('Session created successfully');
         this._router.navigate(['/sessions', sessionId]);
       });
   }

@@ -1,21 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { SessionState } from '../../models/sessions/session-state';
-import { Session } from '../../models/database/session.db';
+import { Session, AssetItem, ExpenseItem } from '../../models/database/session.db';
 
 @Injectable()
 export class SessionStoreService extends ComponentStore<SessionState> {
 
   constructor() {
-    super({
-      profession: null,
-      session: null,
-      totalIncome: 0,
-      totalExpenses: 0,
-      cashflow: 0,
-      expenseLiabilities: [],
-      incomeLiabilities: []
-    });
+    super(null);
   }
 
   readonly data$ = this.select({
@@ -24,14 +16,19 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     totalIncome: this.select(state => this._calculateIncome(state.session)),
     totalExpenses: this.select(state => this._calculateExpenses(state.session)),
     cashflow: this.select(state => this._calculateCashflow(state.session)),
-    expenseLiabilities: this.select(state => state.session?.liabilities.filter(liability => liability.cashflow < 0) || []),
-    incomeLiabilities: this.select(state => state.session?.liabilities.filter(liability => liability.cashflow > 0) || [])
+    expenseLiabilities: this.select(state => this._expenseLiabilities(state.session)),
+    incomeLiabilities: this.select(state => this._incomeLiabilities(state.session))
   });
 
   public setSession(session: Session): void {
-    this.patchState({
+    this.setState({
       session: session,
-      profession: session.profession
+      profession: session.profession,
+      incomeLiabilities: this._incomeLiabilities(session),
+      expenseLiabilities: this._expenseLiabilities(session),
+      totalIncome: this._calculateIncome(session),
+      totalExpenses: this._calculateExpenses(session),
+      cashflow: this._calculateCashflow(session)
     });
   }
 
@@ -59,10 +56,20 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     });
   }
 
+  private _incomeLiabilities(session: Session): AssetItem[] {
+    if (!session) return [];
+    return session.assets.filter(asset => asset.isLiability);
+  }
+
+  private _expenseLiabilities(session: Session): ExpenseItem[] {
+    if (!session) return [];
+    return session.expenses.filter(expense => expense.isLiability);
+  }
+
   private _calculateIncome(session: Session): number {
     if (!session) return 0;
 
-    const liabilities = session.liabilities.filter(liability => liability.cashflow > 0);
+    const liabilities = this._incomeLiabilities(session).filter(item => item.cashflow > 0);
     const totalLiabilities = liabilities.reduce((acc, liability) => acc + liability.cashflow, 0);
 
     return session.income.reduce((acc, income) => acc + income.cashflow, totalLiabilities);
@@ -72,10 +79,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     if (!session) return 0;
 
     const childSupport = session.profession.expenses.childSupport * session.children;
-    const liabilities = session.liabilities.filter(liability => liability.cashflow < 0);
-    const liabilitiesTotal = liabilities.reduce((acc, liability) => acc + liability.cashflow, 0);
 
-    return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport - liabilitiesTotal);
+    return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport);
   }
 
   private _calculateCashflow(session: Session): number {

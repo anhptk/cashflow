@@ -45,11 +45,6 @@
     <span class="w-1/2">$ {{expense.cashflow}}</span>
   </div>
 
-  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let expense of session.expenseLiabilities">
-    <span>{{expense.name}}</span>
-    <span class="w-1/2">$ {{-expense.cashflow}}</span>
-  </div>
-
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Assets</div>
 
 <!--  <div class="flex justify-between items-center my-4 mx-2">-->
@@ -59,7 +54,12 @@
 
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Liabilities</div>
 
-  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let liability of session.session.liabilities">
+  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let liability of session.expenseLiabilities">
+    <span>{{liability.name}}</span>
+    <span class="w-1/2">$ {{liability.value}}</span>
+  </div>
+
+  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let liability of session.incomeLiabilities">
     <span>{{liability.name}}</span>
     <span class="w-1/2">$ {{liability.value}}</span>
   </div>
