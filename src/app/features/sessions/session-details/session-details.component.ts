@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
-import { SessionService } from '../../../shared/services/db/session.service';
 import { Observable } from 'rxjs';
 import { SessionState } from '../../../shared/models/sessions/session-state';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../../shared/ui/progress-bar/progress-bar.component';
+import { Session } from '../../../shared/models/database/session.db';
 
 @Component({
   selector: 'app-session-details',
@@ -16,37 +16,17 @@ import { ProgressBarComponent } from '../../../shared/ui/progress-bar/progress-b
     RouterModule
   ],
   templateUrl: './session-details.component.html',
-  styleUrl: './session-details.component.scss',
-  providers: [SessionStoreService]
+  styleUrl: './session-details.component.scss'
 })
 export class SessionDetailsComponent {
 
-  session$: Observable<SessionState>;
-
-  private _sessionId: number;
+  data$: Observable<SessionState>;
+  session$: Observable<Session>;
 
   constructor(
-    private sessionService: SessionService,
     private sessionStore: SessionStoreService,
-    private route: ActivatedRoute
   ) {
-    this._sessionId = Number(this.route.snapshot.params['sessionId']);
-    this.session$ = this.sessionStore.data$;
-  }
-
-
-  ngOnInit() {
-    this._loadSession();
-  }
-
-  private _loadSession(): void {
-    if (!this._sessionId || isNaN(this._sessionId)) {
-      return;
-    }
-
-    this.sessionService.get(this._sessionId)
-      .subscribe(session => {
-        this.sessionStore.setSession(session);
-      });
+    this.data$ = this.sessionStore.data$;
+    this.session$ = this.sessionStore.select(state => state.session);
   }
 }

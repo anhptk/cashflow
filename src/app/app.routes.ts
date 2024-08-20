@@ -7,6 +7,7 @@ import { CreateNewProfessionComponent } from './features/professions/create-new-
 import { ProfessionDetailsComponent } from './features/professions/profession-details/profession-details.component';
 import { SessionDetailsComponent } from './features/sessions/session-details/session-details.component';
 import { ActionsListComponent } from './features/actions/actions-list/actions-list.component';
+import { SessionDetailsWrapperComponent } from './features/sessions/session-details-wrapper/session-details-wrapper.component';
 
 export const routes: Routes = [
   {
@@ -36,6 +37,7 @@ export const routes: Routes = [
       },
       {
         path: ':sessionId',
+        component: SessionDetailsWrapperComponent,
         children: [
           {
             path: '',

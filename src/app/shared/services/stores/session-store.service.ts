@@ -13,11 +13,11 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   readonly data$ = this.select({
     profession: this.select(state => state.profession),
     session: this.select(state => state.session),
-    totalIncome: this.select(state => this._calculateIncome(state.session)),
-    totalExpenses: this.select(state => this._calculateExpenses(state.session)),
-    cashflow: this.select(state => this._calculateCashflow(state.session)),
-    expenseLiabilities: this.select(state => this._expenseLiabilities(state.session)),
-    incomeLiabilities: this.select(state => this._incomeLiabilities(state.session))
+    totalIncome: this.select(state => state.totalIncome),
+    totalExpenses: this.select(state => state.totalExpenses),
+    cashflow: this.select(state => state.cashflow),
+    expenseLiabilities: this.select(state => state.expenseLiabilities),
+    incomeLiabilities: this.select(state => state.incomeLiabilities)
   });
 
   public setSession(session: Session): void {
@@ -51,7 +51,9 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   public addChild(): void {
     this.patchState((state: SessionState) => {
       return {
-        session: {...state.session, children: state.session.children += 1}
+        session: {...state.session, children: state.session.children += 1},
+        totalExpenses: this._calculateExpenses(state.session),
+        cashflow: this._calculateCashflow(state.session)
       }
     });
   }
