@@ -1,27 +1,39 @@
 import { Component } from '@angular/core';
-import { RatRaceSession } from '../../../shared/models/session-details';
-import { SessionService } from '../../../shared/services/session.service';
 import { ActivatedRoute } from '@angular/router';
+import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
+import { SessionService } from '../../../shared/services/db/session.service';
+import { Observable } from 'rxjs';
+import { SessionState } from '../../../shared/models/sessions/session-state';
+import { CommonModule } from '@angular/common';
+import { ProgressBarComponent } from '../../../shared/ui/progress-bar/progress-bar.component';
 
 @Component({
   selector: 'app-session-details',
   standalone: true,
-  imports: [],
+  imports: [
+    CommonModule,
+    ProgressBarComponent
+  ],
   templateUrl: './session-details.component.html',
-  styleUrl: './session-details.component.scss'
+  styleUrl: './session-details.component.scss',
+  providers: [SessionStoreService]
 })
 export class SessionDetailsComponent {
-  session?: RatRaceSession;
+
+  session$: Observable<SessionState>;
 
   private _sessionId: number;
 
   constructor(
     private sessionService: SessionService,
+    private sessionStore: SessionStoreService,
     private route: ActivatedRoute
   ) {
     this._sessionId = Number(this.route.snapshot.params['sessionId']);
+    this.session$ = this.sessionStore.data$;
   }
-  
+
+
   ngOnInit() {
     this._loadSession();
   }
@@ -33,7 +45,7 @@ export class SessionDetailsComponent {
 
     this.sessionService.get(this._sessionId)
       .subscribe(session => {
-        this.session = new RatRaceSession(session);
+        this.sessionStore.setSession(session);
       });
   }
 }

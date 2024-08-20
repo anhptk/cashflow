@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { Profession } from '../../../shared/models/database/cashflow.db';
-import { ProfessionService } from '../../../shared/services/profession.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { ProfessionService } from '../../../shared/services/db/profession.service';
 
 @Component({
   selector: 'app-professions-list',

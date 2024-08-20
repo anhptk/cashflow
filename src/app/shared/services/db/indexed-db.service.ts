@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { openDB, IDBPDatabase } from 'idb';
-import { CashflowDB } from '../models/database/cashflow.db';
-import { DatabaseTable } from '../constants/database-table.enum';
+import { CashflowDB, Profession } from '../../models/database/cashflow.db';
+import { DatabaseTable } from '../../constants/database-table.enum';
 
 
 @Injectable({
@@ -27,7 +27,8 @@ export class IndexedDbService {
 
   async addData(storeName: DatabaseTable, data: any) {
     const db = await this.dbPromise;
-    return db.add(storeName, data);
+    const dbData = { ...data, createdAt: new Date() };
+    return db.add(storeName, dbData);
   }
 
   async getData(storeName: DatabaseTable, key: number) {

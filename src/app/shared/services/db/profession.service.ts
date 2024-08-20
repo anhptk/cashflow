@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { IndexedDbService } from "./indexed-db.service";
-import { Profession } from "../models/database/cashflow.db";
 import { from, Observable } from "rxjs";
+import { Profession } from '../../models/database/cashflow.db';
 
 @Injectable({
     providedIn: "root"
@@ -11,7 +11,7 @@ export class ProfessionService {
         private indexedDbService: IndexedDbService
     ) {}
 
-    public add(profession: Omit<Profession, 'id'>): Observable<number> {
+    public add(profession: Partial<Profession>): Observable<number> {
         return from(this.indexedDbService.addData("professions", profession));
     }
 
@@ -24,7 +24,7 @@ export class ProfessionService {
     }
 
     public update(profession: Profession): Observable<number> {
-        return from(this.indexedDbService.updateData("professions", profession));
+        return from(this.indexedDbService.updateData("professions", profession.id, profession));
     }
 
     public delete(id: number): Observable<void> {

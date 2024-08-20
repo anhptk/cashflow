@@ -1,0 +1,8 @@
+<div class="p-4">
+  <div class="mb-2">
+    ${{value}} / ${{maxValue}} (${{maxValue - value}} to go)
+  </div>
+  <div class="bg-blue-600 h-2 w-full rounded">
+    <div class="bg-blue-300 h-full rounded" [style.width]="progress + '%'"></div>
+  </div>
+</div>
