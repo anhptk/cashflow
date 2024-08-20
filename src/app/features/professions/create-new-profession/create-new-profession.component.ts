@@ -3,9 +3,9 @@ import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProfessionForm } from '../../../shared/models/forms/profession-form';
 import { ProfessionSummaryComponent } from './profession-summary/profession-summary.component';
-import { ProfessionService } from '../../../shared/services/profession.service';
 import { TypedFormValue } from '../../../shared/models/typed-fom-value';
 import { Profession } from '../../../shared/models/database/cashflow.db';
+import { ProfessionService } from '../../../shared/services/db/profession.service';
 
 @Component({
   selector: 'app-create-new-profession',

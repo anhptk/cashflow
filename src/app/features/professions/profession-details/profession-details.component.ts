@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Profession } from '../../../shared/models/database/cashflow.db';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProfessionService } from '../../../shared/services/profession.service';
 import { CreateNewProfessionComponent } from '../create-new-profession/create-new-profession.component';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
-import { SessionService } from '../../../shared/services/session.service';
+import { ProfessionService } from '../../../shared/services/db/profession.service';
+import { SessionService } from '../../../shared/services/db/session.service';
 
 @Component({
   selector: 'app-profession-details',

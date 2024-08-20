@@ -1,11 +1,11 @@
 import { Profession } from './cashflow.db';
 
-interface FinancialItem {
+export interface FinancialItem {
   name: string;
-  amount: number;
+  cashflow: number;
 }
 
-interface AssetItem {
+export interface AssetItem {
   name: string;
   value: number;
   downPayment?: number;
@@ -26,6 +26,8 @@ export class Session {
   isRatRace: boolean = true;
 
   cash: number;
+  children: number;
+
   income: FinancialItem[] = [];
   expenses: FinancialItem[] = [];
   assets: AssetItem[] = [];
