@@ -27,9 +27,19 @@ export class ActionsListComponent {
   }
 
   public payday(): void {
-    const cf = confirm(`Payday: Cash + $${this.data.cashflow}`);
+    const cf = confirm($localize`:@@actions.paydayConfirm:Payday: Cash +` + `$${this.data.cashflow}`);
     if (cf) {
       this._sessionStore.payday();
+      this._location.back();
+    }
+  }
+
+  public downsize(): void {
+    const cf = confirm($localize`:@@actions.downsizeConfirm:Downsize: Cash -` + `$${this.data.totalExpenses}`);
+    if (cf) {
+      // TODO: Add load if cash is less than total expenses
+      this._sessionStore.downsize();
+      this._location.back();
     }
   }
 }

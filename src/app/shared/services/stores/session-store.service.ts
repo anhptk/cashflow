@@ -37,21 +37,26 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   public payday(): void {
     this.patchState((state: SessionState) => {
-      const newSession = {...state.session, cash: state.session.cash += state.cashflow};
-      this.sessionService.update(newSession);
+      return this._adjustSessionCash(state.profession.income.salary, state.session);
+    });
+  }
 
-      return {
-        session: newSession
-      }
-    })
+  public downsize(): void {
+    this.patchState((state: SessionState) => {
+      return this._adjustSessionCash(-state.totalExpenses, state.session);
+    });
   }
 
   public adjustCash(amount: number): void {
     this.patchState((state: SessionState) => {
-      return {
-        session: {...state.session, cash: state.session.cash += amount}
-      }
+      return this._adjustSessionCash(amount, state.session);
     });
+  }
+
+  private _adjustSessionCash(amount: number, session: Session): Session {
+    const newSession = {...session, cash: session.cash += amount};
+    this.sessionService.update(newSession);
+    return newSession;
   }
 
   public addChild(): void {
