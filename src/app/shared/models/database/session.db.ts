@@ -27,7 +27,6 @@ export interface SessionLog {
 
 export class Session {
   id: number;
-  professionId: number;
   profession: Profession;
   logs: SessionLog[] = [];
   isRatRace: boolean = true;

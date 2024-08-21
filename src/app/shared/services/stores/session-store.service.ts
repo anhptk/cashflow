@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { SessionState } from '../../models/sessions/session-state';
 import { Session, AssetItem, ExpenseItem } from '../../models/database/session.db';
+import { SessionService } from '../db/session.service';
 
 @Injectable()
 export class SessionStoreService extends ComponentStore<SessionState> {
 
-  constructor() {
+  constructor(
+    private sessionService: SessionService
+  ) {
     super(null);
   }
 
@@ -34,26 +37,36 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   public payday(): void {
     this.patchState((state: SessionState) => {
-      return {
-        session: {...state.session, cash: state.session.cash += state.cashflow}
-      }
-    })
+      return this._adjustSessionCash(state.profession.income.salary, state.session);
+    });
+  }
+
+  public downsize(): void {
+    this.patchState((state: SessionState) => {
+      return this._adjustSessionCash(-state.totalExpenses, state.session);
+    });
   }
 
   public adjustCash(amount: number): void {
     this.patchState((state: SessionState) => {
-      return {
-        session: {...state.session, cash: state.session.cash += amount}
-      }
+      return this._adjustSessionCash(amount, state.session);
     });
+  }
+
+  private _adjustSessionCash(amount: number, session: Session): Session {
+    const newSession = {...session, cash: session.cash += amount};
+    this.sessionService.update(newSession);
+    return newSession;
   }
 
   public addChild(): void {
     this.patchState((state: SessionState) => {
+      const newSession = {...state.session, children: state.session.children += 1};
+      this.sessionService.update(newSession);
       return {
-        session: {...state.session, children: state.session.children += 1},
-        totalExpenses: this._calculateExpenses(state.session),
-        cashflow: this._calculateCashflow(state.session)
+        session: newSession,
+        totalExpenses: this._calculateExpenses(newSession),
+        cashflow: this._calculateCashflow(newSession)
       }
     });
   }

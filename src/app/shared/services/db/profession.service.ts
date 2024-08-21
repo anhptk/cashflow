@@ -24,7 +24,7 @@ export class ProfessionService {
     }
 
     public update(profession: Profession): Observable<number> {
-        return from(this.indexedDbService.updateData("professions", profession.id, profession));
+        return from(this.indexedDbService.updateData("professions", profession));
     }
 
     public delete(id: number): Observable<void> {

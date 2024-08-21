@@ -1,7 +1,6 @@
 import { Injectable } from "@angular/core";
 import { IndexedDbService } from "./indexed-db.service";
-import { from, map, mergeMap, Observable, of } from "rxjs";
-import { ProfessionService } from "./profession.service";
+import { from, map, Observable } from "rxjs";
 import { Session, ExpenseItem } from '../../models/database/session.db';
 import { Profession } from '../../models/database/cashflow.db';
 
@@ -11,8 +10,7 @@ import { Profession } from '../../models/database/cashflow.db';
 
 export class SessionService {
     constructor(
-        private indexedDbService: IndexedDbService,
-        private professionService: ProfessionService
+        private indexedDbService: IndexedDbService
     ) {}
 
     public add(profession: Profession): Observable<number> {
@@ -32,7 +30,7 @@ export class SessionService {
         ];
 
         return {
-            professionId: profession.id,
+            profession,
             expenses,
             cash: profession.assets.savings,
             children: 0
@@ -40,22 +38,8 @@ export class SessionService {
     }
 
     public get(id: number): Observable<Session> {
-        const session$ = from(this.indexedDbService.getData("sessions", id)) as Observable<Session>;
-
-        return session$.pipe(
-            mergeMap(session => {
-                if (!session) {
-                    return of(null);
-                }
-
-                return this.professionService.get(session.professionId).pipe(
-                    map(profession => {
-                        return new Session({...session, profession});
-                    })
-                );
-            })
-        );
-        
+        return from(this.indexedDbService.getData("sessions", id))
+          .pipe(map((session: Session) => new Session(session)));
     }
 
     public query(): Observable<Session[]> {
@@ -64,7 +48,7 @@ export class SessionService {
     }
 
     public update(session: Session): Observable<number> {
-        return from(this.indexedDbService.updateData("sessions", session.id, session));
+        return from(this.indexedDbService.updateData("sessions", session));
     }
 
     public delete(id: number): Observable<void> {
