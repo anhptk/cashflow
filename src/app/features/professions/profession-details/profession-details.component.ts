@@ -52,7 +52,7 @@ export class ProfessionDetailsComponent {
 
     this._sessionService.add(this.profession)
       .subscribe(sessionId => {
-        confirm('Session created successfully');
+        confirm($localize`:@@sessionCreated:Session created!`);
         this._router.navigate(['/sessions', sessionId]);
       });
   }

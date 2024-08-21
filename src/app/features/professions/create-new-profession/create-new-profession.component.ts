@@ -69,14 +69,14 @@ export class CreateNewProfessionComponent {
 
   public submit(): void {
     if (!this.professionForm.valid) {
-      alert('Please fill out all required fields');
+      alert($localize`:@@pleaseFillOutAllRequiredFields:Please fill out all required fields`);
       return;
     }
 
     const profession: TypedFormValue<FormGroup<ProfessionForm>> = this.professionForm.value;
 
     this._professionService.add(profession).subscribe(() => {
-      confirm('Profession created successfully');
+      confirm($localize`:@@professionCreatedSuccessfully:Profession created successfully!`);
       setTimeout(() => {
         this._location.back();
       }, 200)

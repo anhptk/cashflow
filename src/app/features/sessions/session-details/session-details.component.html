@@ -10,35 +10,35 @@
     </div>
     <div class="flex items-center">
       <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2" i18n="@@history">History</button>
-      <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded" routerLink="action">Action</button>
+      <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded" routerLink="action" i18n="@@action">Action</button>
     </div>
   </div>
 
-  <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Summary</div>
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@summary">Summary</div>
 
   <div class="flex justify-between items-center my-4 mx-2">
-      <span>Passive income</span>
+      <span i18n="@@passiveIncome2">Passive income</span>
       <span class="w-1/2">$ {{data.totalIncome}}</span>
   </div>
 
   <div class="flex justify-between items-center my-4 mx-2">
-      <span>Monthly cash flow</span>
+      <span i18n="@@monthlyCashFlow2">Monthly cash flow</span>
       <span class="w-1/2">$ {{data.cashflow}}</span>
   </div>
 
-  <div class="bg-blue-800 p-2 font-bold text-white">Income</div>
+  <div class="bg-blue-800 p-2 font-bold text-white" i18n="@@income">Income</div>
 
   <div class="flex justify-between items-center my-4 mx-2">
-    <span>Salary</span>
+    <span i18n="@@salary">Salary</span>
     <span class="w-1/2">$ {{data.profession.income.salary}}</span>
   </div>
 
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let income of data.incomeLiabilities">
-    <span>Salary</span>
+    <span i18n="@@salary">Salary</span>
     <span class="w-1/2">$ {{income.cashflow}}</span>
   </div>
 
-  <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Expenses</div>
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@expenses">Expenses</div>
   <div class="flex justify-between items-center my-4 mx-2" *ngIf="data.session.children">
     <span i18n="@@childSupport">Child support</span>
     <span class="w-1/2">$ {{data.profession.expenses.childSupport * data.session.children}}</span>
@@ -49,14 +49,9 @@
     <span class="w-1/2">$ {{expense.cashflow}}</span>
   </div>
 
-  <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Assets</div>
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@assets">Assets</div>
 
-<!--  <div class="flex justify-between items-center my-4 mx-2">-->
-<!--    <span>3Bd/2Ba</span>-->
-<!--    <span class="w-1/2">$2,000 / $50,000</span>-->
-<!--  </div>-->
-
-  <div class="bg-blue-800 p-2 mt-4 font-bold text-white">Liabilities</div>
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@liabilities">Liabilities</div>
 
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let liability of data.expenseLiabilities">
     <span>{{liability.name}}</span>
