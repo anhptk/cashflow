@@ -61,10 +61,12 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   public addChild(): void {
     this.patchState((state: SessionState) => {
+      const newSession = {...state.session, children: state.session.children += 1};
+      this.sessionService.update(newSession);
       return {
-        session: {...state.session, children: state.session.children += 1},
-        totalExpenses: this._calculateExpenses(state.session),
-        cashflow: this._calculateCashflow(state.session)
+        session: newSession,
+        totalExpenses: this._calculateExpenses(newSession),
+        cashflow: this._calculateCashflow(newSession)
       }
     });
   }

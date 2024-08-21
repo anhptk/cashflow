@@ -3,6 +3,7 @@ import { SessionService } from '../../../shared/services/db/session.service';
 import { SessionState } from '../../../shared/models/sessions/session-state';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { Location } from '@angular/common';
+import { MAX_CHILDREN } from '../../../shared/constants/app.constant';
 
 @Component({
   selector: 'app-actions-list',
@@ -27,7 +28,7 @@ export class ActionsListComponent {
   }
 
   public payday(): void {
-    const cf = confirm($localize`:@@actions.paydayConfirm:Payday: Cash +` + `$${this.data.cashflow}`);
+    const cf = confirm($localize`:@@actions.paydayConfirm:Payday: Cash +$${this.data.cashflow}`);
     if (cf) {
       this._sessionStore.payday();
       this._location.back();
@@ -35,11 +36,26 @@ export class ActionsListComponent {
   }
 
   public downsize(): void {
-    const cf = confirm($localize`:@@actions.downsizeConfirm:Downsize: Cash -` + `$${this.data.totalExpenses}`);
+    const cf = confirm($localize`:@@actions.downsizeConfirm:Downsize: Cash -$${this.data.totalExpenses}`);
     if (cf) {
       // TODO: Add load if cash is less than total expenses
       this._sessionStore.downsize();
       this._location.back();
+    }
+  }
+
+  public addChild(): void {
+    const maxChildrenReached = this.data.session.children >= MAX_CHILDREN;
+
+    if (maxChildrenReached) {
+      alert($localize`:@@actions.maxChildrenReached:You have reached the maximum number of children (${MAX_CHILDREN}).`);
+      return;
+    } else {
+      const cf = confirm($localize`:@@actions.addBabyConfirm:Add Baby: Cashflow -$${this.data.profession.expenses.childSupport}`);
+      if (cf) {
+        this._sessionStore.addChild();
+        this._location.back();
+      }
     }
   }
 }
