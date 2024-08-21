@@ -66,8 +66,6 @@
     "monthlyCashFlow2": "Dòng tiền hàng tháng",
     "childSupport": "Tiền nuôi con",
     "sessionCreatedAt": "Phiên tạo tại",
-    "pageTitle": "{$INTERPOLATION}",
-    "languageSwitch": " EN/VI ",
     "otherPayments": "Các khoản thanh toán khác",
     "homeMortgage": "Thế chấp nhà",
     "schoolLoans": "Khoản vay học phí",
