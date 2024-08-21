@@ -43,7 +43,7 @@ export const routes: Routes = [
             path: '',
             component: SessionDetailsComponent,
             data: {
-              title: 'Session Details'
+              title: $localize`:@@sessionDetails:Session Details`
             }
           },
           {

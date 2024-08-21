@@ -1,0 +1,12 @@
+{
+  "locale": "en-US",
+  "translations": {
+    "sessionDetails": "Session Details",
+    "newSession": "New session",
+    "manageSession": "Manage session",
+    "newProfession": "New profession",
+    "manageProfessions": "Manage professions",
+    "history": "History",
+    "or": "OR"
+  }
+}

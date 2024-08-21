@@ -7,7 +7,10 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build:css": "tailwindcss build src/styles/tailwind.css -o dist/tailwind.css"
+    "build:css": "tailwindcss build src/styles/tailwind.css -o dist/tailwind.css",
+    "gen-locale": "ng extract-i18n --output-path src/locale --format json",
+    "start-vi": "ng serve --configuration=vi",
+    "build-vi": "ng build --configuration=vi"
   },
   "private": true,
   "dependencies": {

@@ -16,7 +16,7 @@
       "i18n": {
         "sourceLocale": "en-US",
         "locales": {
-          "vi": "src/locale/messages.vi.xlf"
+          "vi": "src/locale/messages.vi.json"
         }
       },
       "architect": {
