@@ -43,12 +43,15 @@ export class IndexedDbService {
 
   async deleteData(storeName: DatabaseTable, key: number) {
     const db = await this.dbPromise;
-    return db.delete(storeName, key);
+    const store = db.transaction(storeName, 'readwrite').objectStore(storeName);
+    return store.delete(key);
   }
 
-  async updateData(storeName: DatabaseTable, key: number, data: any) {
+  async updateData(storeName: DatabaseTable, data: any) {
     const db = await this.dbPromise;
-    return db.put(storeName, data, key);
+    const store= db.transaction(storeName, 'readwrite').objectStore(storeName);
+
+    return store.put(data);
   }
 
   async clearData(storeName: DatabaseTable) {

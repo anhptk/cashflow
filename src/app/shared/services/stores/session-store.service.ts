@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { SessionState } from '../../models/sessions/session-state';
 import { Session, AssetItem, ExpenseItem } from '../../models/database/session.db';
+import { SessionService } from '../db/session.service';
 
 @Injectable()
 export class SessionStoreService extends ComponentStore<SessionState> {
 
-  constructor() {
+  constructor(
+    private sessionService: SessionService
+  ) {
     super(null);
   }
 
@@ -34,8 +37,11 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   public payday(): void {
     this.patchState((state: SessionState) => {
+      const newSession = {...state.session, cash: state.session.cash += state.cashflow};
+      this.sessionService.update(newSession);
+
       return {
-        session: {...state.session, cash: state.session.cash += state.cashflow}
+        session: newSession
       }
     })
   }
