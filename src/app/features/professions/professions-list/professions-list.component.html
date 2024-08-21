@@ -1,5 +1,5 @@
 <section class="flex flex-col items-center justify-center p-4 space-y-4 sm:space-y-6">
     <app-button class="w-full" *ngFor="let prof of professions" routerLink="/professions/{{prof.id}}">
-        <span i18n="@@professionName">{{prof.name}}</span> - $<span i18n="@@professionSalary">{{ prof.income.salary}}</span>
+        {{prof.name}} - ${{ prof.income.salary}}
     </app-button>
 </section>

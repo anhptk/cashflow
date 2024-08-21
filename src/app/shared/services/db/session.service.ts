@@ -21,12 +21,12 @@ export class SessionService {
 
     private _constructNewSession(profession: Profession): Partial<Session> {
         const expenses: ExpenseItem[] = [
-            {name: $localize`:@@session.expenses.taxes:Tax`, cashflow: profession.expenses.taxes},
-            {name: $localize`:@@session.expenses.otherPayments:Other payments`, cashflow: profession.expenses.other},
-            {name: $localize`:@@session.expenses.homeMortgage:Home mortgage`, cashflow: profession.expenses.homeMortgage, value: profession.liabilities.homeMortgage, isLiability: true},
-            {name: $localize`:@@session.expenses.schoolLoans:School loans`, cashflow: profession.expenses.schoolLoan, value: profession.liabilities.schoolLoan, isLiability: true},
-            {name: $localize`:@@session.expenses.carLoans:Car loans`, cashflow: profession.expenses.carLoan, value: profession.liabilities.carLoan, isLiability: true},
-            {name: $localize`:@@session.expenses.creditCards:Credit cards`, cashflow: profession.expenses.creditCard, value: profession.liabilities.creditCard, isLiability: true},
+            {name: $localize`:@@taxes:Taxes`, cashflow: profession.expenses.taxes},
+            {name: $localize`:@@otherPayments:Other payments`, cashflow: profession.expenses.other},
+            {name: $localize`:@@homeMortgage:Home mortgage`, cashflow: profession.expenses.homeMortgage, value: profession.liabilities.homeMortgage, isLiability: true},
+            {name: $localize`:@@schoolLoans:School loans`, cashflow: profession.expenses.schoolLoan, value: profession.liabilities.schoolLoan, isLiability: true},
+            {name: $localize`:@@carLoans:Car loans`, cashflow: profession.expenses.carLoan, value: profession.liabilities.carLoan, isLiability: true},
+            {name: $localize`:@@creditCards:Credit cards`, cashflow: profession.expenses.creditCard, value: profession.liabilities.creditCard, isLiability: true},
         ];
 
         return {
