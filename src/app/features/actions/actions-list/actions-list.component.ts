@@ -27,7 +27,7 @@ export class ActionsListComponent {
   }
 
   public payday(): void {
-    const cf = confirm(`Payday: Cash + $${this.data.cashflow}`);
+    const cf = confirm($localize`:@@paydayMessage:Payday: Cash + $${this.data.cashflow}`);
     if (cf) {
       this._sessionStore.payday();
     }

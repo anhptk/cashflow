@@ -1,10 +1,10 @@
 <form [formGroup]="professionForm" class="mt-4 space-y-4">
-  <input type="text" id="profession" placeholder="Enter profession name" formControlName="name" class="w-full p-2 rounded outline outline-1">
+  <input type="text" id="profession" i18n-placeholder="@@enterProfessionName" placeholder="Enter profession name" formControlName="name" class="w-full p-2 rounded outline outline-1">
 
-  <div class="bg-blue-800 p-2 font-bold text-white">Income</div>
+  <div class="bg-blue-800 p-2 font-bold text-white" i18n="@@income">Income</div>
   <div formGroupName="income">
     <div class="flex justify-between items-center">
-      <label for="salary">Salary</label>
+      <label for="salary" i18n="@@salary">Salary</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="salary" formControlName="salary" class="w-full p-2 rounded outline outline-1">
@@ -12,52 +12,52 @@
     </div>
   </div>
 
-  <div class="bg-blue-800 p-2 font-bold text-white">Expenses</div>
+  <div class="bg-blue-800 p-2 font-bold text-white" i18n="@@expenses">Expenses</div>
   <div formGroupName="expenses" class="space-y-4">
     <div class="flex justify-between items-center">
-      <label for="taxes">Taxes</label>
+      <label for="taxes" i18n="@@taxes">Taxes</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="taxes" formControlName="taxes" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="homeExpenses">Home Mortgage Payment</label>
+      <label for="homeExpenses" i18n="@@homeMortgagePayment">Home Mortgage Payment</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="homeExpenses" formControlName="homeMortgage" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="schoolExpenses">School Loan Payment</label>
+      <label for="schoolExpenses" i18n="@@schoolLoanPayment">School Loan Payment</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="schoolExpenses" formControlName="schoolLoan" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="carExpenses">Car Loan Payment</label>
+      <label for="carExpenses" i18n="@@carLoanPayment">Car Loan Payment</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="carExpenses" formControlName="carLoan" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="creditCardExpenses">Credit Card Payment</label>
+      <label for="creditCardExpenses" i18n="@@creditCardPayment">Credit Card Payment</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="creditCardExpenses" formControlName="creditCard" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="retailExpenses">Retail Payment</label>
+      <label for="retailExpenses" i18n="@@retailPayment">Retail Payment</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="retailExpenses" formControlName="retail" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="otherExpenses">Other Expenses</label>
+      <label for="otherExpenses" i18n="@@other">Other Expenses</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="otherExpenses" formControlName="other" class="w-full p-2 rounded outline outline-1">
@@ -65,19 +65,19 @@
     </div>
     <hr>
     <div class="flex justify-between items-center">
-      <label for="perChildExpense">Per Child Expense</label>
+      <label for="perChildExpense" i18n="@@childSupport">Per Child Expense</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="perChildExpense" formControlName="childSupport" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
-    <p class="text-sm">* Expense for each child. Starting child expense will be 0 with 0 children.</p>
+    <p class="text-sm" i18n="@@childExpenseNote">* Expense for each child. Starting child expense will be 0 with 0 children.</p>
   </div>
 
-  <div class="bg-blue-800 p-2 font-bold text-white">Assets</div>
+  <div class="bg-blue-800 p-2 font-bold text-white" i18n="@@assets">Assets</div>
   <div formGroupName="assets" class="space-y-4">
     <div class="flex justify-between items-center">
-      <label for="savings">Savings</label>
+      <label for="savings" i18n="@@savings">Savings</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="savings" formControlName="savings" class="w-full p-2 rounded outline outline-1">
@@ -85,38 +85,38 @@
     </div>
   </div>
 
-  <div class="bg-blue-800 p-2 font-bold text-white">Liabilities</div>
+  <div class="bg-blue-800 p-2 font-bold text-white" i18n="@@liabilities">Liabilities</div>
   <div formGroupName="liabilities" class="space-y-4">
     <div class="flex justify-between items-center">
-      <label for="homeMortgage">Home Mortgage</label>
+      <label for="homeMortgage" i18n="@@homeMortgage">Home Mortgage</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="homeMortgage" formControlName="homeMortgage" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="schoolLoans">School Loans</label>
+      <label for="schoolLoans" i18n="@@schoolLoan">School Loans</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="schoolLoans" formControlName="schoolLoan" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="carLoans">Car Loans</label>
+      <label for="carLoans" i18n="@@carLoan">Car Loans</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="carLoans" formControlName="carLoan" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="creditCards">Credit Cards</label>
+      <label for="creditCards" i18n="@@creditCard">Credit Cards</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="creditCards" formControlName="creditCard" class="w-full p-2 rounded outline outline-1">
       </div>
     </div>
     <div class="flex justify-between items-center">
-      <label for="retailDebt">Retail Debt</label>
+      <label for="retailDebt" i18n="@@retailDebt">Retail Debt</label>
       <div class="flex items-center w-1/2">
         <span class="mr-2">$</span>
         <input type="number" id="retailDebt" formControlName="retail" class="w-full p-2 rounded outline outline-1">
@@ -127,10 +127,10 @@
   <app-profession-summary [form]="professionForm"></app-profession-summary>
 
   <div class="my-4">
-    <app-button (click)="submit()">Save</app-button>
+    <app-button (click)="submit()" i18n="@@save">Save</app-button>
   </div>
 
   <div class="my-4">
-    <app-button>Save and start new session</app-button>
+    <app-button i18n="@@saveAndStartNewSession">Save and start new session</app-button>
   </div>
 </form>

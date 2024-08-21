@@ -14,7 +14,7 @@ export const routes: Routes = [
     path: '',
     component: HomeComponent,
     data: {
-      title: 'Home',
+      title: $localize`:@@home:Home`,
       hideBackButton: true
     }
   },
@@ -25,14 +25,14 @@ export const routes: Routes = [
         path: '',
         component: SessionsListComponent,
         data: {
-          title: 'Sessions'
+          title: $localize`:@@sessions:Sessions`
         }
       },
       {
         path: 'new',
         component: CreateNewSessionComponent,
         data: {
-          title: 'Create New Session'
+          title: $localize`:@@createNewSession:Create New Session`
         }
       },
       {
@@ -50,7 +50,7 @@ export const routes: Routes = [
             path: 'action',
             component: ActionsListComponent,
             data: {
-              title: 'Actions'
+              title: $localize`:@@actions:Actions`
             }
           }
         ]
@@ -64,21 +64,21 @@ export const routes: Routes = [
         path: '',
         component: ProfessionsListComponent,
         data: {
-          title: 'Professions'
+          title: $localize`:@@professions:Professions`
         }
       },
       {
         path: 'new',
         component: CreateNewProfessionComponent,
         data: {
-          title: 'Create New Profession'
+          title: $localize`:@@createNewProfession:Create New Profession`
         }
       },
       {
         path: ':professionId',
         component: ProfessionDetailsComponent,
         data: {
-          title: 'Profession Details'
+          title: $localize`:@@professionDetails:Profession Details`
         }
       }
     ]
