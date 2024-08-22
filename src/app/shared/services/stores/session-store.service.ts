@@ -38,7 +38,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   public payday(): void {
     this.patchState((state: SessionState) => {
-      return this._adjustSessionCash(state.profession.income.salary, state.session);
+      return this._adjustSessionCash(state.cashflow, state.session);
     });
   }
 

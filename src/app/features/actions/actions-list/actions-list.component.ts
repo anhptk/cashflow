@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { SessionService } from '../../../shared/services/db/session.service';
 import { SessionState } from '../../../shared/models/sessions/session-state';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { Location } from '@angular/common';
-import { MAX_CHILDREN, LOAN_STEP, LOAN_INTEREST } from '../../../shared/constants/app.constant';
+import { MAX_CHILDREN, LOAN_STEP, LOAN_INTEREST, RAT_RACE_CHARITY_RATE } from '../../../shared/constants/app.constant';
 
 @Component({
   selector: 'app-actions-list',
@@ -16,7 +15,6 @@ export class ActionsListComponent {
   data: SessionState;
 
   constructor(
-    private _sessionService: SessionService,
     private _sessionStore: SessionStoreService,
     private _location: Location
   ) {}
@@ -62,9 +60,22 @@ export class ActionsListComponent {
     }
   }
 
-  private _getLoanDialog(missingAmount: number, callback: Function): void {
+  public doCharity(): void {
+    const charityAmount = (this.data.cashflow + this.data.totalExpenses) * RAT_RACE_CHARITY_RATE;
+    if (this.data.session.cash < charityAmount) {
+      alert($localize`:@@actions.canNotDonate:Insufficient cash. Can not donate.`);
+    } else {
+      const cf = confirm($localize`:@@actions.doCharityConfirm:Donate: Cash -$${charityAmount}`);
+      if (cf) {
+        this._sessionStore.adjustCash(-charityAmount);
+        this._location.back();
+      }
+    }
+  }
+
+  private _getLoanDialog(missingAmount: number, next: Function): void {
     if (missingAmount <= 0) {
-      callback();
+      next();
       return;
     }
 
@@ -73,7 +84,7 @@ export class ActionsListComponent {
 
     const cf = confirm($localize`:@@actions.getLoanConfirm: Insufficient cash. Get Loan: Cash +$${loanAmount}. Cashflow -$${cashflowReduction}`);
     if (cf) {
-      callback();
+      next();
       this._sessionStore.loan(loanAmount);
     }
   }
