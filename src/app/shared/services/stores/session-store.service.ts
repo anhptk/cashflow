@@ -3,6 +3,7 @@ import { ComponentStore } from '@ngrx/component-store';
 import { SessionState } from '../../models/sessions/session-state';
 import { Session, AssetItem, ExpenseItem } from '../../models/database/session.db';
 import { SessionService } from '../db/session.service';
+import { LOAN_INTEREST } from '../../constants/app.constant';
 
 @Injectable()
 export class SessionStoreService extends ComponentStore<SessionState> {
@@ -44,6 +45,25 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   public downsize(): void {
     this.patchState((state: SessionState) => {
       return this._adjustSessionCash(-state.totalExpenses, state.session);
+    });
+  }
+
+  public loan(amount: number): void {
+    this.patchState((state: SessionState) => {
+      const newSession = {
+        ...state.session,
+        expenses: state.session.expenses.filter(x=> x.name !== 'Loans').concat(this._calculateLoan(state.session, amount)),
+        cash: state.session.cash += amount
+      }
+
+      this.sessionService.update(newSession);
+
+      return {
+        session: newSession,
+        expenseLiabilities: this._expenseLiabilities(newSession),
+        totalExpenses: this._calculateExpenses(newSession),
+        cashflow: this._calculateCashflow(newSession)
+      }
     });
   }
 
@@ -102,5 +122,22 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     if (!session) return 0;
 
     return session.profession.income.salary + this._calculateIncome(session) - this._calculateExpenses(session);
+  }
+
+  private _calculateLoan(session: Session, amount: number): ExpenseItem {
+    const loan = session.expenses.find(expense => expense.name === 'Loans');
+    if (!loan) {
+      return {
+        name: 'Loans',
+        cashflow: amount * LOAN_INTEREST,
+        value: amount,
+        isLiability: true
+      };
+    }
+    return {
+      ...loan,
+      cashflow: loan.cashflow + amount * LOAN_INTEREST,
+      value: loan.value + amount
+    };
   }
 }
