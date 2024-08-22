@@ -73,6 +73,30 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     });
   }
 
+  public payoffExpense(expense: ExpenseItem): void {
+    this.patchState((state: SessionState) => {
+      if (expense.value > state.session.cash) {
+        alert($localize`:@@actions.payoffExpenseFailed:Insufficient cash. Can not pay off.`);
+        return state;
+      }
+
+      const newSession = {
+        ...state.session,
+        expenses: state.session.expenses.filter(x => x.name !== expense.name),
+        cash: state.session.cash -= expense.value
+      }
+
+      this.sessionService.update(newSession);
+
+      return {
+        session: newSession,
+        expenseLiabilities: this._expenseLiabilities(newSession),
+        totalExpenses: this._calculateExpenses(newSession),
+        cashflow: this._calculateCashflow(newSession)
+      }
+    });
+  }
+
   private _adjustSessionCash(amount: number, session: Session): Session {
     const newSession = {...session, cash: session.cash += amount};
     this.sessionService.update(newSession);

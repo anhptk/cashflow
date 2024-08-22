@@ -8,6 +8,8 @@ import { ProfessionDetailsComponent } from './features/professions/profession-de
 import { SessionDetailsComponent } from './features/sessions/session-details/session-details.component';
 import { ActionsListComponent } from './features/actions/actions-list/actions-list.component';
 import { SessionDetailsWrapperComponent } from './features/sessions/session-details-wrapper/session-details-wrapper.component';
+import { RouteWrapperComponent } from './shared/ui/route-wrapper/route-wrapper.component';
+import { SessionExpensePayoffComponent } from './features/sessions/widgets/session-expense-payoff/session-expense-payoff.component';
 
 export const routes: Routes = [
   {
@@ -48,10 +50,23 @@ export const routes: Routes = [
           },
           {
             path: 'action',
-            component: ActionsListComponent,
-            data: {
-              title: $localize`:@@actions:Actions`
-            }
+            component: RouteWrapperComponent,
+            children: [
+              {
+                path: '',
+                component: ActionsListComponent,
+                data: {
+                  title: $localize`:@@actions:Actions`
+                }
+              },
+              {
+                path: 'payoff',
+                component: SessionExpensePayoffComponent,
+                data: {
+                  title: $localize`:@@Payoff:Payoff`
+                }
+              }
+            ]
           }
         ]
       }

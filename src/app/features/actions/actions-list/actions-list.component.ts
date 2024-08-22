@@ -3,11 +3,12 @@ import { SessionState } from '../../../shared/models/sessions/session-state';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { Location } from '@angular/common';
 import { MAX_CHILDREN, LOAN_STEP, LOAN_INTEREST, RAT_RACE_CHARITY_RATE } from '../../../shared/constants/app.constant';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-actions-list',
   standalone: true,
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './actions-list.component.html',
   styleUrl: './actions-list.component.scss'
 })
