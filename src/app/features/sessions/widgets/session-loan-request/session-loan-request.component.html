@@ -1,0 +1,14 @@
+<p class="p-2" i18n="@@currentCash">Current cash: ${{cash$ | async}}</p>
+<p class="p-2 mb-2" i18n="@@currentCashFlow">Current cash flow: ${{cashflow$ | async}}</p>
+<app-divider></app-divider>
+<p class="p-2">
+  How much would you like to borrow? (Increment of ${{ LOAN_STEP }}, monthly interest rate of {{LOAN_INTEREST | percent}})
+</p>
+<div class="flex items-center w-1/2">
+  <span class="mr-2">$</span>
+  <input type="number" [step]="LOAN_STEP" id="salary" [formControl]="loanAmountControl" class="w-full p-2 rounded outline outline-1">
+</div>
+
+<div class="flex justify-center mt-10">
+  <app-button class="w-1/4" (click)="onLoanRequest()" i18n="@@confirm">Confirm</app-button>
+</div>

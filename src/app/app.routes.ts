@@ -10,6 +10,7 @@ import { ActionsListComponent } from './features/actions/actions-list/actions-li
 import { SessionDetailsWrapperComponent } from './features/sessions/session-details-wrapper/session-details-wrapper.component';
 import { RouteWrapperComponent } from './shared/ui/route-wrapper/route-wrapper.component';
 import { SessionExpensePayoffComponent } from './features/sessions/widgets/session-expense-payoff/session-expense-payoff.component';
+import { SessionLoanRequestComponent } from './features/sessions/widgets/session-loan-request/session-loan-request.component';
 
 export const routes: Routes = [
   {
@@ -65,7 +66,14 @@ export const routes: Routes = [
                 data: {
                   title: $localize`:@@Payoff:Payoff`
                 }
-              }
+              },
+              {
+                path: 'loan',
+                component: SessionLoanRequestComponent,
+                data: {
+                  title: $localize`:@@takeALoan:Take a Loan`
+                }
+              },
             ]
           }
         ]
