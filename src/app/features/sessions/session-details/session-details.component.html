@@ -1,18 +1,7 @@
 <ng-container *ngIf="data$ | async as data">
   <app-progress-bar [value]="data.totalIncome" [maxValue]="data.totalExpenses"></app-progress-bar>
 
-  <div class="flex justify-between items-center p-4" *ngIf="session$ | async as session">
-    <div class="flex items-center">
-      <span class="mr-2">$</span>
-      <span>{{ session.cash }}</span>
-      <span class="mx-2">👶</span>
-      <span>{{ session.children }}</span>
-    </div>
-    <div class="flex items-center">
-      <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2" i18n="@@history">History</button>
-      <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded" routerLink="action" i18n="@@action">Action</button>
-    </div>
-  </div>
+  <app-session-header></app-session-header>
 
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@summary">Summary</div>
 
@@ -34,20 +23,11 @@
   </div>
 
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let income of data.incomeLiabilities">
-    <span i18n="@@salary">Salary</span>
+    <span>{{income.name}}</span>
     <span class="w-1/2">$ {{income.cashflow}}</span>
   </div>
 
-  <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@expenses">Expenses</div>
-  <div class="flex justify-between items-center my-4 mx-2" *ngIf="data.session.children">
-    <span i18n="@@childSupport">Child support</span>
-    <span class="w-1/2">$ {{data.profession.expenses.childSupport * data.session.children}}</span>
-  </div>
-
-  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let expense of data.session.expenses">
-    <span>{{expense.name}}</span>
-    <span class="w-1/2">$ {{expense.cashflow}}</span>
-  </div>
+  <app-session-expenses [childSupport]="data.profession.expenses.childSupport"></app-session-expenses>
 
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@assets">Assets</div>
 

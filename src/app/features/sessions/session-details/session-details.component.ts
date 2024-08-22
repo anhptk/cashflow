@@ -5,7 +5,8 @@ import { Observable } from 'rxjs';
 import { SessionState } from '../../../shared/models/sessions/session-state';
 import { CommonModule } from '@angular/common';
 import { ProgressBarComponent } from '../../../shared/ui/progress-bar/progress-bar.component';
-import { Session } from '../../../shared/models/database/session.db';
+import { SessionHeaderComponent } from '../widgets/session-header/session-header.component';
+import { SessionExpensesComponent } from '../widgets/session-expenses/session-expenses.component';
 
 @Component({
   selector: 'app-session-details',
@@ -13,7 +14,9 @@ import { Session } from '../../../shared/models/database/session.db';
   imports: [
     CommonModule,
     ProgressBarComponent,
-    RouterModule
+    RouterModule,
+    SessionHeaderComponent,
+    SessionExpensesComponent
   ],
   templateUrl: './session-details.component.html',
   styleUrl: './session-details.component.scss'
@@ -21,12 +24,10 @@ import { Session } from '../../../shared/models/database/session.db';
 export class SessionDetailsComponent {
 
   data$: Observable<SessionState>;
-  session$: Observable<Session>;
 
   constructor(
     private sessionStore: SessionStoreService,
   ) {
     this.data$ = this.sessionStore.data$;
-    this.session$ = this.sessionStore.select(state => state.session);
   }
 }
