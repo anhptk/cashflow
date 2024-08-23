@@ -13,6 +13,7 @@ import { SessionExpensePayoffComponent } from './features/sessions/widgets/sessi
 import { SessionLoanRequestComponent } from './features/sessions/widgets/session-loan-request/session-loan-request.component';
 import { SessionCashAdjustmentComponent } from './features/sessions/widgets/session-cash-adjustment/session-cash-adjustment.component';
 import { SessionDoodadsComponent } from './features/sessions/widgets/session-doodads/session-doodads.component';
+import { DealsComponent } from './features/actions/deals/deals.component';
 
 export const routes: Routes = [
   {
@@ -88,6 +89,20 @@ export const routes: Routes = [
                 component: SessionDoodadsComponent,
                 data: {
                   title: $localize`:@@doodads:Doodads`
+                }
+              },
+              {
+                path: 'deals',
+                component: DealsComponent,
+                data: {
+                  title: $localize`:@@selectDeal:Select Deal`
+                }
+              },
+              {
+                path: 'market',
+                component: DealsComponent,
+                data: {
+                  title: $localize`:@@market:Market`
                 }
               }
             ]
