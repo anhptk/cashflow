@@ -12,6 +12,7 @@ import { RouteWrapperComponent } from './shared/ui/route-wrapper/route-wrapper.c
 import { SessionExpensePayoffComponent } from './features/sessions/widgets/session-expense-payoff/session-expense-payoff.component';
 import { SessionLoanRequestComponent } from './features/sessions/widgets/session-loan-request/session-loan-request.component';
 import { SessionCashAdjustmentComponent } from './features/sessions/widgets/session-cash-adjustment/session-cash-adjustment.component';
+import { SessionDoodadsComponent } from './features/sessions/widgets/session-doodads/session-doodads.component';
 
 export const routes: Routes = [
   {
@@ -80,6 +81,13 @@ export const routes: Routes = [
                 component: SessionCashAdjustmentComponent,
                 data: {
                   title: $localize`:@@adjustCash:Adjust Cash`
+                }
+              },
+              {
+                path: 'doodads',
+                component: SessionDoodadsComponent,
+                data: {
+                  title: $localize`:@@doodads:Doodads`
                 }
               }
             ]

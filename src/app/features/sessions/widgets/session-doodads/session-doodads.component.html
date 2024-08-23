@@ -1,0 +1,15 @@
+<p class="p-2" i18n="@@currentCash">Current cash: ${{cash$ | async}}</p>
+<p class="p-2 mb-2" i18n="@@currentCashFlow">Current cash flow: ${{cashflow$ | async}}</p>
+<app-divider></app-divider>
+
+<p class="p-2" i18n="@@doodadsInstructions">
+  How much are you paying for the expenses?
+</p>
+<div class="flex items-center w-1/2">
+  <span class="mr-2">$</span>
+  <input type="number" [formControl]="amountControl" class="w-full p-2 rounded outline outline-1">
+</div>
+
+<div class="flex justify-center mt-10">
+  <app-button class="w-1/4" (click)="submit()" i18n="@@confirm">Confirm</app-button>
+</div>
