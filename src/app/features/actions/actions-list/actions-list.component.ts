@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SessionState } from '../../../shared/models/sessions/session-state';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { Location } from '@angular/common';
-import { MAX_CHILDREN, LOAN_STEP, LOAN_INTEREST, RAT_RACE_CHARITY_RATE } from '../../../shared/constants/app.constant';
+import { MAX_CHILDREN, RAT_RACE_CHARITY_RATE } from '../../../shared/constants/app.constant';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -37,8 +37,8 @@ export class ActionsListComponent {
   public downsize(): void {
     const cf = confirm($localize`:@@actions.downsizeConfirm:Downsize: Cash -$${this.data.totalExpenses}`);
     if (cf) {
-      this._getLoanDialog(
-        this.data.totalExpenses - this.data.session.cash,
+      this._sessionStore.autoLoan(
+        this.data.totalExpenses,
         () => {
         this._sessionStore.downsize();
         this._location.back();
@@ -71,22 +71,6 @@ export class ActionsListComponent {
         this._sessionStore.adjustCash(-charityAmount);
         this._location.back();
       }
-    }
-  }
-
-  private _getLoanDialog(missingAmount: number, next: Function): void {
-    if (missingAmount <= 0) {
-      next();
-      return;
-    }
-
-    const loanAmount = Math.ceil(missingAmount/LOAN_STEP)*LOAN_STEP;
-    const cashflowReduction = loanAmount*LOAN_INTEREST;
-
-    const cf = confirm($localize`:@@actions.getLoanConfirm: Insufficient cash. Get Loan: Cash +$${loanAmount}. Cashflow -$${cashflowReduction}`);
-    if (cf) {
-      next();
-      this._sessionStore.loan(loanAmount);
     }
   }
 }

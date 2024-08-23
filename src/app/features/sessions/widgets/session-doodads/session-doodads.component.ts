@@ -40,8 +40,10 @@ export class SessionDoodadsComponent {
 
     const cf = confirm($localize`:@@actions.doodadsConfirm: Cash -$${amount}`);
     if (cf) {
-      this._sessionStore.adjustCash(-amount);
-      this._location.back();
+      this._sessionStore.autoLoan(amount, () => {
+        this._sessionStore.adjustCash(-amount);
+        this._location.back();
+      });
     }
   }
 }

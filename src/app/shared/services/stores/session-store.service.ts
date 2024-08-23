@@ -1,9 +1,9 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { SessionState } from '../../models/sessions/session-state';
 import { Session, AssetItem, ExpenseItem } from '../../models/database/session.db';
 import { SessionService } from '../db/session.service';
-import { LOAN_INTEREST } from '../../constants/app.constant';
+import { LOAN_INTEREST, LOAN_STEP } from '../../constants/app.constant';
 import { tap } from 'rxjs';
 
 @Injectable()
@@ -60,6 +60,24 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     });
 
     this._updateSessionDb(this.select(state => state.session));
+  }
+
+  public autoLoan(expenseAmount: number, next: Function): void {
+    const missingAmount = expenseAmount -  this.get(state => state.session.cash);
+
+    if (missingAmount <= 0) {
+      next();
+      return;
+    }
+
+    const loanAmount = Math.ceil(missingAmount/LOAN_STEP)*LOAN_STEP;
+    const cashflowReduction = loanAmount*LOAN_INTEREST;
+
+    const cf = confirm($localize`:@@actions.getLoanConfirm: Insufficient cash. Get Loan: Cash +$${loanAmount}. Cashflow -$${cashflowReduction}`);
+    if (cf) {
+      next();
+      this.loan(loanAmount);
+    }
   }
 
   public adjustCash(amount: number): void {
