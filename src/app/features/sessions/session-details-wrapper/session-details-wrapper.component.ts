@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { SessionService } from '../../../shared/services/db/session.service';
+import { provideComponentStore } from '@ngrx/component-store';
 
 @Component({
   selector: 'app-session-details-wrapper',
   standalone: true,
   imports: [RouterModule],
-  providers: [SessionStoreService],
+  providers: [provideComponentStore(SessionStoreService)],
   templateUrl: './session-details-wrapper.component.html',
   styleUrl: './session-details-wrapper.component.scss'
 })

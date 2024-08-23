@@ -1,17 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { SessionState } from '../../models/sessions/session-state';
 import { Session, AssetItem, ExpenseItem } from '../../models/database/session.db';
 import { SessionService } from '../db/session.service';
 import { LOAN_INTEREST } from '../../constants/app.constant';
+import { tap } from 'rxjs';
 
 @Injectable()
-export class SessionStoreService extends ComponentStore<SessionState> {
+export class SessionStoreService extends ComponentStore<SessionState> implements OnDestroy {
 
   constructor(
     private sessionService: SessionService
   ) {
-    super(null);
+    super();
   }
 
   readonly data$ = this.select({
@@ -40,12 +41,16 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     this.patchState((state: SessionState) => {
       return this._adjustSessionCash(state.cashflow, state.session);
     });
+
+    this._updateSessionDb(this.select(state => state.session));
   }
 
   public downsize(): void {
     this.patchState((state: SessionState) => {
       return this._adjustSessionCash(-state.totalExpenses, state.session);
     });
+
+    this._updateSessionDb(this.select(state => state.session));
   }
 
   public loan(amount: number): void {
@@ -56,8 +61,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         cash: state.session.cash += amount
       }
 
-      this.sessionService.update(newSession);
-
       return {
         session: newSession,
         expenseLiabilities: this._expenseLiabilities(newSession),
@@ -65,12 +68,16 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         cashflow: this._calculateCashflow(newSession)
       }
     });
+
+    this._updateSessionDb(this.select(state => state.session));
   }
 
   public adjustCash(amount: number): void {
     this.patchState((state: SessionState) => {
       return this._adjustSessionCash(amount, state.session);
     });
+
+    this._updateSessionDb(this.select(state => state.session));
   }
 
   public payoffExpense(expense: ExpenseItem): void {
@@ -86,8 +93,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         cash: state.session.cash -= expense.value
       }
 
-      this.sessionService.update(newSession);
-
       return {
         session: newSession,
         expenseLiabilities: this._expenseLiabilities(newSession),
@@ -95,24 +100,25 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         cashflow: this._calculateCashflow(newSession)
       }
     });
+
+    this._updateSessionDb(this.select(state => state.session));
   }
 
   private _adjustSessionCash(amount: number, session: Session): Session {
-    const newSession = {...session, cash: session.cash += amount};
-    this.sessionService.update(newSession);
-    return newSession;
+    return {...session, cash: session.cash += amount};
   }
 
   public addChild(): void {
     this.patchState((state: SessionState) => {
       const newSession = {...state.session, children: state.session.children += 1};
-      this.sessionService.update(newSession);
       return {
         session: newSession,
         totalExpenses: this._calculateExpenses(newSession),
         cashflow: this._calculateCashflow(newSession)
       }
     });
+
+    this._updateSessionDb(this.select(state => state.session));
   }
 
   private _incomeLiabilities(session: Session): AssetItem[] {
@@ -164,4 +170,12 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       value: loan.value + amount
     };
   }
+
+  private _updateSessionDb = this.effect<Session>(session$ => {
+    return session$.pipe(
+      tap((session:Session) => {
+        this.sessionService.update(session);
+      })
+    );
+  });
 }
