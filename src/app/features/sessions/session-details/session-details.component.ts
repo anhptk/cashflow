@@ -28,6 +28,6 @@ export class SessionDetailsComponent {
   constructor(
     private sessionStore: SessionStoreService,
   ) {
-    this.data$ = this.sessionStore.data$;
+    this.data$ = this.sessionStore.state$;
   }
 }

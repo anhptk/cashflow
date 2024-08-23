@@ -21,7 +21,7 @@ export class ActionsListComponent {
   ) {}
 
   ngOnInit(): void {
-    this._sessionStore.data$.subscribe((data) => {
+    this._sessionStore.state$.subscribe((data) => {
       this.data = data;
     });
   }

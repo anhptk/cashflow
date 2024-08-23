@@ -7,23 +7,13 @@ import { LOAN_INTEREST } from '../../constants/app.constant';
 import { tap } from 'rxjs';
 
 @Injectable()
-export class SessionStoreService extends ComponentStore<SessionState> implements OnDestroy {
+export class SessionStoreService extends ComponentStore<SessionState> {
 
   constructor(
     private sessionService: SessionService
   ) {
     super();
   }
-
-  readonly data$ = this.select({
-    profession: this.select(state => state.profession),
-    session: this.select(state => state.session),
-    totalIncome: this.select(state => state.totalIncome),
-    totalExpenses: this.select(state => state.totalExpenses),
-    cashflow: this.select(state => state.cashflow),
-    expenseLiabilities: this.select(state => state.expenseLiabilities),
-    incomeLiabilities: this.select(state => state.incomeLiabilities)
-  });
 
   public setSession(session: Session): void {
     this.setState({
