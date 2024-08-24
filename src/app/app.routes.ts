@@ -14,6 +14,8 @@ import { SessionLoanRequestComponent } from './features/sessions/widgets/session
 import { SessionCashAdjustmentComponent } from './features/sessions/widgets/session-cash-adjustment/session-cash-adjustment.component';
 import { SessionDoodadsComponent } from './features/sessions/widgets/session-doodads/session-doodads.component';
 import { DealsComponent } from './features/actions/deals/deals.component';
+import { ActionTypesSelectComponent } from './features/actions/action-types-select/action-types-select.component';
+import { DEAL_TYPE } from './shared/constants/deals.enum';
 
 export const routes: Routes = [
   {
@@ -93,10 +95,86 @@ export const routes: Routes = [
               },
               {
                 path: 'deals',
-                component: DealsComponent,
-                data: {
-                  title: $localize`:@@selectDeal:Select Deal`
-                }
+                component: RouteWrapperComponent,
+                children: [
+                  {
+                    path: '',
+                    component: DealsComponent,
+                    data: {
+                      title: $localize`:@@selectDeal:Select Deal`
+                    }
+                  },
+                  {
+                    path: 'stocks',
+                    component: RouteWrapperComponent,
+                    children: [
+                      {
+                        path: '',
+                        component: ActionTypesSelectComponent,
+                        data: {
+                          title: $localize`:@@stocks-Actions:Stocks - Select actions`,
+                          dealType: DEAL_TYPE.STOCKS
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    path: 'housing',
+                    component: RouteWrapperComponent,
+                    children: [
+                      {
+                        path: '',
+                        component: ActionTypesSelectComponent,
+                        data: {
+                          title: $localize`:@@housing-Actions:Housing - Select actions`,
+                          dealType: DEAL_TYPE.HOUSING
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    path: 'land',
+                    component: RouteWrapperComponent,
+                    children: [
+                      {
+                        path: '',
+                        component: ActionTypesSelectComponent,
+                        data: {
+                          title: $localize`:@@land-Actions:Land - Select actions`,
+                          dealType: DEAL_TYPE.LAND
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    path: 'business',
+                    component: RouteWrapperComponent,
+                    children: [
+                      {
+                        path: '',
+                        component: ActionTypesSelectComponent,
+                        data: {
+                          title: $localize`:@@business-Actions:Business - Select actions`,
+                          dealType: DEAL_TYPE.BUSINESS
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    path: 'gold',
+                    component: RouteWrapperComponent,
+                    children: [
+                      {
+                        path: '',
+                        component: ActionTypesSelectComponent,
+                        data: {
+                          title: $localize`:@@gold-Actions:Gold - Select actions`,
+                          dealType: DEAL_TYPE.GOLD
+                        }
+                      }
+                    ]
+                  }
+                ]
               },
               {
                 path: 'market',
