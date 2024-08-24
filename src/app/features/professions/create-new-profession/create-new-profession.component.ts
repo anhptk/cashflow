@@ -76,9 +76,7 @@ export class CreateNewProfessionComponent {
       return;
     }
 
-    const profession: TypedFormValue<FormGroup<ProfessionForm>> = this.professionForm.value;
-
-    this._professionService.add(profession).subscribe(() => {
+    this._upsertProfessionRequest().subscribe(() => {
       confirm($localize`:@@professionCreatedSuccessfully:Profession created successfully!`);
       this._location.back();
     });
