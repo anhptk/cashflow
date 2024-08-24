@@ -17,6 +17,79 @@ import { DealsComponent } from './features/actions/deals/deals.component';
 import { ActionTypesSelectComponent } from './features/actions/action-types-select/action-types-select.component';
 import { DEAL_TYPE } from './shared/constants/deals.enum';
 
+const dealRoutes: Routes = [
+  {
+    path: 'stocks',
+    component: RouteWrapperComponent,
+    children: [
+      {
+        path: '',
+        component: ActionTypesSelectComponent,
+        data: {
+          title: $localize`:@@stocks-Actions:Stocks - Select actions`,
+          dealType: DEAL_TYPE.STOCKS
+        }
+      }
+    ]
+  },
+  {
+    path: 'housing',
+    component: RouteWrapperComponent,
+    children: [
+      {
+        path: '',
+        component: ActionTypesSelectComponent,
+        data: {
+          title: $localize`:@@housing-Actions:Housing - Select actions`,
+          dealType: DEAL_TYPE.HOUSING
+        }
+      }
+    ]
+  },
+  {
+    path: 'land',
+    component: RouteWrapperComponent,
+    children: [
+      {
+        path: '',
+        component: ActionTypesSelectComponent,
+        data: {
+          title: $localize`:@@land-Actions:Land - Select actions`,
+          dealType: DEAL_TYPE.LAND
+        }
+      }
+    ]
+  },
+  {
+    path: 'business',
+    component: RouteWrapperComponent,
+    children: [
+      {
+        path: '',
+        component: ActionTypesSelectComponent,
+        data: {
+          title: $localize`:@@business-Actions:Business - Select actions`,
+          dealType: DEAL_TYPE.BUSINESS
+        }
+      }
+    ]
+  },
+  {
+    path: 'gold',
+    component: RouteWrapperComponent,
+    children: [
+      {
+        path: '',
+        component: ActionTypesSelectComponent,
+        data: {
+          title: $localize`:@@gold-Actions:Gold - Select actions`,
+          dealType: DEAL_TYPE.GOLD
+        }
+      }
+    ]
+  }
+];
+
 export const routes: Routes = [
   {
     path: '',
@@ -97,91 +170,29 @@ export const routes: Routes = [
                 path: 'deals',
                 component: RouteWrapperComponent,
                 children: [
+                  ...dealRoutes,
                   {
                     path: '',
                     component: DealsComponent,
                     data: {
                       title: $localize`:@@selectDeal:Select Deal`
                     }
-                  },
-                  {
-                    path: 'stocks',
-                    component: RouteWrapperComponent,
-                    children: [
-                      {
-                        path: '',
-                        component: ActionTypesSelectComponent,
-                        data: {
-                          title: $localize`:@@stocks-Actions:Stocks - Select actions`,
-                          dealType: DEAL_TYPE.STOCKS
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    path: 'housing',
-                    component: RouteWrapperComponent,
-                    children: [
-                      {
-                        path: '',
-                        component: ActionTypesSelectComponent,
-                        data: {
-                          title: $localize`:@@housing-Actions:Housing - Select actions`,
-                          dealType: DEAL_TYPE.HOUSING
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    path: 'land',
-                    component: RouteWrapperComponent,
-                    children: [
-                      {
-                        path: '',
-                        component: ActionTypesSelectComponent,
-                        data: {
-                          title: $localize`:@@land-Actions:Land - Select actions`,
-                          dealType: DEAL_TYPE.LAND
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    path: 'business',
-                    component: RouteWrapperComponent,
-                    children: [
-                      {
-                        path: '',
-                        component: ActionTypesSelectComponent,
-                        data: {
-                          title: $localize`:@@business-Actions:Business - Select actions`,
-                          dealType: DEAL_TYPE.BUSINESS
-                        }
-                      }
-                    ]
-                  },
-                  {
-                    path: 'gold',
-                    component: RouteWrapperComponent,
-                    children: [
-                      {
-                        path: '',
-                        component: ActionTypesSelectComponent,
-                        data: {
-                          title: $localize`:@@gold-Actions:Gold - Select actions`,
-                          dealType: DEAL_TYPE.GOLD
-                        }
-                      }
-                    ]
                   }
                 ]
               },
               {
                 path: 'market',
-                component: DealsComponent,
-                data: {
-                  title: $localize`:@@market:Market`
-                }
+                component: RouteWrapperComponent,
+                children: [
+                  ...dealRoutes,
+                  {
+                    path: '',
+                    component: DealsComponent,
+                    data: {
+                      title: $localize`:@@market:Market`
+                    }
+                  }
+                ]
               }
             ]
           }
