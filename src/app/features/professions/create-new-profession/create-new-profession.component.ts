@@ -5,8 +5,10 @@ import { ProfessionForm } from '../../../shared/models/forms/profession-form';
 import { ProfessionSummaryComponent } from './profession-summary/profession-summary.component';
 import { TypedFormValue } from '../../../shared/models/typed-fom-value';
 import { Profession } from '../../../shared/models/database/cashflow.db';
-import { ProfessionService } from '../../../shared/services/db/profession.service';
 import { Location } from '@angular/common';
+import { Observable, switchMap } from 'rxjs';
+import { SessionService } from '../../../shared/services/db/session.service';
+import { ProfessionService } from '../../../shared/services/db/profession.service';
 
 @Component({
   selector: 'app-create-new-profession',
@@ -27,6 +29,7 @@ export class CreateNewProfessionComponent {
 
   constructor(
     private _professionService: ProfessionService,
+    private _sessionService: SessionService,
     private _location: Location
   ) {
     this.professionForm = this._buildForm();
@@ -77,10 +80,40 @@ export class CreateNewProfessionComponent {
 
     this._professionService.add(profession).subscribe(() => {
       confirm($localize`:@@professionCreatedSuccessfully:Profession created successfully!`);
-      setTimeout(() => {
-        this._location.back();
-      }, 200)
+      this._location.back();
     });
   }
 
+  public submitAndCreateSession(): void {
+    if (!this.professionForm.valid) {
+      alert($localize`:@@formValidation.required:Please fill out all required fields`);
+      return;
+    }
+
+    this._upsertProfessionRequest()
+    .pipe(
+      switchMap((professionId) => this._professionService.get(professionId)),
+      switchMap(profession => this._sessionService.add(profession))
+    ).subscribe((sessionId) => {
+      alert($localize`:@@sessionAdded:Session added successfully!`);
+      this._location.go(`/sessions/${sessionId}`);
+    })
+  }
+
+  private _upsertProfessionRequest(): Observable<number> {
+    const profession: TypedFormValue<FormGroup<ProfessionForm>> = this.professionForm.value;
+
+    if (this.profession) {
+      return this._professionService.update({ ...profession, id: this.profession.id, createdAt: this.profession.createdAt });
+    } else {
+      return this._professionService.add(profession);
+    }
+  }
+
+  public delete(): void {
+    this._professionService.delete(this.profession!.id).subscribe(() => {
+      alert($localize`:@@professionDeleted:Profession deleted successfully!`);
+      this._location.back();
+    });
+  }
 }

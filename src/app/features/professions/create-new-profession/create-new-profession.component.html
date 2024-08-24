@@ -127,10 +127,14 @@
   <app-profession-summary [form]="professionForm"></app-profession-summary>
 
   <div class="my-4">
-    <app-button (click)="submit()" i18n="@@save">Save</app-button>
+    <app-button (click)="submit()" [disabled]="!professionForm.dirty"><span i18n="@@save">Save</span></app-button>
   </div>
 
   <div class="my-4">
-    <app-button i18n="@@saveAndStartNewSession">Save and start new session</app-button>
+    <app-button color="blue" (click)="submitAndCreateSession()"><span i18n="@@saveAndStartNewSession">Save and start new session</span></app-button>
+  </div>
+
+  <div class="my-4">
+    <app-button color="red" (click)="delete()" [disabled]="!profession"><span i18n="@@delete">Delete</span></app-button>
   </div>
 </form>

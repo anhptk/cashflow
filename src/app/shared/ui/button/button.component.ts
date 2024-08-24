@@ -9,4 +9,6 @@ import { Component, Input } from '@angular/core';
 })
 export class ButtonComponent {
   @Input() clickFn: () => void = () => {};
+  @Input() color = 'blue';
+  @Input() disabled = false;
 }
