@@ -1,34 +1,28 @@
 import { Component } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Location } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
-import { DividerComponent } from '../../../../shared/ui/divider/divider.component';
-import { FormsModule, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
+import { SessionCashSummaryComponent } from '../session-cash-summary/session-cash-summary.component';
 
 @Component({
   selector: 'app-session-cash-adjustment',
   standalone: true,
   imports: [
-    CommonModule,
     ButtonComponent,
-    DividerComponent,
-    FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SessionCashSummaryComponent
   ],
   templateUrl: './session-cash-adjustment.component.html',
   styleUrl: './session-cash-adjustment.component.scss'
 })
 export class SessionCashAdjustmentComponent {
-  cash$: Observable<number>;
   cashAmountControl: FormControl<number> = new FormControl(null);
 
   constructor(
     private _store: SessionStoreService,
     private _location: Location
-  ) {
-    this.cash$ = this._store.select(state => state.session.cash);
-  }
+  ) {}
 
   public submit(): void {
     const amount = this.cashAmountControl.value || 0;

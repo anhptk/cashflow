@@ -3,12 +3,14 @@ import { SessionStoreService } from '../../../../shared/services/stores/session-
 import { Observable } from 'rxjs';
 import { ExpenseItem } from '../../../../shared/models/database/session.db';
 import { CommonModule } from '@angular/common';
+import { SessionCashSummaryComponent } from '../session-cash-summary/session-cash-summary.component';
 
 @Component({
   selector: 'app-session-expense-payoff',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    SessionCashSummaryComponent
   ],
   templateUrl: './session-expense-payoff.component.html',
   styleUrl: './session-expense-payoff.component.scss'
