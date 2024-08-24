@@ -16,6 +16,7 @@ import { SessionDoodadsComponent } from './features/sessions/widgets/session-doo
 import { DealsComponent } from './features/actions/deals/deals.component';
 import { ActionTypesSelectComponent } from './features/actions/action-types-select/action-types-select.component';
 import { DEAL_TYPE } from './shared/constants/deals.enum';
+import { BuyStocksComponent } from './features/actions/stocks/buy-stocks/buy-stocks.component';
 
 const dealRoutes: Routes = [
   {
@@ -28,6 +29,13 @@ const dealRoutes: Routes = [
         data: {
           title: $localize`:@@stocks-Actions:Stocks - Select actions`,
           dealType: DEAL_TYPE.STOCKS
+        }
+      },
+      {
+        path: 'buy',
+        component: BuyStocksComponent,
+        data: {
+          title: $localize`:@@buyStocks:Buy Stocks`
         }
       }
     ]

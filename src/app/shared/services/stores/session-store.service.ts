@@ -112,6 +112,24 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     this._updateSessionDb(this.select(state => state.session));
   }
 
+  public addAsset(asset: AssetItem): void {
+    this.patchState((state: SessionState) => {
+      const newSession = {
+        ...state.session,
+        assets: state.session.assets.concat(asset),
+      }
+
+      return {
+        session: newSession,
+        incomeLiabilities: this._incomeLiabilities(newSession),
+        totalIncome: this._calculateIncome(newSession),
+        cashflow: this._calculateCashflow(newSession)
+      }
+    });
+
+    this._updateSessionDb(this.select(state => state.session));
+  }
+
   private _adjustSessionCash(amount: number, session: Session): Session {
     return {...session, cash: session.cash += amount};
   }

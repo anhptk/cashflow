@@ -1,0 +1,47 @@
+<app-session-cash-summary></app-session-cash-summary>
+
+<div [formGroup]="mainForm" class="space-y-4 p-4">
+    <div class="flex justify-between items-center">
+        <div class="flex justify-between w-1/2">
+            <label for="name" i18n="@@stockCD">Stock / CD</label>
+        </div>
+        <input type="text" formControlName="name" class="w-1/2 p-2 rounded outline outline-1">
+    </div>
+
+    <div class="flex justify-between items-center">
+        <div class="flex justify-between w-1/2">
+            <label for="unitPrice" i18n="@@unitPrice">Unit price</label>
+            <span class="mr-2">$</span>
+        </div>
+        <input type="number" formControlName="unitPrice" class="w-1/2 p-2 rounded outline outline-1">
+    </div>
+
+    <div class="flex justify-between items-center">
+        <div class="flex justify-between w-1/2">
+            <label for="quantity" i18n="@@shares">Shares</label>
+        </div>
+        <input type="number" formControlName="quantity" class="w-1/2 p-2 rounded outline outline-1">
+    </div>
+
+    <div class="flex justify-between items-center">
+        <div class="flex justify-between w-1/2">
+            <label for="interRestOrDividend" i18n="@@interestDividends">Interest / Dividends</label>
+            <span class="mr-2">$</span>
+        </div>
+        <input type="number" formControlName="interRestOrDividend" class="w-1/2 p-2 rounded outline outline-1">
+    </div>
+</div>
+
+<app-divider></app-divider>
+
+<div class="flex justify-between items-center p-4 font-bold">
+    <div class="flex justify-between w-1/2">
+        <span i18n="@@totalPayment">Total payment</span>
+        <span class="mr-2">$</span>
+    </div>
+    <div class="w-1/2">{{totalCost | number}}</div>
+</div>
+
+<div class="my-4">
+    <app-button (click)="submit()"><span i18n="@@confirm">Confirm</span></app-button>
+</div>

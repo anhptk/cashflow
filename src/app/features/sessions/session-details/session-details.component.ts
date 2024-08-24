@@ -9,6 +9,8 @@ import { SessionHeaderComponent } from '../widgets/session-header/session-header
 import { SessionExpensesComponent } from '../widgets/session-expenses/session-expenses.component';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { SessionService } from '../../../shared/services/db/session.service';
+import { SessionAssetsComponent } from '../widgets/session-assets/session-assets.component';
+
 @Component({
   selector: 'app-session-details',
   standalone: true,
@@ -18,6 +20,7 @@ import { SessionService } from '../../../shared/services/db/session.service';
     RouterModule,
     SessionHeaderComponent,
     SessionExpensesComponent,
+    SessionAssetsComponent,
     ButtonComponent,
   ],
   templateUrl: './session-details.component.html',

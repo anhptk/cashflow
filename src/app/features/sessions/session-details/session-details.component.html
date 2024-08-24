@@ -7,40 +7,40 @@
 
   <div class="flex justify-between items-center my-4 mx-2">
       <span i18n="@@passiveIncome2">Passive income</span>
-      <span class="w-1/2">$ {{data.totalIncome}}</span>
+      <span>$ {{data.totalIncome}}</span>
   </div>
 
   <div class="flex justify-between items-center my-4 mx-2">
       <span i18n="@@monthlyCashFlow2">Monthly cash flow</span>
-      <span class="w-1/2">$ {{data.cashflow}}</span>
+      <span>$ {{data.cashflow}}</span>
   </div>
 
   <div class="bg-blue-800 p-2 font-bold text-white" i18n="@@income">Income</div>
 
   <div class="flex justify-between items-center my-4 mx-2">
     <span i18n="@@salary">Salary</span>
-    <span class="w-1/2">$ {{data.profession.income.salary}}</span>
+    <span>$ {{data.profession.income.salary}}</span>
   </div>
 
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let income of data.incomeLiabilities">
     <span>{{income.name}}</span>
-    <span class="w-1/2">$ {{income.cashflow}}</span>
+    <span>$ {{income.cashflow}}</span>
   </div>
 
   <app-session-expenses [childSupport]="data.profession.expenses.childSupport"></app-session-expenses>
 
-  <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@assets">Assets</div>
+  <app-session-assets></app-session-assets>
 
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@liabilities">Liabilities</div>
 
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let liability of data.expenseLiabilities">
     <span>{{liability.name}}</span>
-    <span class="w-1/2">$ {{liability.value}}</span>
+    <span>$ {{liability.value}}</span>
   </div>
 
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let liability of data.incomeLiabilities">
     <span>{{liability.name}}</span>
-    <span class="w-1/2">$ {{liability.value}}</span>
+    <span>$ {{liability.value}}</span>
   </div>
 
   <div class="my-4">

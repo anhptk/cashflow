@@ -1,3 +1,4 @@
+import { DealType } from '../../constants/deals.enum';
 import { Profession } from './cashflow.db';
 
 export interface FinancialItem {
@@ -16,6 +17,7 @@ export interface AssetItem extends FinancialItem {
   volume?: number;
   unitPrice?: number;
   isLiability?: boolean;
+  assetType?: DealType;
 }
 
 export interface SessionLog {

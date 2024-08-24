@@ -1,0 +1,20 @@
+<ng-container *ngIf="assets$ | async as assets">
+    <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@assets">Assets</div>
+    <div class="flex justify-between items-center my-4 mx-2" *ngFor="let asset of assets">
+      <span class="w-1/2">{{asset.name}}</span>
+      <ng-container *ngTemplateOutlet="assetValue; context: {$implicit: asset}"></ng-container>
+      <span class="w-1/4 text-right">$ {{asset.cashflow}}</span>
+    </div>
+</ng-container>
+
+<ng-template #assetValue let-asset>
+  <ng-container [ngSwitch]="asset.assetType">
+    <ng-container *ngSwitchCase="DEAL_TYPE.STOCKS">
+      <span class="w-1/4">$ {{asset.unitPrice}} x {{asset.volume}}</span>
+    </ng-container>
+
+    <ng-container *ngSwitchDefault>
+      <span class="w-1/4">$ {{asset.value}}</span>
+    </ng-container>
+  </ng-container>
+</ng-template>

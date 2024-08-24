@@ -1,5 +1,5 @@
 <section class="flex flex-col items-center justify-center p-4 space-y-4 sm:space-y-6">
-    <app-button *ngFor="let actionType of actionTypes" [color]="ACTION_TYPE_LABEL[actionType].color" class="w-full">
+    <app-button *ngFor="let actionType of actionTypes" [color]="ACTION_TYPE_LABEL[actionType].color" class="w-full" [routerLink]="ACTION_TYPE_LABEL[actionType].link">
         {{ACTION_TYPE_LABEL[actionType].label}}
     </app-button>
 </section>

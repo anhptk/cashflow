@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { ACTION_TYPE, ACTION_TYPE_LABEL, ActionType } from '../../../shared/constants/actions.enum';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DEAL_TYPE, DealType } from '../../../shared/constants/deals.enum';
 
@@ -10,7 +10,8 @@ import { DEAL_TYPE, DealType } from '../../../shared/constants/deals.enum';
   standalone: true,
   imports: [
     CommonModule,
-    ButtonComponent
+    ButtonComponent,
+    RouterModule
   ],
   templateUrl: './action-types-select.component.html',
   styleUrl: './action-types-select.component.scss'

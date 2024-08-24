@@ -2,11 +2,11 @@
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@expenses">Expenses</div>
   <div class="flex justify-between items-center my-4 mx-2" *ngIf="session.children">
     <span i18n="@@childSupport">Child support</span>
-    <span class="w-1/2">$ {{childSupport * session.children}}</span>
+    <span>$ {{childSupport * session.children}}</span>
   </div>
 
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let expense of session.expenses">
     <span>{{expense.name}}</span>
-    <span class="w-1/2">$ {{expense.cashflow}}</span>
+    <span>$ {{expense.cashflow}}</span>
   </div>
 </ng-container>
