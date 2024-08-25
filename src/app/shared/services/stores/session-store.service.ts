@@ -113,10 +113,13 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public addAsset(asset: AssetItem): void {
+    const payment = asset.downPayment || asset.value;
+
     this.patchState((state: SessionState) => {
       const newSession = {
         ...state.session,
         assets: state.session.assets.concat(asset),
+        cash: state.session.cash -= payment
       }
 
       return {
