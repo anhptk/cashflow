@@ -18,6 +18,8 @@ import { ActionTypesSelectComponent } from './features/actions/action-types-sele
 import { DEAL_TYPE } from './shared/constants/deals.enum';
 import { BuyStocksComponent } from './features/actions/stocks/buy-stocks/buy-stocks.component';
 import { BuyHouseComponent } from './features/actions/houses/buy-house/buy-house.component';
+import { SelectHouseComponent } from './features/actions/houses/select-house/select-house.component';
+import { SellHouseComponent } from './features/actions/houses/sell-house/sell-house.component';
 
 const dealRoutes: Routes = [
   {
@@ -59,6 +61,26 @@ const dealRoutes: Routes = [
         data: {
           title: $localize`:@@buyAHouse:Buy A House`
         }
+      },
+      {
+        path: 'sell',
+        component: RouteWrapperComponent,
+        children: [
+          {
+            path: '',
+            component: SelectHouseComponent,
+            data: {
+              title: $localize`:@@selectAHouse:Select A House`
+            }
+          },
+          {
+            path: ':assetIndex',
+            component: SellHouseComponent,
+            data: {
+              title: $localize`:@@sellHouse:Sell House`
+            }
+          }
+        ]
       }
     ]
   },
