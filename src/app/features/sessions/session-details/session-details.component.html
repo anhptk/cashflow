@@ -27,8 +27,10 @@
     <span>$ {{income.cashflow}}</span>
   </div>
 
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@expenses">Expenses</div>
   <app-session-expenses [childSupport]="data.profession.expenses.childSupport"></app-session-expenses>
 
+  <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@assets">Assets</div>
   <app-session-assets></app-session-assets>
 
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@liabilities">Liabilities</div>
@@ -40,7 +42,7 @@
 
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let liability of data.incomeLiabilities">
     <span>{{liability.name}}</span>
-    <span class="w-1/2">$ {{liability.value}}</span>
+    <span class="w-1/2">$ {{liability.value - liability.downPayment}}</span>
   </div>
 
   <div class="my-4">

@@ -113,7 +113,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public addAsset(asset: AssetItem): void {
-    const payment = asset.downPayment || asset.value;
+    const payment = asset.assetType === 'HOUSING' ? asset.downPayment : asset.value;
 
     this.patchState((state: SessionState) => {
       const newSession = {

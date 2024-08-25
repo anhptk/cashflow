@@ -1,5 +1,4 @@
 <ng-container *ngIf="session$ | async as session">
-  <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@expenses">Expenses</div>
   <div class="flex justify-between items-center my-4 mx-2" *ngIf="session.children">
     <span i18n="@@childSupport">Child support</span>
     <span>$ {{childSupport * session.children}}</span>
