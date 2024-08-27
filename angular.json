@@ -42,7 +42,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "localize": true
+            "localize": ["en-US", "vi-VN"]
           },
           "configurations": {
             "production": {
@@ -112,6 +112,13 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "dir": "dist/cashflow",
+            "localize": ["en-US", "vi-VN"]
           }
         }
       }
