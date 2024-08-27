@@ -16,7 +16,7 @@
       "i18n": {
         "sourceLocale": "en-US",
         "locales": {
-          "vi": "src/locale/messages.vi.json"
+          "vi-VN": "src/locale/messages.vi.json"
         }
       },
       "architect": {
@@ -58,7 +58,8 @@
                   "maximumError": "4kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "localize": ["en-US", "vi-VN"]
             },
             "development": {
               "optimization": false,
@@ -67,7 +68,7 @@
             },
             "vi": {
               "localize": [
-                "vi"
+                "vi-VN"
               ]
             }
           },

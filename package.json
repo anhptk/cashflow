@@ -10,7 +10,7 @@
     "build:css": "tailwindcss build src/styles/tailwind.css -o dist/tailwind.css",
     "gen-locale": "ng extract-i18n --output-path src/locale --format json",
     "start-vi": "ng serve --configuration=vi",
-    "build-vi": "ng build --configuration=vi"
+    "build:vi": "ng build --localize=vi"
   },
   "private": true,
   "dependencies": {
