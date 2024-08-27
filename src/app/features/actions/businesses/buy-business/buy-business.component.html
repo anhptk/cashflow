@@ -1,0 +1,56 @@
+<app-session-cash-summary></app-session-cash-summary>
+
+<div [formGroup]="mainForm" class="space-y-4 p-4">
+  <div class="flex justify-between items-center">
+    <div class="flex justify-between w-1/2">
+      <label i18n="@@name">Name</label>
+    </div>
+    <input formControlName="businessName" class="w-1/2 p-2 rounded outline outline-1">
+  </div>
+
+  <div class="flex justify-between items-center">
+    <div class="flex justify-between w-1/2">
+      <label i18n="@@cost">Cost</label>
+      <span class="mr-2">$</span>
+    </div>
+    <input type="number" formControlName="cost" class="w-1/2 p-2 rounded outline outline-1">
+  </div>
+
+  <div class="flex justify-between items-center">
+    <div class="flex justify-between w-1/2">
+      <label i18n="@@downPayment">Down Payment</label>
+      <span class="mr-2">$</span>
+    </div>
+    <input type="number" formControlName="downPayment" class="w-1/2 p-2 rounded outline outline-1">
+  </div>
+
+  <div class="flex justify-between items-center">
+    <div class="flex justify-between w-1/2">
+      <label i18n="@@cashFlow">Cash flow</label>
+      <span class="mr-2">$</span>
+    </div>
+    <input type="number" formControlName="cashFlow" class="w-1/2 p-2 rounded outline outline-1">
+  </div>
+</div>
+
+<app-divider></app-divider>
+
+<div class="flex justify-between items-center p-4 font-bold">
+  <div class="flex justify-between w-1/2">
+    <span i18n="@@totalPayment">Total payment</span>
+    <span class="mr-2">$</span>
+  </div>
+  <div class="w-1/2">{{totalPayment | number}}</div>
+</div>
+
+<div class="flex justify-between items-center p-4">
+  <div class="flex justify-between w-1/2">
+    <span i18n="@@mortgage">Mortgage</span>
+    <span class="mr-2">$</span>
+  </div>
+  <div class="w-1/2">{{mortgage | number}}</div>
+</div>
+
+<div class="my-4">
+  <app-button (click)="submit()"><span i18n="@@confirm">Confirm</span></app-button>
+</div>
