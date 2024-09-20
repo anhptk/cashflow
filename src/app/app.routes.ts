@@ -136,7 +136,7 @@ const dealRoutes: Routes = [
   }
 ];
 
-export const routes: Routes = [
+const localeRoutes: Routes = [
   {
     path: '',
     component: HomeComponent,
@@ -271,5 +271,21 @@ export const routes: Routes = [
         }
       }
     ]
+  }
+];
+
+export const routes: Routes = [
+  {
+    path: ':locale',
+    children: localeRoutes
+  },
+  {
+    path: '',
+    redirectTo: '/en-US',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
+    component: RouteWrapperComponent
   }
 ];

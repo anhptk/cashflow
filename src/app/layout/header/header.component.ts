@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
+import { RoutingHelperService } from '../../shared/services/utils/routing-helper.service';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +17,8 @@ export class HeaderComponent {
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
-    private _location: Location
+    private _location: Location,
+    private _routingHelper: RoutingHelperService
   ) {}
 
   ngOnInit(): void {
@@ -39,9 +41,17 @@ export class HeaderComponent {
 
     this.title = route.snapshot.data['title'];
     this.showBackButton = !route.snapshot.data['hideBackButton'];
+    this._routingHelper.locale = route.snapshot.params['locale'];
   }
 
   public navigateBack(): void {
     this._location.back();
+  }
+
+  public switchLanguage(): void {
+    const newLanguage = this._routingHelper.locale === 'en-US' ? 'vi-VN' : 'en-US';
+
+    this._routingHelper.locale = newLanguage;
+    this._router.navigate([newLanguage]);
   }
 }
