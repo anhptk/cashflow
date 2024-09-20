@@ -276,13 +276,8 @@ const localeRoutes: Routes = [
 
 export const routes: Routes = [
   {
-    path: ':locale',
-    children: localeRoutes
-  },
-  {
     path: '',
-    redirectTo: '/en-US',
-    pathMatch: 'full'
+    children: localeRoutes
   },
   {
     path: '**',

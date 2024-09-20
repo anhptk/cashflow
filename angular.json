@@ -16,7 +16,10 @@
       "i18n": {
         "sourceLocale": "en-US",
         "locales": {
-          "vi-VN": "src/locale/messages.vi.json"
+          "vi-VN": {
+            "translation": "src/locale/messages.vi.json",
+            "baseHref": ""
+          }
         }
       },
       "architect": {
@@ -42,7 +45,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "localize": ["en-US", "vi-VN"]
+            "localize": true
           },
           "configurations": {
             "production": {
@@ -59,7 +62,7 @@
                 }
               ],
               "outputHashing": "all",
-              "localize": ["en-US", "vi-VN"]
+              "localize": true
             },
             "development": {
               "optimization": false,
@@ -118,7 +121,7 @@
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "dir": "dist/cashflow",
-            "localize": ["en-US", "vi-VN"]
+            "localize": true
           }
         }
       }
