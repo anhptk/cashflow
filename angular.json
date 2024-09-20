@@ -16,10 +16,7 @@
       "i18n": {
         "sourceLocale": "en-US",
         "locales": {
-          "vi-VN": {
-            "translation": "src/locale/messages.vi.json",
-            "baseHref": ""
-          }
+          "vi-VN": "src/locale/messages.vi.json"
         }
       },
       "architect": {
