@@ -1,4 +1,4 @@
 <app-buy-asset [assetType]="BUSINESS_TYPE" [nameControl]="nameControl">
-  <label i18n="@@assetName">Asset name</label>
-  <input assetNameControl formControlName="assetName" class="w-1/2 p-2 rounded outline outline-1">
+  <label i18n="@@businessName">Business name</label>
+  <input assetNameControl [formControl]="nameControl" class="w-1/2 p-2 rounded outline outline-1">
 </app-buy-asset>
