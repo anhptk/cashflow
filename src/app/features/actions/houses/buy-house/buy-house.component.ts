@@ -4,11 +4,11 @@ import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 import { CommonModule, Location } from '@angular/common';
 import { DividerComponent } from '../../../../shared/ui/divider/divider.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { BuyHouseForm } from '../../../../shared/models/forms/houses-form';
 import { AssetItem } from '../../../../shared/models/database/session.db';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { HOUSE_TYPE_LABEL, HouseType } from '../../../../shared/constants/houses.enum';
 import { filter } from 'rxjs';
+import { BuyAssetForm } from '../../../../shared/models/forms/asset-form';
 
 @Component({
   selector: 'app-buy-house',
@@ -27,7 +27,7 @@ export class BuyHouseComponent {
   readonly houseTypes = Object.keys(HOUSE_TYPE_LABEL) as HouseType[];
   readonly houseTypeLabel = HOUSE_TYPE_LABEL;
 
-  mainForm: FormGroup<BuyHouseForm>;
+  mainForm: FormGroup<BuyAssetForm>;
 
   public totalPayment: number;
   public mortgage: number;
@@ -40,9 +40,9 @@ export class BuyHouseComponent {
     this._subscribeToFormChanges();
   }
 
-  private _buildForm(): FormGroup<BuyHouseForm> {
-    return new FormGroup<BuyHouseForm>({
-      name: new FormControl<string>('', [Validators.required]),
+  private _buildForm(): FormGroup<BuyAssetForm> {
+    return new FormGroup<BuyAssetForm>({
+      assetName: new FormControl<string>('', [Validators.required]),
       cost: new FormControl<number>(null, [Validators.required, Validators.min(0)]),
       downPayment: new FormControl<number>(null, [Validators.min(0)]),
       cashFlow: new FormControl<number>(null)
@@ -61,7 +61,7 @@ export class BuyHouseComponent {
   public submit() {
     const formValue = this.mainForm.value;
     const newAsset: AssetItem = {
-      name: HOUSE_TYPE_LABEL[formValue.name],
+      name: HOUSE_TYPE_LABEL[formValue.assetName],
       value: formValue.cost,
       downPayment: formValue.downPayment,
       cashflow: formValue.cashFlow,

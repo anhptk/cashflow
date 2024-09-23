@@ -7,7 +7,7 @@ import { SessionCashSummaryComponent } from '../../../sessions/widgets/session-c
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { filter } from 'rxjs';
 import { AssetItem } from '../../../../shared/models/database/session.db';
-import { BuyBusinessForm } from '../../../../shared/models/forms/business-form';
+import { BuyAssetForm } from '../../../../shared/models/forms/asset-form';
 
 @Component({
   selector: 'app-buy-business',
@@ -23,7 +23,7 @@ import { BuyBusinessForm } from '../../../../shared/models/forms/business-form';
   styleUrl: './buy-business.component.scss'
 })
 export class BuyBusinessComponent {
-  mainForm: FormGroup<BuyBusinessForm>;
+  mainForm: FormGroup<BuyAssetForm>;
 
   public totalPayment: number;
   public mortgage: number;
@@ -36,9 +36,9 @@ export class BuyBusinessComponent {
     this._subscribeToFormChanges();
   }
 
-  private _buildForm(): FormGroup<BuyBusinessForm> {
-    return new FormGroup<BuyBusinessForm>({
-      businessName: new FormControl<string>('', [Validators.required]),
+  private _buildForm(): FormGroup<BuyAssetForm> {
+    return new FormGroup<BuyAssetForm>({
+      assetName: new FormControl<string>('', [Validators.required]),
       cost: new FormControl<number>(null, [Validators.required, Validators.min(0)]),
       downPayment: new FormControl<number>(null, [Validators.min(0)]),
       cashFlow: new FormControl<number>(null)
@@ -57,7 +57,7 @@ export class BuyBusinessComponent {
   public submit() {
     const formValue = this.mainForm.value;
     const newAsset: AssetItem = {
-      name: formValue.businessName,
+      name: formValue.assetName,
       value: formValue.cost,
       downPayment: formValue.downPayment,
       cashflow: formValue.cashFlow,

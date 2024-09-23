@@ -3,9 +3,9 @@
 <div [formGroup]="mainForm" class="space-y-4 p-4">
   <div class="flex justify-between items-center">
     <div class="flex justify-between w-1/2">
-      <label i18n="@@name">Name</label>
+      <label i18n="@@assetName">Name</label>
     </div>
-    <select formControlName="name" class="w-1/2 p-2 rounded outline outline-1">
+    <select formControlName="assetName" class="w-1/2 p-2 rounded outline outline-1">
       <option *ngFor="let houseType of houseTypes" [value]="houseType">{{ houseTypeLabel[houseType] }}</option>
     </select>
   </div>
