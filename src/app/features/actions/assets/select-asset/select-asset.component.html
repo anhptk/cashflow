@@ -1,0 +1,5 @@
+<ng-container *ngFor="let asset of assets$ | async; let i=index">
+  <button *ngIf="asset.assetType === assetType" class="bg-gray-400 py-4 w-full m-2 rounded-lg" routerLink="{{i}}">
+    {{ asset.name }}: ${{ asset.downPayment }} / ${{ asset.value }} (${{asset.cashflow}})
+  </button>
+</ng-container>

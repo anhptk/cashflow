@@ -22,6 +22,7 @@ import { SelectHouseComponent } from './features/actions/houses/select-house/sel
 import { SellHouseComponent } from './features/actions/houses/sell-house/sell-house.component';
 import { BuyBusinessComponent } from './features/actions/businesses/buy-business/buy-business.component';
 import { BuyLandComponent } from './features/actions/lands/buy-land/buy-land.component';
+import { SelectBusinessComponent } from './features/actions/businesses/select-business/select-business.component';
 
 const dealRoutes: Routes = [
   {
@@ -125,6 +126,19 @@ const dealRoutes: Routes = [
         data: {
           title: $localize`:@@buyBusiness:Buy Business`
         }
+      },
+      {
+        path: 'sell',
+        component: RouteWrapperComponent,
+        children: [
+          {
+            path: '',
+            component: SelectBusinessComponent,
+            data: {
+              title: $localize`:@@selectBusiness:Select Business`
+            }
+          },
+        ]
       }
     ]
   },
