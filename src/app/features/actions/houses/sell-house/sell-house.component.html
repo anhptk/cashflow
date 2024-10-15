@@ -1,42 +1,28 @@
-<app-session-cash-summary></app-session-cash-summary>
+<app-sell-asset>
+  <ng-container *ngIf="asset$ | async as asset">
+    <div class="flex justify-between items-center my-4 mx-2">
+      <span i18n="@@housing">Housing</span>
+      <span class="w-1/2">{{asset.name}}</span>
+    </div>
 
-<ng-container *ngIf="asset$ | async as asset">
-  <div class="flex justify-between items-center my-4 mx-2">
-    <span i18n="@@housing">Housing</span>
-    <span class="w-1/2">{{asset.name}}</span>
-  </div>
+    <div class="flex justify-between items-center my-4 mx-2">
+      <span i18n="@@cost">Cost</span>
+      <span class="w-1/2">$ {{asset.value}}</span>
+    </div>
 
-  <div class="flex justify-between items-center my-4 mx-2">
-    <span i18n="@@cost">Cost</span>
-    <span class="w-1/2">$ {{asset.value}}</span>
-  </div>
+    <div class="flex justify-between items-center my-4 mx-2">
+      <span class="capitalize" i18n="@@downPayment">Down payment</span>
+      <span class="w-1/2">$ {{asset.downPayment}}</span>
+    </div>
 
-  <div class="flex justify-between items-center my-4 mx-2">
-    <span class="capitalize" i18n="@@downPayment">Down payment</span>
-    <span class="w-1/2">$ {{asset.downPayment}}</span>
-  </div>
+    <div class="flex justify-between items-center my-4 mx-2">
+      <span i18n="@@cashFlow">Cash Flow</span>
+      <span class="w-1/2">$ {{asset.cashflow}}</span>
+    </div>
 
-  <div class="flex justify-between items-center my-4 mx-2">
-    <span i18n="@@cashFlow">Cash Flow</span>
-    <span class="w-1/2">$ {{asset.cashflow}}</span>
-  </div>
-
-  <div class="flex justify-between items-center my-4 mx-2">
-    <span i18n="@@mortgage">Mortgage</span>
-    <span class="w-1/2">$ {{asset.value - asset.downPayment}}</span>
-  </div>
-</ng-container>
-
-<app-divider></app-divider>
-
-<div class="flex justify-between items-center my-4 mx-2">
-  <div class="flex justify-between w-1/2">
-    <label i18n="@@sellAt">Sell at</label>
-    <span class="mr-2">$</span>
-  </div>
-  <input type="number" [formControl]="priceControl" class="w-1/2 p-2 rounded outline outline-1">
-</div>
-
-<div class="my-8">
-  <app-button (click)="sellHouse()"><span i18n="@@confirm">Confirm</span></app-button>
-</div>
+    <div class="flex justify-between items-center my-4 mx-2">
+      <span i18n="@@mortgage">Mortgage</span>
+      <span class="w-1/2">$ {{asset.value - asset.downPayment}}</span>
+    </div>
+  </ng-container>
+</app-sell-asset>

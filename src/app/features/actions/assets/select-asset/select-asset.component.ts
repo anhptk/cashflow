@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AssetItem } from '../../../../shared/models/database/session.db';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
-import { DealType } from '../../../../shared/constants/deals.enum';
+import { DEAL_TYPE, DealType } from '../../../../shared/constants/deals.enum';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
   styleUrl: './select-asset.component.scss'
 })
 export class SelectAssetComponent {
+  readonly DealType = DEAL_TYPE;
   @Input({required: true}) assetType: DealType;
   public assets$: Observable<AssetItem[]>;
 

@@ -23,6 +23,9 @@ import { SellHouseComponent } from './features/actions/houses/sell-house/sell-ho
 import { BuyBusinessComponent } from './features/actions/businesses/buy-business/buy-business.component';
 import { BuyLandComponent } from './features/actions/lands/buy-land/buy-land.component';
 import { SelectBusinessComponent } from './features/actions/businesses/select-business/select-business.component';
+import { BuyGoldComponent } from './features/actions/gold/buy-gold/buy-gold.component';
+import { SelectGoldComponent } from './features/actions/gold/select-gold/select-gold.component';
+import { SellGoldComponent } from './features/actions/gold/sell-gold/sell-gold.component';
 
 const dealRoutes: Routes = [
   {
@@ -153,6 +156,33 @@ const dealRoutes: Routes = [
           title: $localize`:@@gold-Actions:Gold - Select actions`,
           dealType: DEAL_TYPE.GOLD
         }
+      },
+      {
+        path: 'buy',
+        component: BuyGoldComponent,
+        data: {
+          title: $localize`:@@buyGold:Buy Gold`
+        }
+      },
+      {
+        path: 'sell',
+        component: RouteWrapperComponent,
+        children: [
+          {
+            path: '',
+            component: SelectGoldComponent,
+            data: {
+              title: $localize`:@@selectGold:Select Gold For Sale`
+            }
+          },
+          {
+            path: ':assetIndex',
+            component: SellGoldComponent,
+            data: {
+              title: $localize`:@@sellGold:Sell Gold`
+            }
+          }
+        ]
       }
     ]
   }

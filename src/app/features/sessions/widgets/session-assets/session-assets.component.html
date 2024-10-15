@@ -12,6 +12,10 @@
       <span class="w-1/4">$ {{asset.unitPrice}} x {{asset.volume}}</span>
     </ng-container>
 
+    <ng-container *ngSwitchCase="DEAL_TYPE.GOLD">
+      <span class="w-1/4">$ {{asset.unitPrice}} x {{asset.volume}}</span>
+    </ng-container>
+
     <ng-container *ngSwitchCase="DEAL_TYPE.HOUSING">
       <span class="w-1/4">$ {{asset.downPayment}} / $ {{asset.value}}</span>
     </ng-container>

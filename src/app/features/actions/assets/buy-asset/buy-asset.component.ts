@@ -9,7 +9,7 @@ import { SessionStoreService } from '../../../../shared/services/stores/session-
 import { filter } from 'rxjs';
 import { AssetItem } from '../../../../shared/models/database/session.db';
 import { HOUSE_TYPE_LABEL } from '../../../../shared/constants/houses.enum';
-import { DealType } from '../../../../shared/constants/deals.enum';
+import { DEAL_TYPE, DealType } from '../../../../shared/constants/deals.enum';
 
 @Component({
   selector: 'app-buy-asset',
@@ -25,6 +25,8 @@ import { DealType } from '../../../../shared/constants/deals.enum';
   styleUrl: './buy-asset.component.scss'
 })
 export class BuyAssetComponent {
+  readonly DealType = DEAL_TYPE;
+
   @Input({required: true}) assetType: DealType;
   @Input({required: true}) nameControl: FormControl<string>;
 
@@ -65,7 +67,7 @@ export class BuyAssetComponent {
   public submit() {
     const formValue = this.mainForm.value;
     const newAsset: AssetItem = {
-      name: HOUSE_TYPE_LABEL[formValue.assetName],
+      name: this.assetType === DEAL_TYPE.HOUSING ? HOUSE_TYPE_LABEL[formValue.assetName] : formValue.assetName,
       value: formValue.cost,
       downPayment: formValue.downPayment,
       cashflow: formValue.cashFlow,

@@ -1,0 +1,18 @@
+<app-sell-asset>
+  <ng-container *ngIf="asset$ | async as asset">
+    <div class="flex justify-between items-center my-4 mx-2">
+      <span i18n="@@unitPrice">Unit price</span>
+      <span class="w-1/2">$ {{asset.unitPrice}}</span>
+    </div>
+
+    <div class="flex justify-between items-center my-4 mx-2">
+      <span class="capitalize" i18n="@@oz">Oz</span>
+      <span class="w-1/2">{{asset.volume}}</span>
+    </div>
+
+    <div class="flex justify-between items-center my-4 mx-2  font-bold">
+      <span i18n="@@value">Value</span>
+        <span class="w-1/2">$ {{asset.value}}</span>
+    </div>
+  </ng-container>
+</app-sell-asset>
