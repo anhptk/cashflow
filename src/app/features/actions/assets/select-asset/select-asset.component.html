@@ -7,6 +7,13 @@
         </button>
       }
     }
+    @case (DealType.STOCKS) {
+      @if (assetType === asset.assetType) {
+        <button class="bg-gray-400 py-4 w-full m-2 rounded-lg" routerLink="{{i}}">
+          {{ asset.name }}: ${{ asset.unitPrice }} x {{ asset.volume }} (${{asset.value}})
+        </button>
+      }
+    }
     @default {
       @if (assetType === asset.assetType) {
         <button class="bg-gray-400 py-4 w-full m-2 rounded-lg" routerLink="{{i}}">

@@ -26,6 +26,8 @@ import { SelectBusinessComponent } from './features/actions/businesses/select-bu
 import { BuyGoldComponent } from './features/actions/gold/buy-gold/buy-gold.component';
 import { SelectGoldComponent } from './features/actions/gold/select-gold/select-gold.component';
 import { SellGoldComponent } from './features/actions/gold/sell-gold/sell-gold.component';
+import { SelectStockComponent } from './features/actions/stocks/select-stock/select-stock.component';
+import { SellStockComponent } from './features/actions/stocks/sell-stock/sell-stock.component';
 
 const dealRoutes: Routes = [
   {
@@ -46,6 +48,26 @@ const dealRoutes: Routes = [
         data: {
           title: $localize`:@@buyStocks:Buy Stocks`
         }
+      },
+      {
+        path: 'sell',
+        component: RouteWrapperComponent,
+        children: [
+          {
+            path: '',
+            component: SelectStockComponent,
+            data: {
+              title: $localize`:@@selectStock:Select Stock For Sale`
+            }
+          },
+          {
+            path: ':assetIndex',
+            component: SellStockComponent,
+            data: {
+              title: $localize`:@@sellStock:Sell Stock`
+            }
+          }
+        ]
       }
     ]
   },

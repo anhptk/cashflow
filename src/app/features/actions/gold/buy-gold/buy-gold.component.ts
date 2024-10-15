@@ -25,7 +25,7 @@ import { BuyStocksForm } from '../../../../shared/models/forms/stocks-form';
 export class BuyGoldComponent {
   totalCost = 0;
 
-  mainForm: FormGroup<Omit<BuyStocksForm, 'name'>>;
+  mainForm: FormGroup<Omit<BuyStocksForm, 'assetName'>>;
 
   constructor(
     private _sessionStore: SessionStoreService,

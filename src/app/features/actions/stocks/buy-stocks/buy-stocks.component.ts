@@ -36,7 +36,7 @@ export class BuyStocksComponent {
 
   private _constructForm(): FormGroup<BuyStocksForm> {
     return new FormGroup(<BuyStocksForm>{
-      name: new FormControl<string>('', [Validators.required]),
+      assetName: new FormControl<string>('', [Validators.required]),
       unitPrice: new FormControl<number>(null, [Validators.required, Validators.min(0)]),
       quantity: new FormControl<number>(null, [Validators.required, Validators.min(1)]),
       interRestOrDividend: new FormControl<number>(null)
@@ -59,7 +59,7 @@ export class BuyStocksComponent {
     if (!cf) return;
 
     const newAsset: AssetItem = {
-      name: this.mainForm.value.name,
+      name: this.mainForm.value.assetName,
       cashflow: 0,
       value: this.totalCost,
       downPayment: 0,

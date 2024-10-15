@@ -1,7 +1,7 @@
 import { FormControl } from "@angular/forms";
 
 export interface BuyStocksForm {
-    name: FormControl<string>;
+    assetName: FormControl<string>;
     unitPrice: FormControl<number>;
     quantity: FormControl<number>;
 
