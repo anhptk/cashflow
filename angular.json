@@ -42,7 +42,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "localize": true
+            "localize": false
           },
           "configurations": {
             "production": {
@@ -59,7 +59,7 @@
                 }
               ],
               "outputHashing": "all",
-              "localize": true
+              "localize": false
             },
             "development": {
               "optimization": false,
@@ -118,7 +118,7 @@
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "dir": "dist/cashflow",
-            "localize": true
+            "localize": false
           }
         }
       }
