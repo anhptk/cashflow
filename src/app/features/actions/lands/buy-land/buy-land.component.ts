@@ -15,6 +15,5 @@ import { DEAL_TYPE } from '../../../../shared/constants/deals.enum';
   styleUrl: './buy-land.component.scss'
 })
 export class BuyLandComponent {
-  public readonly LAND_TYPE = DEAL_TYPE.LAND;
   public nameControl = new FormControl('', Validators.required);
 }

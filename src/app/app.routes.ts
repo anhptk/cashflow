@@ -28,6 +28,9 @@ import { SelectGoldComponent } from './features/actions/gold/select-gold/select-
 import { SellGoldComponent } from './features/actions/gold/sell-gold/sell-gold.component';
 import { SelectStockComponent } from './features/actions/stocks/select-stock/select-stock.component';
 import { SellStockComponent } from './features/actions/stocks/sell-stock/sell-stock.component';
+import { UpdateAssetComponent } from './features/actions/assets/update-asset/update-asset.component';
+import { SelectLandComponent } from './features/actions/lands/select-land/select-land.component';
+import { SellLandComponent } from './features/actions/lands/sell-land/sell-land.component';
 
 const dealRoutes: Routes = [
   {
@@ -109,6 +112,26 @@ const dealRoutes: Routes = [
             }
           }
         ]
+      },
+      {
+        path: 'update',
+        component: RouteWrapperComponent,
+        children: [
+          {
+            path: '',
+            component: SelectHouseComponent,
+            data: {
+              title: $localize`:@@selectHouse:Select House To Update`
+            }
+          },
+          {
+            path: ':assetIndex',
+            component: UpdateAssetComponent,
+            data: {
+              title: $localize`:@@updateHouse:Update House`
+            }
+          }
+        ]
       }
     ]
   },
@@ -130,6 +153,46 @@ const dealRoutes: Routes = [
         data: {
           title: $localize`:@@buyLand:Buy Land`
         }
+      },
+      {
+        path: 'sell',
+        component: RouteWrapperComponent,
+        children: [
+          {
+            path: '',
+            component: SelectLandComponent,
+            data: {
+              title: $localize`:@@selectLand:Select Land For Sale`
+            }
+          },
+          {
+            path: ':assetIndex',
+            component: SellLandComponent,
+            data: {
+              title: $localize`:@@sellLand:Sell Land`
+            }
+          }
+        ]
+      },
+      {
+        path: 'update',
+        component: RouteWrapperComponent,
+        children: [
+          {
+            path: '',
+            component: SelectLandComponent,
+            data: {
+              title: $localize`:@@selectLand:Select Land To Update`
+            }
+          },
+          {
+            path: ':assetIndex',
+            component: UpdateAssetComponent,
+            data: {
+              title: $localize`:@@updateLand:Update Land`
+            }
+          }
+        ]
       }
     ]
   },
@@ -163,6 +226,26 @@ const dealRoutes: Routes = [
               title: $localize`:@@selectBusiness:Select Business`
             }
           },
+        ]
+      },
+      {
+        path: 'update',
+        component: RouteWrapperComponent,
+        children: [
+          {
+            path: '',
+            component: SelectBusinessComponent,
+            data: {
+              title: $localize`:@@selectBusiness:Select Business To Update`
+            }
+          },
+          {
+            path: ':assetIndex',
+            component: UpdateAssetComponent,
+            data: {
+              title: $localize`:@@updateBusiness:Update Business`
+            }
+          }
         ]
       }
     ]
