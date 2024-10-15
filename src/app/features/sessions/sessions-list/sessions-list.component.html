@@ -1,5 +1,7 @@
 <section class="flex flex-col items-center justify-center p-4 space-y-4 sm:space-y-6">
-  <app-button color="green" class="w-full" *ngFor="let session of sessions" routerLink="/sessions/{{session.id}}">
-    <span i18n="@@sessionCreatedAt">Session at</span> {{session.createdAt | date: 'short'}}
-  </app-button>
+  @for(session of sessions(); track session.id) {
+    <app-button color="green" class="w-full" routerLink="/sessions/{{session.id}}">
+      <span i18n="@@sessionCreatedAt">Session at</span> {{session.createdAt | date: 'short'}}
+    </app-button>
+  }
 </section>

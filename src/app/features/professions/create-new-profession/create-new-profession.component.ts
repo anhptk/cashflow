@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProfessionForm } from '../../../shared/models/forms/profession-form';
@@ -9,6 +9,7 @@ import { Location } from '@angular/common';
 import { Observable, switchMap } from 'rxjs';
 import { SessionService } from '../../../shared/services/db/session.service';
 import { ProfessionService } from '../../../shared/services/db/profession.service';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-create-new-profession',
@@ -16,29 +17,30 @@ import { ProfessionService } from '../../../shared/services/db/profession.servic
   imports: [
     ButtonComponent,
     ReactiveFormsModule,
-    ProfessionSummaryComponent
+    ProfessionSummaryComponent,
+    RouterModule
   ],
   templateUrl: './create-new-profession.component.html',
-  styleUrl: './create-new-profession.component.scss'
+  styleUrl: './create-new-profession.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateNewProfessionComponent {
 
-  @Input() profession?: Profession;
+  profession = input<Profession>(null);
 
   professionForm: FormGroup<ProfessionForm>;
 
   constructor(
     private _professionService: ProfessionService,
     private _sessionService: SessionService,
-    private _location: Location
+    private _location: Location,
+    private _router: Router
   ) {
     this.professionForm = this._buildForm();
-  }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['profession'].currentValue) {
-      this.professionForm.patchValue(this.profession!);
-    }
+    effect(() => {
+      this.professionForm.patchValue(this.profession());
+    })
   }
 
   private _buildForm(): FormGroup {
@@ -94,22 +96,22 @@ export class CreateNewProfessionComponent {
       switchMap(profession => this._sessionService.add(profession))
     ).subscribe((sessionId) => {
       alert($localize`:@@sessionAdded:Session added successfully!`);
-      this._location.go(`/sessions/${sessionId}`);
+      this._router.navigateByUrl(`/sessions/${sessionId}`);
     })
   }
 
   private _upsertProfessionRequest(): Observable<number> {
     const profession: TypedFormValue<FormGroup<ProfessionForm>> = this.professionForm.value;
 
-    if (this.profession) {
-      return this._professionService.update({ ...profession, id: this.profession.id, createdAt: this.profession.createdAt });
+    if (this.profession()) {
+      return this._professionService.update({ ...profession, id: this.profession().id, createdAt: this.profession().createdAt });
     } else {
       return this._professionService.add(profession);
     }
   }
 
   public delete(): void {
-    this._professionService.delete(this.profession!.id).subscribe(() => {
+    this._professionService.delete(this.profession().id).subscribe(() => {
       alert($localize`:@@professionDeleted:Profession deleted successfully!`);
       this._location.back();
     });
