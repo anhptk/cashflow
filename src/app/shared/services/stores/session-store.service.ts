@@ -113,7 +113,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public addAsset(asset: AssetItem): void {
-    const payment = asset.assetType === 'HOUSING' ? asset.downPayment : asset.value;
+    const payment = asset.downPayment || asset.value;
 
     this.patchState((state: SessionState) => {
       const newSession = {
@@ -137,10 +137,10 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   public sellAsset(assetIndex: number, sellAtPrice: number): void {
     this.patchState((state: SessionState) => {
       const asset = state.session.assets[assetIndex];
-      let profit = sellAtPrice;
 
+      let profit = sellAtPrice;
       if (asset.downPayment > 0) {
-        profit = sellAtPrice + asset.downPayment - asset.value;
+        profit += asset.downPayment - asset.value;
       }
 
       const newSession = {
