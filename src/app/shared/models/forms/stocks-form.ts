@@ -7,3 +7,8 @@ export interface BuyStocksForm {
 
     interRestOrDividend?: FormControl<number>;
 }
+
+export interface SplitStockForm {
+    assetName: FormControl<string>;
+    splitRatio: FormControl<number>;
+}

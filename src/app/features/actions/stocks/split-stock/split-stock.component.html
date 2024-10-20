@@ -1,0 +1,80 @@
+<app-session-cash-summary></app-session-cash-summary>
+
+@if (isReverseSplit()) {
+<div class="p-2" i18n="@@introReverseSplitAction">
+  <p>In a reverse split event, share amount reduces and price rises, and the total value remains.
+    <br>
+    Note: the new values may change slightly due to rounding.
+  </p>
+</div>
+} @else {
+<div class="p-2" i18n="@@introSplitAction">
+  <p>In a split event, share amount increases and price drops, and the total value remains.
+    <br>
+    Note: the new values may change slightly due to rounding.
+  </p>
+</div>
+}
+
+@if (stockNames().length) {
+<div [formGroup]="mainForm" class="space-y-4 p-2">
+  <div class="flex justify-between items-center">
+    <div class="flex justify-between w-1/2">
+      <label i18n="@@stocks">Stocks</label>
+    </div>
+    <select assetNameControl formControlName="assetName" class="w-1/2 p-2 rounded outline outline-1">
+      @for (name of stockNames(); track name) {
+        <option value="{{ name }}">{{ name }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="flex justify-between items-center pb-2">
+    <div class="flex justify-between w-1/2">
+      @if (isReverseSplit()) {
+      <label i18n="@@reverseSplitRatio">Reverse split ratio (1 for ____ )</label>
+      } @else {
+        <label i18n="@@splitRatio">Split ratio ( ____ for 1)</label>
+      }
+    </div>
+    <input type="number" formControlName="splitRatio" class="w-1/2 p-2 rounded outline outline-1">
+  </div>
+</div>
+
+<app-divider></app-divider>
+
+@if (mainForm.value.assetName) {
+  <div class="flex justify-between items-center p-2 font-bold">
+    <div class="w-1/2" i18n="@@unitPrice">
+      Unit price
+    </div>
+
+    <div class="w-1/2" i18n="@@shares">
+      Shares
+    </div>
+  </div>
+    
+    @for(stock of stock$ | async; track stock) {
+      @if (stock.name === mainForm.value.assetName) {
+        <div class="flex justify-between items-center pl-2">
+          <div class="w-1/2">
+            ${{ stock.unitPrice | number}} 
+          </div>
+      
+          <div class="w-1/2">
+            {{ stock.volume | number }}
+          </div>
+        </div>
+      }
+    }
+}
+
+<div class="my-4">
+  <app-button [disabled]="!mainForm.valid" (click)="submit()"><span i18n="@@confirm">Confirm</span></app-button>
+</div>
+
+} @else {
+  <div class="p-2 text-red-500">
+    <p i18n="@@noStocksInAsset">There are no stocks in your asset.</p>
+  </div> 
+}

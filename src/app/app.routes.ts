@@ -31,6 +31,7 @@ import { SellStockComponent } from './features/actions/stocks/sell-stock/sell-st
 import { UpdateAssetComponent } from './features/actions/assets/update-asset/update-asset.component';
 import { SelectLandComponent } from './features/actions/lands/select-land/select-land.component';
 import { SellLandComponent } from './features/actions/lands/sell-land/sell-land.component';
+import { SplitStockComponent } from './features/actions/stocks/split-stock/split-stock.component';
 
 const dealRoutes: Routes = [
   {
@@ -71,6 +72,21 @@ const dealRoutes: Routes = [
             }
           }
         ]
+      },
+      {
+        path: 'split',
+        component: SplitStockComponent,
+        data: {
+          title: $localize`:@@splitStock:Split Stock`
+        }
+      },
+      {
+        path: 'reverse-split',
+        component: SplitStockComponent,
+        data: {
+          title: $localize`:@@reverseSplitStock:Reverse Split Stock`,
+          isReverseSplit: true
+        }
       }
     ]
   },

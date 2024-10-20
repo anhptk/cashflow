@@ -5,6 +5,7 @@ import { Session, AssetItem, ExpenseItem } from '../../models/database/session.d
 import { SessionService } from '../db/session.service';
 import { LOAN_INTEREST, LOAN_STEP } from '../../constants/app.constant';
 import { tap } from 'rxjs';
+import { DEAL_TYPE } from '../../constants/deals.enum';
 
 @Injectable()
 export class SessionStoreService extends ComponentStore<SessionState> {
@@ -183,6 +184,56 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         expenseLiabilities: this._expenseLiabilities(newSession),
         totalIncome: this._calculateIncome(newSession),
         cashflow: this._calculateCashflow(newSession)
+      }
+    });
+
+    this._updateSessionDb(this.select(state => state.session));
+  }
+
+  public splitStock(stockName: string, splitRatio: number): void {
+    this.patchState((state: SessionState) => {
+      const newSession = {
+        ...state.session,
+        assets: state.session.assets.map(asset => {
+          if (asset.name === stockName && asset.assetType === DEAL_TYPE.STOCKS) {
+            const volume = Math.ceil(asset.volume * splitRatio);
+            return {
+              ...asset, 
+              volume,
+              unitPrice: +(asset.value / volume).toFixed(2)
+            };
+          }
+          return asset;
+        })
+      }
+
+      return {
+        session: newSession
+      }
+    });
+
+    this._updateSessionDb(this.select(state => state.session));
+  }
+
+  public reverseSplitStock(stockName: string, splitRatio: number): void {
+    this.patchState((state: SessionState) => {
+      const newSession = {
+        ...state.session,
+        assets: state.session.assets.map(asset => {
+          if (asset.name === stockName && asset.assetType === DEAL_TYPE.STOCKS) {
+            const volume = Math.ceil(asset.volume / splitRatio);
+            return {
+              ...asset, 
+              volume,
+              unitPrice: +(asset.value / volume).toFixed(2)
+            };
+          }
+          return asset;
+        })
+      }
+
+      return {
+        session: newSession
       }
     });
 
