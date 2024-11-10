@@ -36,9 +36,6 @@ export class SessionDetailsWrapperComponent {
     this.sessionService.get(this._sessionId)
       .subscribe(session => {
         this.sessionStore.setSession(session);
-
-        // first payday
-        this.sessionStore.payday();
       });
   }
 }
