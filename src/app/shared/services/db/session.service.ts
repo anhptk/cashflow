@@ -30,10 +30,12 @@ export class SessionService {
             { name: $localize`:@@retailDebt:Retail debt`, cashflow: profession.expenses.retail, value: profession.liabilities.retail, isLiability: true }
         ];
 
+        const intialCashflow = profession.income.salary - expenses.map(expense => expense.cashflow).reduce((acc, cashflow) => acc + cashflow);
+
         return {
             profession,
             expenses,
-            cash: profession.assets.savings,
+            cash: profession.assets.savings + intialCashflow,
             children: 0
         };
     }
