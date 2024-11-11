@@ -11,7 +11,7 @@ import { Profession } from '../../models/database/cashflow.db';
 export class SessionService {
     constructor(
         private indexedDbService: IndexedDbService
-    ) {}
+    ) { }
 
     public add(profession: Profession): Observable<number> {
         const session = this._constructNewSession(profession);
@@ -21,12 +21,13 @@ export class SessionService {
 
     private _constructNewSession(profession: Profession): Partial<Session> {
         const expenses: ExpenseItem[] = [
-            {name: $localize`:@@taxes:Taxes`, cashflow: profession.expenses.taxes},
-            {name: $localize`:@@otherPayments:Other payments`, cashflow: profession.expenses.other},
-            {name: $localize`:@@homeMortgage:Home mortgage`, cashflow: profession.expenses.homeMortgage, value: profession.liabilities.homeMortgage, isLiability: true},
-            {name: $localize`:@@schoolLoans:School loans`, cashflow: profession.expenses.schoolLoan, value: profession.liabilities.schoolLoan, isLiability: true},
-            {name: $localize`:@@carLoans:Car loans`, cashflow: profession.expenses.carLoan, value: profession.liabilities.carLoan, isLiability: true},
-            {name: $localize`:@@creditCards:Credit cards`, cashflow: profession.expenses.creditCard, value: profession.liabilities.creditCard, isLiability: true},
+            { name: $localize`:@@carLoans:Car loans`, cashflow: profession.expenses.carLoan, value: profession.liabilities.carLoan, isLiability: true },
+            { name: $localize`:@@creditCards:Credit cards`, cashflow: profession.expenses.creditCard, value: profession.liabilities.creditCard, isLiability: true },
+            { name: $localize`:@@homeMortgage:Home mortgage`, cashflow: profession.expenses.homeMortgage, value: profession.liabilities.homeMortgage, isLiability: true },
+            { name: $localize`:@@schoolLoans:School loans`, cashflow: profession.expenses.schoolLoan, value: profession.liabilities.schoolLoan, isLiability: true },
+            { name: $localize`:@@otherPayments:Other payments`, cashflow: profession.expenses.other },
+            { name: $localize`:@@taxes:Taxes`, cashflow: profession.expenses.taxes },
+            { name: $localize`:@@retailDebt:Retail debt`, cashflow: profession.expenses.retail, value: profession.liabilities.retail, isLiability: true }
         ];
 
         const intialCashflow = profession.income.salary - expenses.map(expense => expense.cashflow).reduce((acc, cashflow) => acc + cashflow);
@@ -41,12 +42,12 @@ export class SessionService {
 
     public get(id: number): Observable<Session> {
         return from(this.indexedDbService.getData("sessions", id))
-          .pipe(map((session: Session) => new Session(session)));
+            .pipe(map((session: Session) => new Session(session)));
     }
 
     public query(): Observable<Session[]> {
         return from(this.indexedDbService.getAllData("sessions"))
-          .pipe(map((sessions: Session[]) => sessions.map(session => new Session(session))));
+            .pipe(map((sessions: Session[]) => sessions.map(session => new Session(session))));
     }
 
     public update(session: Session): Observable<number> {

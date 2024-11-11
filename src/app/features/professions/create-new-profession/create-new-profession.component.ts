@@ -101,12 +101,12 @@ export class CreateNewProfessionComponent {
   }
 
   private _upsertProfessionRequest(): Observable<number> {
-    const profession: TypedFormValue<FormGroup<ProfessionForm>> = this.professionForm.value;
+    const professionValue: TypedFormValue<FormGroup<ProfessionForm>> = this.professionForm.value;
 
     if (this.profession()) {
-      return this._professionService.update({ ...profession, id: this.profession().id, createdAt: this.profession().createdAt });
+      return this._professionService.update({ ...professionValue, id: this.profession().id, createdAt: this.profession().createdAt });
     } else {
-      return this._professionService.add(profession);
+      return this._professionService.add(professionValue);
     }
   }
 
