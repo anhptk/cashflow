@@ -29,7 +29,7 @@ export class SessionService {
             {name: $localize`:@@creditCards:Credit cards`, cashflow: profession.expenses.creditCard, value: profession.liabilities.creditCard, isLiability: true},
         ];
 
-        const intialCashflow = profession.income.salary - expenses.map(expense => expense.cashflow).reduce((acc, curr) => acc + curr);
+        const intialCashflow = profession.income.salary - expenses.map(expense => expense.cashflow).reduce((acc, cashflow) => acc + cashflow);
 
         return {
             profession,
