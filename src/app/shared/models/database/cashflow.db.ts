@@ -1,8 +1,9 @@
 import { DBSchema } from "idb";
 import { TypedFormValue } from "../typed-fom-value";
 import { FormGroup } from "@angular/forms";
-import { Session } from './session.db';
+import { Session, SessionLog } from './session.db';
 import { ProfessionForm } from '../forms/profession-form';
+import { FastTrackSession } from "./fast-track-session.db";
 
 export interface CashflowDB extends DBSchema {
     professions: {
@@ -12,6 +13,14 @@ export interface CashflowDB extends DBSchema {
     sessions: {
         key: number;
         value: Session;
+    },
+    fastTrackSessions: {
+        key: number;
+        value: FastTrackSession;
+    },
+    logs: {
+        key: number;
+        value: SessionLog;
     }
 }
 

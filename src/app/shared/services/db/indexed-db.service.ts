@@ -11,13 +11,21 @@ export class IndexedDbService {
   private dbPromise: Promise<IDBPDatabase<CashflowDB>>;
 
   constructor() {
-    this.dbPromise = openDB<CashflowDB>('cashflow', 1, {
+    this.dbPromise = openDB<CashflowDB>('cashflow', 1.1, {
       upgrade(db) {
         db.createObjectStore('professions', {
           keyPath: 'id',
           autoIncrement: true
         });
         db.createObjectStore('sessions', {
+          keyPath: 'id',
+          autoIncrement: true
+        });
+        db.createObjectStore('fastTrackSessions', {
+          keyPath: 'id',
+          autoIncrement: true
+        });
+        db.createObjectStore('logs', {
           keyPath: 'id',
           autoIncrement: true
         });

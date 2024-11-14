@@ -23,6 +23,7 @@ export interface AssetItem extends FinancialItem {
 export interface SessionLog {
   id: number;
   sessionId: number;
+  fastTrackId?: number;
   message: string;
   dateTime: Date;
 }
@@ -31,7 +32,7 @@ export class Session {
   id: number;
   profession: Profession;
   logs: SessionLog[] = [];
-  isRatRace: boolean = true;
+  fastTrackId?: number;
 
   cash: number;
   children: number;
