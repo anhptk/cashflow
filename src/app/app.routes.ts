@@ -32,6 +32,7 @@ import { UpdateAssetComponent } from './features/actions/assets/update-asset/upd
 import { SelectLandComponent } from './features/actions/lands/select-land/select-land.component';
 import { SellLandComponent } from './features/actions/lands/sell-land/sell-land.component';
 import { SplitStockComponent } from './features/actions/stocks/split-stock/split-stock.component';
+import { SellBusinessComponent } from './features/actions/businesses/sell-business/sell-business.component';
 
 const dealRoutes: Routes = [
   {
@@ -240,8 +241,15 @@ const dealRoutes: Routes = [
             component: SelectBusinessComponent,
             data: {
               title: $localize`:@@selectBusiness:Select Business`
-            }
+            },
           },
+          {
+            path: ':assetIndex',
+            component: SellBusinessComponent,
+            data: {
+              title: $localize`:@@sellBusiness:Sell Business`
+            }
+          }
         ]
       },
       {
