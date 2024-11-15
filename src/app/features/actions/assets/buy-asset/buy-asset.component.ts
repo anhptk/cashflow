@@ -69,8 +69,8 @@ export class BuyAssetComponent {
     const newAsset: AssetItem = {
       name: this.assetType === DEAL_TYPE.HOUSING ? HOUSE_TYPE_LABEL[formValue.assetName] : formValue.assetName,
       value: formValue.cost,
-      downPayment: formValue.downPayment,
-      cashflow: formValue.cashFlow,
+      downPayment: formValue.downPayment || 0,
+      cashflow: formValue.cashFlow || 0,
       isLiability: true,
       assetType: this.assetType
     }
