@@ -9,8 +9,17 @@
     <label i18n="@@sellAt">Sell at</label>
     <span class="mr-2">$</span>
   </div>
-  <input type="number" [formControl]="priceControl" class="w-1/2 p-2 rounded outline outline-1">
+  <input type="number" [formControl]="mainForm.controls.price" class="w-1/2 p-2 rounded outline outline-1">
 </div>
+
+@if (mainForm.controls.volume) {
+<div class="flex justify-between items-center my-4 mx-2">
+  <div class="flex justify-between w-1/2">
+    <label i18n="@@volumne">Volume</label>
+  </div>
+  <input type="number" [formControl]="mainForm.controls.volume" class="w-1/2 p-2 rounded outline outline-1">
+</div>
+}
 
 <div class="my-8">
   <app-button (click)="sell()"><span i18n="@@confirm">Confirm</span></app-button>
