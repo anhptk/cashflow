@@ -43,7 +43,7 @@ export class SellAssetComponent implements OnChanges {
 
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.assetType.currentValue) {
-      this._setupStockSharesForm();
+      this._setupVolumeForm();
     }
   }
 
@@ -66,7 +66,7 @@ export class SellAssetComponent implements OnChanges {
     }
   }
 
-  private _setupStockSharesForm(): void {
+  private _setupVolumeForm(): void {
     if (this.assetType !== DEAL_TYPE.STOCKS) return;
 
     this.mainForm.addControl('volume', new FormControl(null, [Validators.required, Validators.min(0)]));
