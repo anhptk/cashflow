@@ -26,6 +26,7 @@ export class FastTrackSessionService {
     private _constructNewFastTrack(session: Session): Partial<FastTrackSession> {
         return {
             sessionId: session.id,
+            createdAt: new Date(),
             startCashflow: FAST_TRACK_START_RATE * session.assets.reduce((acc, asset) => acc + asset.cashflow, 0)
         }
     }
