@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
-import { Observable } from 'rxjs';
+import { combineLatestWith, Observable } from 'rxjs';
 import { SessionState } from '../../../shared/models/sessions/session-state';
 import { CommonModule, Location } from '@angular/common';
 import { ProgressBarComponent } from '../../../shared/ui/progress-bar/progress-bar.component';
@@ -10,6 +10,7 @@ import { SessionExpensesComponent } from '../widgets/session-expenses/session-ex
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { SessionService } from '../../../shared/services/db/session.service';
 import { SessionAssetsComponent } from '../widgets/session-assets/session-assets.component';
+import { FAST_TRACK_WIN_CASHFLOW } from '../../../shared/constants/app.constant';
 
 @Component({
   selector: 'app-session-details',
@@ -28,26 +29,63 @@ import { SessionAssetsComponent } from '../widgets/session-assets/session-assets
 })
 export class SessionDetailsComponent {
 
+  readonly FAST_TRACK_WIN_CASHFLOW = FAST_TRACK_WIN_CASHFLOW;
   data$: Observable<SessionState>;
+  isFastTrack$: Observable<boolean>;
   sessionId: number;
 
   constructor(
-    private sessionStore: SessionStoreService,
-    private sessionService: SessionService,
+    private _sessionStore: SessionStoreService,
+    private _sessionService: SessionService,
     private _location: Location,
-    private route: ActivatedRoute
+    private _route: ActivatedRoute
   ) {
-    this.data$ = this.sessionStore.state$;
-    this.sessionId = +route.snapshot.params['sessionId'];
+    this.data$ = this._sessionStore.state$;
+    this.isFastTrack$ = this._sessionStore.select(state => state.isFastTrackView);
+    this.sessionId = +_route.snapshot.params['sessionId'];
+  }
+
+  ngOnInit(): void {
+    this._subscribeToIncomeChange();
   }
 
   public delete(): void {
     const cf = confirm($localize`:@@confirmDeleteSession:Do you really want to delete this session?`);
     if (cf) {
-      this.sessionService.delete(this.sessionId).subscribe(() => {
+      this._sessionService.delete(this.sessionId).subscribe(() => {
         this._location.back();
       });
     }
   }
 
+  private _subscribeToIncomeChange(): void {
+    this._sessionStore.select(state => state.totalIncome)
+    .pipe(
+      combineLatestWith(this.isFastTrack$)
+    )
+    .subscribe(([income, isFastTrack]) => {
+      if (isFastTrack) {
+        this._checkFastTrackWon(income);
+      } else {
+        this._checkRatRaceWon(income);
+      }
+    });
+  }
+
+  private _checkFastTrackWon(income: number): void {
+    const isWon = income >= FAST_TRACK_WIN_CASHFLOW;
+
+    if (isWon) {
+      alert($localize`:@@fastTrackWon:Congratulations! You have completed the Fast Track!`);
+    }
+  }
+
+  private _checkRatRaceWon(income: number): void {
+    const isWon = income >= this._sessionStore.state().totalExpenses;
+
+    if (isWon && !this._sessionStore.state().session.fastTrackId) {
+      alert($localize`:@@ratRaceWon:Congratulations! You have completed the Rat Race. You will now enter the Fast Track!`);
+      this._sessionStore.createFastTrackSession();
+    }
+  }
 }

@@ -4,27 +4,63 @@ import { SessionState } from '../../models/sessions/session-state';
 import { Session, AssetItem, ExpenseItem } from '../../models/database/session.db';
 import { SessionService } from '../db/session.service';
 import { LOAN_INTEREST, LOAN_STEP } from '../../constants/app.constant';
-import { tap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
 import { DEAL_TYPE } from '../../constants/deals.enum';
+import { FastTrackSessionService } from '../db/fast-track-session.service';
+import { FastTrackSession } from '../../models/database/fast-track-session.db';
 
 @Injectable()
 export class SessionStoreService extends ComponentStore<SessionState> {
 
   constructor(
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private fastTrackService: FastTrackSessionService
   ) {
     super();
   }
 
-  public setSession(session: Session): void {
+  public setSession(session: Session, fastTrack?: FastTrackSession): void {
     this.setState({
       session: session,
       profession: session.profession,
+      fastTrack,
+      isFastTrackView: !!session.fastTrackId,
       incomeLiabilities: this._incomeLiabilities(session),
       expenseLiabilities: this._expenseLiabilities(session),
       totalIncome: this._calculateIncome(session),
       totalExpenses: this._calculateExpenses(session),
       cashflow: this._calculateCashflow(session)
+    });
+  }
+
+  public setFastTrackSession(session: Session, fastTrack: FastTrackSession): void {
+    this.setState({
+      session: session,
+      profession: session.profession,
+      fastTrack,
+      isFastTrackView: true,
+      incomeLiabilities: fastTrack.assets,
+      expenseLiabilities: [],
+      totalIncome: this._calculateIncome(fastTrack),
+      totalExpenses: 0,
+      cashflow: this._calculateCashflow(fastTrack)
+  });
+}
+
+  public toggleFastTrackView(isFastTrackView: boolean): void {
+    this.patchState({isFastTrackView});
+    this._calculateDisplayData(isFastTrackView);
+  }
+
+  public createFastTrackSession(): void {
+    this.fastTrackService.add(this.state().session)
+    .pipe(switchMap((id) => this.fastTrackService.get(id)))
+    .subscribe((session) => {      
+      this.patchState({
+        fastTrack: session
+      });
+
+      this.toggleFastTrackView(true);
     });
   }
 
@@ -263,13 +299,18 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     return session.expenses.filter(expense => expense.isLiability);
   }
 
-  private _calculateIncome(session: Session): number {
+  private _calculateIncome(session: Session | FastTrackSession): number {
     if (!session) return 0;
 
-    const liabilities = this._incomeLiabilities(session).filter(item => item.cashflow > 0);
-    const totalLiabilities = liabilities.reduce((acc, liability) => acc + liability.cashflow, 0);
+    if (session instanceof Session) {
+      const liabilities = this._incomeLiabilities(session).filter(item => item.cashflow > 0);
+      const totalLiabilities = liabilities.reduce((acc, liability) => acc + liability.cashflow, 0);
 
-    return session.income.reduce((acc, income) => acc + income.cashflow, totalLiabilities);
+      return session.income.reduce((acc, income) => acc + income.cashflow, totalLiabilities);
+    } else {
+      const assets = session.assets.filter(asset => asset.cashflow > 0);
+      return assets.reduce((acc, asset) => acc + asset.cashflow, 0);
+    }
   }
 
   private _calculateExpenses(session: Session): number {
@@ -280,10 +321,14 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport);
   }
 
-  private _calculateCashflow(session: Session): number {
+  private _calculateCashflow(session: Session | FastTrackSession): number {
     if (!session) return 0;
 
-    return session.profession.income.salary + this._calculateIncome(session) - this._calculateExpenses(session);
+    if (session instanceof Session) {
+      return session.profession.income.salary + this._calculateIncome(session) - this._calculateExpenses(session);
+    } else {
+      return session.startCashflow + this._calculateIncome(session);
+    }
   }
 
   private _calculateLoan(session: Session, amount: number): ExpenseItem {
@@ -303,10 +348,39 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     };
   }
 
+  private _calculateDisplayData(isFastTrackView: boolean): void {
+    if (isFastTrackView) {
+      this.patchState({
+        incomeLiabilities: this.state().fastTrack.assets,
+        expenseLiabilities: [],
+        totalIncome: this._calculateIncome(this.state().fastTrack),
+        totalExpenses: 0,
+        cashflow: this._calculateCashflow(this.state().fastTrack)
+      })
+    } else {
+      const session = this.state().session;
+      this.patchState({
+        incomeLiabilities: this._incomeLiabilities(session),
+        expenseLiabilities: this._expenseLiabilities(session),
+        totalIncome: this._calculateIncome(session),
+        totalExpenses: this._calculateExpenses(session),
+        cashflow: this._calculateCashflow(session)
+      });
+    }
+  }
+
   private _updateSessionDb = this.effect<Session>(session$ => {
     return session$.pipe(
       tap((session:Session) => {
         this.sessionService.update(session);
+      })
+    );
+  });
+
+  private _updateFastTrackDb = this.effect<FastTrackSession>(session$ => {
+    return session$.pipe(
+      tap((session:FastTrackSession) => {
+        this.fastTrackService.update(session);
       })
     );
   });

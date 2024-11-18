@@ -3,6 +3,8 @@ import { RouterModule, ActivatedRoute } from '@angular/router';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { SessionService } from '../../../shared/services/db/session.service';
 import { provideComponentStore } from '@ngrx/component-store';
+import { FastTrackSessionService } from '../../../shared/services/db/fast-track-session.service';
+import { Session } from '../../../shared/models/database/session.db';
 
 @Component({
   selector: 'app-session-details-wrapper',
@@ -17,6 +19,7 @@ export class SessionDetailsWrapperComponent {
 
   constructor(
     private sessionService: SessionService,
+    private fastTrackService: FastTrackSessionService,
     private sessionStore: SessionStoreService,
     private route: ActivatedRoute
   ) {
@@ -35,7 +38,18 @@ export class SessionDetailsWrapperComponent {
 
     this.sessionService.get(this._sessionId)
       .subscribe(session => {
-        this.sessionStore.setSession(session);
+        if (!session.fastTrackId) {
+          this.sessionStore.setSession(session);
+        } else {
+          this._loadFastTrackSession(session);
+        }
+      });
+  }
+
+  private _loadFastTrackSession(session: Session): void {
+    this.fastTrackService.get(session.fastTrackId)
+      .subscribe(fastTrack => {
+        this.sessionStore.setFastTrackSession(session, fastTrack);
       });
   }
 }

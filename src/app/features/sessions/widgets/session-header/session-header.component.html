@@ -1,3 +1,16 @@
+@if (isFastTrackView$ | async) {
+  <div class="flex justify-between items-center p-4" *ngIf="fastTrack$ | async as session">
+    <div class="flex items-center">
+      <span class="mr-2">$</span>
+      <span>{{ session.cash | number }}</span>
+    </div>
+    <div class="flex items-center">
+      <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded mr-2" (click)="toggleFastTrackView(false)" i18n="@@ratRace">Rat Race</button>
+      <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2" i18n="@@history">History</button>
+      <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded" routerLink="action" i18n="@@action">Action</button>
+    </div>
+  </div>
+} @else {
 <div class="flex justify-between items-center p-4" *ngIf="session$ | async as session">
   <div class="flex items-center">
     <span class="mr-2">$</span>
@@ -6,7 +19,15 @@
     <span>{{ session.children }}</span>
   </div>
   <div class="flex items-center">
-    <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2" i18n="@@history">History</button>
-    <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded" routerLink="action" i18n="@@action">Action</button>
+    @if (fastTrack$ | async) {
+      <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded mr-2" (click)="toggleFastTrackView(true)" i18n="@@fastTrack">Fast Track</button>
+    }
+    
+    <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded" i18n="@@history">History</button>
+
+    @if (!(fastTrack$ | async)) {
+    <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded ml-2" routerLink="action" i18n="@@action">Action</button>
+    }
   </div>
 </div>
+}
