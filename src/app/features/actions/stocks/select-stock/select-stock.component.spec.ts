@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectStockComponent } from './select-stock.component';
+import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
+import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
 
 describe('SelectStockComponent', () => {
   let component: SelectStockComponent;
@@ -8,7 +10,10 @@ describe('SelectStockComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SelectStockComponent]
+      imports: [SelectStockComponent],
+      providers: [
+        { provide: SessionStoreService, useValue: new MockSessionStoreService() }
+      ]
     })
     .compileComponents();
 

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 import { Location, CommonModule } from '@angular/common';
 import { DividerComponent } from '../../../../shared/ui/divider/divider.component';
@@ -24,7 +24,7 @@ import { DEAL_TYPE, DealType } from '../../../../shared/constants/deals.enum';
   templateUrl: './buy-asset.component.html',
   styleUrl: './buy-asset.component.scss'
 })
-export class BuyAssetComponent {
+export class BuyAssetComponent implements OnInit {
   readonly DealType = DEAL_TYPE;
 
   @Input({required: true}) assetType: DealType;

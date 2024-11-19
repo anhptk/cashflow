@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SessionHeaderComponent } from './session-header.component';
+import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
+import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
 
 describe('SessionHeaderComponent', () => {
   let component: SessionHeaderComponent;
@@ -8,7 +10,10 @@ describe('SessionHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SessionHeaderComponent]
+      imports: [SessionHeaderComponent],
+      providers: [
+        { provide: SessionStoreService, useValue: new MockSessionStoreService() }
+      ]
     })
     .compileComponents();
 

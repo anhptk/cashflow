@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateNewSessionComponent } from './create-new-session.component';
+import { RouterModule } from '@angular/router';
 
 describe('CreateNewSessionComponent', () => {
   let component: CreateNewSessionComponent;
@@ -8,7 +9,10 @@ describe('CreateNewSessionComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateNewSessionComponent]
+      imports: [
+        CreateNewSessionComponent,
+        RouterModule.forRoot([])
+      ]
     })
     .compileComponents();
 
