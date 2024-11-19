@@ -5,7 +5,15 @@
         <div class="flex justify-between w-1/2">
             <label for="assetName" i18n="@@stockCD">Stock / CD</label>
         </div>
-        <input id="assetName" type="text" formControlName="assetName" class="w-1/2 p-2 rounded outline outline-1">
+        <select assetNameControl [formControl]="mainForm.controls.assetName"
+            class="p-2 rounded outline outline-1" [ngClass]="{'w-1/4': showOtherStockName, 'w-1/2': !showOtherStockName}">
+            @for (stock of stockOptions; track $index) {
+            <option [value]="stock">{{stockLabels[stock]}}</option>
+            }
+        </select>
+        @if (showOtherStockName) {
+        <input id="assetName" type="text" formControlName="assetOtherName" class="w-1/2 p-2 rounded outline outline-1 ml-2">
+        }
     </div>
 
     <div class="flex justify-between items-center">
@@ -28,7 +36,8 @@
             <label for="interRestOrDividend" i18n="@@interestDividends">Interest / Dividends</label>
             <span class="mr-2">$</span>
         </div>
-        <input id="interRestOrDividend" type="number" formControlName="interRestOrDividend" class="w-1/2 p-2 rounded outline outline-1">
+        <input id="interRestOrDividend" type="number" formControlName="interRestOrDividend"
+            class="w-1/2 p-2 rounded outline outline-1">
     </div>
 </div>
 
