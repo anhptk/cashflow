@@ -48,7 +48,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     this.patchState((state: SessionState) => {
       const newSession = {
         ...state.session,
-        expenses: state.session.expenses.filter(x=> x.name !== 'Loans').concat(this._calculateLoan(state.session, amount)),
+        expenses: state.session.expenses.filter(x => x.name !== 'Loans').concat(this._calculateLoan(state.session, amount)),
         cash: state.session.cash += amount
       }
 
@@ -64,15 +64,15 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public autoLoan(expenseAmount: number, next: Function): void {
-    const missingAmount = expenseAmount -  this.get(state => state.session.cash);
+    const missingAmount = expenseAmount - this.get(state => state.session.cash);
 
     if (missingAmount <= 0) {
       next();
       return;
     }
 
-    const loanAmount = Math.ceil(missingAmount/LOAN_STEP)*LOAN_STEP;
-    const cashflowReduction = loanAmount*LOAN_INTEREST;
+    const loanAmount = Math.ceil(missingAmount / LOAN_STEP) * LOAN_STEP;
+    const cashflowReduction = loanAmount * LOAN_INTEREST;
 
     const cf = confirm($localize`:@@actions.getLoanConfirm: Insufficient cash. Get Loan: Cash +$${loanAmount}. Cashflow -$${cashflowReduction}`);
     if (cf) {
@@ -148,16 +148,18 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         profit += asset.downPayment - asset.value;
       }
 
-      asset.volume = asset.volume < volume ? 0 : asset.volume - volume;
+      if (!isNaN(asset.volume)) {
+        asset.volume = asset.volume < volume ? 0 : asset.volume - volume;
+      }
 
       const newSession = {
         ...state.session,
         cash: state.session.cash += profit
       }
 
-      if (asset.volume === 0) {
+      if (asset.volume === 0 || isNaN(asset.volume)) {
         newSession.assets = state.session.assets.filter((_, index) => index !== assetIndex);
-      } 
+      }
 
       return {
         session: newSession,
@@ -172,7 +174,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   private _adjustSessionCash(amount: number, session: Session): Session {
-    return {...session, cash: session.cash += amount};
+    return { ...session, cash: session.cash += amount };
   }
 
   public updateAssetCashflow(assetIndex: number, cashflow: number): void {
@@ -181,7 +183,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         ...state.session,
         assets: state.session.assets.map((asset, index) => {
           if (index === assetIndex) {
-            return {...asset, cashflow: cashflow};
+            return { ...asset, cashflow: cashflow };
           }
           return asset;
         })
@@ -207,7 +209,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
           if (asset.name === stockName && asset.assetType === DEAL_TYPE.STOCKS) {
             const volume = Math.ceil(asset.volume * splitRatio);
             return {
-              ...asset, 
+              ...asset,
               volume,
               unitPrice: +(asset.value / volume).toFixed(2)
             };
@@ -232,7 +234,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
           if (asset.name === stockName && asset.assetType === DEAL_TYPE.STOCKS) {
             const volume = Math.ceil(asset.volume / splitRatio);
             return {
-              ...asset, 
+              ...asset,
               volume,
               unitPrice: +(asset.value / volume).toFixed(2)
             };
@@ -251,7 +253,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   public addChild(): void {
     this.patchState((state: SessionState) => {
-      const newSession = {...state.session, children: state.session.children += 1};
+      const newSession = { ...state.session, children: state.session.children += 1 };
       return {
         session: newSession,
         totalExpenses: this._calculateExpenses(newSession),
@@ -314,7 +316,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   private _updateSessionDb = this.effect<Session>(session$ => {
     return session$.pipe(
-      tap((session:Session) => {
+      tap((session: Session) => {
         this.sessionService.update(session);
       })
     );

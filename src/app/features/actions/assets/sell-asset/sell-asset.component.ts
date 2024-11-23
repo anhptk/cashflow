@@ -62,7 +62,7 @@ export class SellAssetComponent implements OnChanges {
     
     const cf = confirm($localize`:@@sellAssetConfirm:Are you sure you want to sell asset at $${totalValue}?`);
     if (cf) {
-      this._sessionStore.sellAsset(this._assetIndex, priceValue, this.mainForm.controls.volume.value ?? 1);
+      this._sessionStore.sellAsset(this._assetIndex, priceValue, this.mainForm.controls.volume?.value ?? 1);
       this._location.historyGo(-5); // move back to the main session page
     }
   }
