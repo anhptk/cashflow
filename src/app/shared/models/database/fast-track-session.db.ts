@@ -1,11 +1,11 @@
-import { FinancialItem, SessionLog } from "./session.db";
+import { AssetItem, SessionLog } from "./session.db";
 
 export class FastTrackSession {
     id: number;
     sessionId: number;
     logs: SessionLog[] = [];
     cash: number = 0;
-    income: FinancialItem[] = [];
+    assets: AssetItem[] = [];
     createdAt: Date;
     startCashflow: number;
 

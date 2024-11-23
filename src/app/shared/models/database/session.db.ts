@@ -23,9 +23,8 @@ export interface AssetItem extends FinancialItem {
 export interface SessionLog {
   id: number;
   sessionId: number;
-  fastTrackId?: number;
   message: string;
-  dateTime: Date;
+  createdAt: Date;
 }
 
 export class Session {
