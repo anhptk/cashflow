@@ -139,20 +139,25 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     this._updateSessionDb(this.select(state => state.session));
   }
 
-  public sellAsset(assetIndex: number, sellAtPrice: number): void {
+  public sellAsset(assetIndex: number, sellAtPrice: number, volume = 1): void {
     this.patchState((state: SessionState) => {
       const asset = state.session.assets[assetIndex];
 
-      let profit = sellAtPrice;
+      let profit = sellAtPrice * volume;
       if (asset.downPayment > 0) {
         profit += asset.downPayment - asset.value;
       }
 
+      asset.volume = asset.volume < volume ? 0 : asset.volume - volume;
+
       const newSession = {
         ...state.session,
-        assets: state.session.assets.filter((_, index) => index !== assetIndex),
         cash: state.session.cash += profit
       }
+
+      if (asset.volume === 0) {
+        newSession.assets = state.session.assets.filter((_, index) => index !== assetIndex);
+      } 
 
       return {
         session: newSession,
