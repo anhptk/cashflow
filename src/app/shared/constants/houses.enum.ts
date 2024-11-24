@@ -11,7 +11,7 @@ export const HOUSE_TYPE = {
 
 export type HouseType = typeof HOUSE_TYPE[keyof typeof HOUSE_TYPE];
 
-export const HOUSE_TYPE_LABEL= {
+export const HOUSE_TYPE_LABEL = {
   TWO_BED_ONE_BATH: $localize`:@@twoBedOneBath:2Bd/1Ba`,
   THREE_BED_TWO_BATH: $localize`:@@threeBedTwoBath:3Bd/2Ba`,
   DUPLEX: $localize`:@@duplex:Duplex`,

@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UpdateAssetComponent } from './update-asset.component';
+import { RouterModule } from '@angular/router';
+import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
+import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
 
 describe('UpdateAssetComponent', () => {
   let component: UpdateAssetComponent;
@@ -8,7 +11,13 @@ describe('UpdateAssetComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UpdateAssetComponent]
+      imports: [
+        UpdateAssetComponent,
+        RouterModule.forRoot([])
+      ],
+      providers: [
+        {provide: SessionStoreService, useValue: new MockSessionStoreService()}
+      ]
     })
     .compileComponents();
 

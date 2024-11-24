@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SelectLandComponent } from './select-land.component';
+import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
+import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
 
 describe('SelectLandComponent', () => {
   let component: SelectLandComponent;
@@ -8,7 +10,10 @@ describe('SelectLandComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SelectLandComponent]
+      imports: [SelectLandComponent],
+      providers: [
+        { provide: SessionStoreService, useValue: new MockSessionStoreService() }
+      ]
     })
     .compileComponents();
 

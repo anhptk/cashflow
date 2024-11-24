@@ -17,10 +17,8 @@ export class ProgressBarComponent {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['value'] || changes['value'].currentValue) {
       this.progress = Math.round((this.value / this.maxValue) * 100);
-      
-      if (this.progress >= 100) {
-        this.completed.set(true);
-      }
+
+      this.completed.set(this.progress >= 100);
     }
   }
 }

@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SellLandComponent } from './sell-land.component';
+import { RouterModule } from '@angular/router';
+import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
+import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
 
 describe('SellLandComponent', () => {
   let component: SellLandComponent;
@@ -8,7 +11,13 @@ describe('SellLandComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SellLandComponent]
+      imports: [
+        SellLandComponent,
+        RouterModule.forRoot([])
+      ],
+      providers: [
+        {provide: SessionStoreService, useValue: new MockSessionStoreService()}
+      ]
     })
     .compileComponents();
 
