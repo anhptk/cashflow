@@ -6,7 +6,7 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { SessionCashSummaryComponent } from '../../../sessions/widgets/session-cash-summary/session-cash-summary.component';
 import { BuyAssetForm } from '../../../../shared/models/forms/asset-form';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
-import { filter } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { AssetItem } from '../../../../shared/models/database/session.db';
 import { HOUSE_TYPE_LABEL } from '../../../../shared/constants/houses.enum';
 import { DEAL_TYPE, DealType } from '../../../../shared/constants/deals.enum';
@@ -35,10 +35,13 @@ export class BuyAssetComponent implements OnInit {
   public totalPayment: number;
   public mortgage: number;
 
+  public isFastTrackAction$: Observable<boolean>;
+
   constructor(
     private _sessionStore: SessionStoreService,
     private _location: Location
   ) {
+    this.isFastTrackAction$ = this._sessionStore.select(state => state.isFastTrackView);
   }
 
   ngOnInit() {
@@ -82,6 +85,30 @@ export class BuyAssetComponent implements OnInit {
         this._sessionStore.addAsset(newAsset);
         this._location.historyGo(-4);
       })
+    }
+  }
+
+  public submitFastTrack() {
+    const formValue = this.mainForm.value;
+
+    const newAsset: AssetItem = {
+      name: formValue.assetName,
+      value: formValue.cost,
+      downPayment: 0,
+      cashflow: formValue.cashFlow || 0,
+      assetType: this.assetType
+    }
+
+    const cf = confirm(this._constructBuyAssetConfirmMessage());
+
+    if (cf) {
+      if (newAsset.value > this._sessionStore.state().fastTrack.cash) {
+        alert($localize`:@@notEnoughCash:You do not have enough cash to buy this asset.`);
+        return;
+      }
+
+      this._sessionStore.addFastTrackAsset(newAsset);
+      this._location.historyGo(-1);
     }
   }
 

@@ -19,6 +19,10 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     super();
   }
 
+  public get sessionUrl(): string {
+    return `/sessions/${this.get(state => state.session.id)}`;
+  }
+
   public setSession(session: Session, fastTrack?: FastTrackSession): void {
     this.setState({
       session: session,
@@ -53,7 +57,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public createFastTrackSession(): void {
-    this.fastTrackService.add(this.state().session)
+    this.fastTrackService.add(this.get(state => state.session))
     .pipe(switchMap((id) => this.fastTrackService.get(id)))
     .subscribe((session) => {      
       this.patchState({
@@ -65,19 +69,11 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public payday(): void {
-    this.patchState((state: SessionState) => {
-      return this._adjustSessionCash(state.cashflow, state.session);
-    });
-
-    this._updateSessionDb(this.select(state => state.session));
+    this.adjustCash(this.get(state => state.cashflow));
   }
 
   public downsize(): void {
-    this.patchState((state: SessionState) => {
-      return this._adjustSessionCash(-state.totalExpenses, state.session);
-    });
-
-    this._updateSessionDb(this.select(state => state.session));
+    this.adjustCash(-this.get(state => state.totalExpenses));
   }
 
   public loan(amount: number): void {
@@ -119,10 +115,15 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   public adjustCash(amount: number): void {
     this.patchState((state: SessionState) => {
-      return this._adjustSessionCash(amount, state.session);
+      if (state.isFastTrackView) {
+        return {fastTrack: this._adjustFastTrackCash(amount, state.fastTrack)};
+      } else {
+        return {session: this._adjustSessionCash(amount, state.session)};
+      }
     });
 
     this._updateSessionDb(this.select(state => state.session));
+    this._updateFastTrackDb(this.select(state => state.fastTrack));
   }
 
   public payoffExpense(expense: ExpenseItem): void {
@@ -171,6 +172,25 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     this._updateSessionDb(this.select(state => state.session));
   }
 
+  public addFastTrackAsset(asset: AssetItem): void {
+    this.patchState((state: SessionState) => {
+      const newSession = {
+        ...state.fastTrack,
+        assets: state.fastTrack.assets.concat(asset),
+        cash: state.fastTrack.cash -= asset.value
+      }
+
+      return {
+        fastTrack: newSession,
+        incomeLiabilities: this._incomeLiabilities(newSession),
+        totalIncome: this._calculateIncome(newSession),
+        cashflow: this._calculateCashflow(newSession)
+      }
+    });
+
+    this._updateFastTrackDb(this.select(state => state.fastTrack));
+  }
+
   public sellAsset(assetIndex: number, sellAtPrice: number): void {
     this.patchState((state: SessionState) => {
       const asset = state.session.assets[assetIndex];
@@ -200,6 +220,10 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   private _adjustSessionCash(amount: number, session: Session): Session {
     return {...session, cash: session.cash += amount};
+  }
+
+  private _adjustFastTrackCash(amount: number, fastTrack: FastTrackSession): FastTrackSession {
+    return {...fastTrack, cash: fastTrack.cash += amount};
   }
 
   public updateAssetCashflow(assetIndex: number, cashflow: number): void {
@@ -289,7 +313,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     this._updateSessionDb(this.select(state => state.session));
   }
 
-  private _incomeLiabilities(session: Session): AssetItem[] {
+  private _incomeLiabilities(session: Session | FastTrackSession): AssetItem[] {
     if (!session) return [];
     return session.assets.filter(asset => asset.isLiability);
   }
@@ -351,14 +375,14 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   private _calculateDisplayData(isFastTrackView: boolean): void {
     if (isFastTrackView) {
       this.patchState({
-        incomeLiabilities: this.state().fastTrack.assets,
+        incomeLiabilities: this.get(state => state.fastTrack.assets),
         expenseLiabilities: [],
-        totalIncome: this._calculateIncome(this.state().fastTrack),
+        totalIncome: this._calculateIncome(this.get(state => state.fastTrack)),
         totalExpenses: 0,
-        cashflow: this._calculateCashflow(this.state().fastTrack)
+        cashflow: this._calculateCashflow(this.get(state => state.fastTrack))
       })
     } else {
-      const session = this.state().session;
+      const session = this.get(state => state.session);
       this.patchState({
         incomeLiabilities: this._incomeLiabilities(session),
         expenseLiabilities: this._expenseLiabilities(session),

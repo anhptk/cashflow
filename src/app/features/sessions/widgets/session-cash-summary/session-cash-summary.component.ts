@@ -22,6 +22,6 @@ export class SessionCashSummaryComponent {
     private _store: SessionStoreService,
   ) {
     this.cashflow$ = this._store.select(state => state.cashflow);
-    this.cash$ = this._store.select(state => state.session.cash);
+    this.cash$ = this._store.select(state => state.isFastTrackView ? state.fastTrack.cash : state.session.cash);
   }
 }
