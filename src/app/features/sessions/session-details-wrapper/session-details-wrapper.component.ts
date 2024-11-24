@@ -36,6 +36,10 @@ export class SessionDetailsWrapperComponent {
       return;
     }
 
+    if (this.sessionStore.state()?.session?.id === this._sessionId) {
+      return;
+    }
+
     this.sessionService.get(this._sessionId)
       .subscribe(session => {
         if (!session.fastTrackId) {

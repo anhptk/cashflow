@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
-import { combineLatestWith, Observable } from 'rxjs';
+import { Observable, withLatestFrom } from 'rxjs';
 import { SessionState } from '../../../shared/models/sessions/session-state';
 import { CommonModule, Location } from '@angular/common';
 import { ProgressBarComponent } from '../../../shared/ui/progress-bar/progress-bar.component';
@@ -60,16 +60,14 @@ export class SessionDetailsComponent {
 
   private _subscribeToIncomeChange(): void {
     this._sessionStore.select(state => state.totalIncome)
-    .pipe(
-      combineLatestWith(this.isFastTrack$)
-    )
-    .subscribe(([income, isFastTrack]) => {
-      if (isFastTrack) {
-        this._checkFastTrackWon(income);
-      } else {
-        this._checkRatRaceWon(income);
-      }
-    });
+      .pipe(withLatestFrom(this._sessionStore.select(state => state.session)))
+      .subscribe(([income, session]) => {
+        if (session.fastTrackId) {
+          this._checkFastTrackWon(income);
+        } else {
+          this._checkRatRaceWon(income);
+        }
+      });
   }
 
   private _checkFastTrackWon(income: number): void {
@@ -83,8 +81,9 @@ export class SessionDetailsComponent {
   private _checkRatRaceWon(income: number): void {
     const isWon = income >= this._sessionStore.state().totalExpenses;
 
-    if (isWon && !this._sessionStore.state().session.fastTrackId) {
+    if (isWon) {
       alert($localize`:@@ratRaceWon:Congratulations! You have completed the Rat Race. You will now enter the Fast Track!`);
+
       this._sessionStore.createFastTrackSession();
     }
   }
