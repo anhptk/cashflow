@@ -1,8 +1,20 @@
 <div class="p-4">
-  <div class="mb-2" i18n="@@progressBarStatus">
-    ${{value}} / ${{maxValue}} (${{maxValue - value}} to go)
-  </div>
-  <div class="bg-blue-600 h-2 w-full rounded">
-    <div class="bg-blue-300 h-full rounded" [style.width]="progress + '%'"></div>
-  </div>
+  @if (completed()) {
+    <div class="mb-2" i18n="@@progressBarCompletedStatus">
+      ${{value}} / ${{maxValue}} (completed)
+    </div>
+
+    <div class="bg-blue-600 h-2 w-full rounded">
+      <div class="bg-green-400 h-full rounded" [style.width]="'100%'"></div>
+    </div>
+  } @else {
+    <div class="mb-2" i18n="@@progressBarStatus">
+      ${{value}} / ${{maxValue}} (${{maxValue - value}} to go)
+    </div>
+
+    <div class="bg-blue-600 h-2 w-full rounded">
+      <div class="bg-blue-300 h-full rounded" [style.width]="progress + '%'"></div>
+    </div>
+  }
+
 </div>
