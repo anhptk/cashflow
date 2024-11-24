@@ -15,13 +15,17 @@ import { DEAL_TYPE } from '../../../../shared/constants/deals.enum';
   styleUrl: './session-assets.component.scss'
 })
 export class SessionAssetsComponent {
-  assets$: Observable<AssetItem[]>;
+  sessionAssets$: Observable<AssetItem[]>;
+  fastTrackAssets$: Observable<AssetItem[]>;
+  isFastTrackView$: Observable<boolean>;
 
   DEAL_TYPE = DEAL_TYPE;
 
   constructor(
     private _sessionStore: SessionStoreService
   ) {
-    this.assets$ = this._sessionStore.select(state => state.session.assets);
+    this.sessionAssets$ = this._sessionStore.select(state => state.session.assets);
+    this.fastTrackAssets$ = this._sessionStore.select(state => state.fastTrack?.assets || []);
+    this.isFastTrackView$ = this._sessionStore.select(state => state.isFastTrackView);
   }
 }
