@@ -5,6 +5,8 @@ import { SessionService } from '../../../shared/services/db/session.service';
 import { provideComponentStore } from '@ngrx/component-store';
 import { FastTrackSessionService } from '../../../shared/services/db/fast-track-session.service';
 import { Session } from '../../../shared/models/database/session.db';
+import { filter, withLatestFrom } from 'rxjs';
+import { FAST_TRACK_WIN_CASHFLOW } from '../../../shared/constants/app.constant';
 
 @Component({
   selector: 'app-session-details-wrapper',
@@ -26,9 +28,9 @@ export class SessionDetailsWrapperComponent {
     this._sessionId = Number(this.route.snapshot.params['sessionId']);
   }
 
-
   ngOnInit() {
     this._loadSession();
+    this._subscribeToIncomeChange();
   }
 
   private _loadSession(): void {
@@ -55,5 +57,40 @@ export class SessionDetailsWrapperComponent {
       .subscribe(fastTrack => {
         this.sessionStore.setFastTrackSession(session, fastTrack);
       });
+  }
+  
+  private _subscribeToIncomeChange(): void {
+    this.sessionStore.select(state => state.totalIncome)
+      .pipe(
+        withLatestFrom(this.sessionStore.select(state => state.session)),
+        filter(([income, _]) => !!income),
+      )
+      .subscribe(([income, session]) => {
+        if (session.fastTrackId) {
+          this._checkFastTrackWon(income);
+        } else {
+          this._checkRatRaceWon(income);
+        }
+      });
+  }
+
+  
+
+  private _checkFastTrackWon(income: number): void {
+    const isWon = income >= FAST_TRACK_WIN_CASHFLOW;
+
+    if (isWon) {
+      alert($localize`:@@fastTrackWon:Congratulations! You have completed the Fast Track!`);
+    }
+  }
+
+  private _checkRatRaceWon(income: number): void {
+    const isWon = income >= this.sessionStore.state().totalExpenses;
+
+    if (isWon) {
+      alert($localize`:@@ratRaceWon:Congratulations! You have completed the Rat Race. You will now enter the Fast Track!`);
+
+      this.sessionStore.createFastTrackSession();
+    }
   }
 }

@@ -56,9 +56,9 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   public toggleFastTrackView(isFastTrackView: boolean): void {
     this.patchState({isFastTrackView});
     if (isFastTrackView) {
-      this._calculateDisplayData(this.get(state => state.fastTrack));
+      this.patchState(this._calculateDisplayData(this.get(state => state.fastTrack)));
     } else {
-      this._calculateDisplayData(this.get(state => state.session));
+      this.patchState(this._calculateDisplayData(this.get(state => state.session)));
     }
   }
 
@@ -69,9 +69,9 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     .pipe(switchMap((id) => this.fastTrackService.get(id)))
     .subscribe((fastTrack) => {    
       this.setFastTrackSession(this.get(state => state.session), fastTrack);
-    });
 
-    this._updateSessionDb(this.select(state => state.session));
+      this._updateSessionDb(this.select(state => state.session));
+    });
   }
 
   public payday(): void {
