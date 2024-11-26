@@ -1,5 +1,9 @@
 <ng-container *ngIf="data$ | async as data">
-  <app-progress-bar [value]="data.totalIncome" [maxValue]="data.totalExpenses"></app-progress-bar>
+  @if (isFastTrack$ | async) {
+    <app-progress-bar [value]="data.totalIncome" [maxValue]="FAST_TRACK_WIN_CASHFLOW"></app-progress-bar>
+  } @else {
+    <app-progress-bar [value]="data.totalIncome" [maxValue]="data.totalExpenses"></app-progress-bar>
+  }
 
   <app-session-header></app-session-header>
 
@@ -15,6 +19,7 @@
       <span>$ {{data.cashflow}}</span>
   </div>
 
+  @if (!(isFastTrack$ | async)) {
   <div class="bg-blue-800 p-2 font-bold text-white" i18n="@@income">Income</div>
 
   <div class="flex justify-between items-center my-4 mx-2">
@@ -29,10 +34,12 @@
 
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@expenses">Expenses</div>
   <app-session-expenses [childSupport]="data.profession.expenses.childSupport"></app-session-expenses>
+  }
 
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@assets">Assets</div>
   <app-session-assets></app-session-assets>
 
+  @if (!(isFastTrack$ | async)) {
   <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@liabilities">Liabilities</div>
 
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let liability of data.expenseLiabilities">
@@ -44,8 +51,9 @@
     <span>{{liability.name}}</span>
     <span class="w-1/2">$ {{liability.value - liability.downPayment}}</span>
   </div>
+  }
 
-  <div class="my-4">
+  <div class="my-6">
     <app-button color="red" (click)="delete()"><span i18n="@@delete">Delete</span></app-button>
   </div>
 

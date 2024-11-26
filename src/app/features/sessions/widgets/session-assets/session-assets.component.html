@@ -1,10 +1,16 @@
-<ng-container *ngIf="assets$ | async as assets">
-    <div class="flex justify-between items-center my-4 mx-2" *ngFor="let asset of assets">
-      <span class="w-1/2">{{asset.name}}</span>
-      <ng-container *ngTemplateOutlet="assetValue; context: {$implicit: asset}"></ng-container>
-      <span class="w-1/4 text-right">$ {{asset.cashflow}}</span>
-    </div>
-</ng-container>
+@if (isFastTrackView$ | async) {
+  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let asset of fastTrackAssets$ | async">
+    <span class="w-1/2">{{asset.name}}</span>
+    <ng-container *ngTemplateOutlet="assetValue; context: {$implicit: asset}"></ng-container>
+    <span class="w-1/4 text-right">$ {{asset.cashflow}}</span>
+  </div>
+} @else {
+  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let asset of sessionAssets$ | async">
+    <span class="w-1/2">{{asset.name}}</span>
+    <ng-container *ngTemplateOutlet="assetValue; context: {$implicit: asset}"></ng-container>
+    <span class="w-1/4 text-right">$ {{asset.cashflow}}</span>
+  </div>
+}
 
 <ng-template #assetValue let-asset>
   <ng-container [ngSwitch]="asset.assetType">
