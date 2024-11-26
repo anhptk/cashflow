@@ -5,6 +5,7 @@ import { AssetItem } from '../../../../shared/models/database/session.db';
 import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
+import { DEAL_TYPE } from '../../../../shared/constants/deals.enum';
 
 @Component({
   selector: 'app-sell-stock',
@@ -14,8 +15,9 @@ import { SessionStoreService } from '../../../../shared/services/stores/session-
   styleUrl: './sell-stock.component.scss'
 })
 export class SellStockComponent {
-  private _assetIndex: number;
+  public readonly DEAL_TYPE = DEAL_TYPE;
   public asset$: Observable<AssetItem>;
+  private _assetIndex: number;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
