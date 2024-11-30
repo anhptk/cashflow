@@ -1,0 +1,18 @@
+<app-session-cash-summary></app-session-cash-summary>
+
+<p class="p-2" i18n="@@loansBalance">
+    Current loans remaining: ${{ loansBalance }}
+</p>
+
+<p class="p-2" i18n="@@payoffLoanInstructions">
+    How much would you like to payoff? (Increment of ${{ LOAN_STEP }})
+</p>
+
+<div class="flex items-center w-1/2">
+    <span class="mr-2">$</span>
+    <input type="number" [step]="LOAN_STEP" [formControl]="loanAmountControl" class="w-full p-2 rounded outline outline-1">
+</div>
+
+<div class="mt-10">
+    <app-button [disabled]="!loanAmountControl.valid" class="w-full" (click)="payoff()" i18n="@@confirm">Confirm</app-button>
+</div>

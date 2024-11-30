@@ -35,6 +35,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       totalExpenses: this._calculateExpenses(session),
       cashflow: this._calculateCashflow(session)
     });
+
+    this._updateSessionDb(this.select(state => state.session));
   }
 
   public setFastTrackSession(session: Session, fastTrack: FastTrackSession): void {
@@ -51,6 +53,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       totalExpenses: 0,
       cashflow: this._calculateCashflow(fastTrack)
   });
+
+  this._updateFastTrackDb(this.select(state => state.fastTrack));
 }
 
   public toggleFastTrackView(isFastTrackView: boolean): void {
@@ -97,8 +101,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         cashflow: this._calculateCashflow(newSession)
       }
     });
-
-    this._updateSessionDb(this.select(state => state.session));
   }
 
   public autoLoan(expenseAmount: number, next: Function): void {
@@ -127,9 +129,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         return {session: this._adjustSessionCash(amount, state.session)};
       }
     });
-
-    this._updateSessionDb(this.select(state => state.session));
-    this._updateFastTrackDb(this.select(state => state.fastTrack));
   }
 
   public payoffExpense(expense: ExpenseItem): void {
@@ -152,8 +151,43 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         cashflow: this._calculateCashflow(newSession)
       }
     });
+  }
+  
+  public payoffLoan(amount: number): void {
+    const loanItem = this.get(state => state.session.expenses.find(expense => expense.name === 'Loans'));
+    
+    if (!loanItem) {
+      return;
+    }
 
-    this._updateSessionDb(this.select(state => state.session));
+    if (amount === loanItem.value) {
+      this.payoffExpense(loanItem);
+      return;
+    }
+
+    const newLoan = {
+      ...loanItem,
+      cashflow: loanItem.cashflow - amount * LOAN_INTEREST,
+      value: loanItem.value - amount
+    }
+
+    this.patchState((state: SessionState) => {
+      const newSession = new Session({
+        ...state.session,
+        expenses: state.session.expenses
+        .filter(x => x.name !== 'Loans')
+        .concat(newLoan),
+        cash: state.session.cash -= amount
+      });
+
+      return {
+        session: newSession,
+        expenseLiabilities: this._expenseLiabilities(newSession),
+        totalExpenses: this._calculateExpenses(newSession),
+        cashflow: this._calculateCashflow(newSession)
+      }
+    });
+  
   }
 
   public addAsset(asset: AssetItem): void {
@@ -175,8 +209,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         ...this._calculateDisplayData(newSession)
       }
     });
-
-    this._updateSessionDb(this.select(state => state.session));
   }
 
   public addFastTrackAsset(asset: AssetItem): void {
@@ -223,8 +255,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         ...this._calculateDisplayData(newSession)
       }
     });
-
-    this._updateSessionDb(this.select(state => state.session));
   }
 
   private _adjustSessionCash(amount: number, session: Session): Session {
@@ -252,8 +282,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         ...this._calculateDisplayData(newSession)
       }
     });
-
-    this._updateSessionDb(this.select(state => state.session));
   }
 
   public splitStock(stockName: string, splitRatio: number): void {
@@ -277,8 +305,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         session: newSession
       }
     });
-
-    this._updateSessionDb(this.select(state => state.session));
   }
 
   public reverseSplitStock(stockName: string, splitRatio: number): void {
@@ -302,8 +328,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         session: newSession
       }
     });
-
-    this._updateSessionDb(this.select(state => state.session));
   }
 
   public addChild(): void {
@@ -315,8 +339,6 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         cashflow: this._calculateCashflow(newSession)
       }
     });
-
-    this._updateSessionDb(this.select(state => state.session));
   }
 
   private _incomeLiabilities(session: Session | FastTrackSession): AssetItem[] {

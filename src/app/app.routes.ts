@@ -33,6 +33,7 @@ import { SelectLandComponent } from './features/actions/lands/select-land/select
 import { SellLandComponent } from './features/actions/lands/sell-land/sell-land.component';
 import { SplitStockComponent } from './features/actions/stocks/split-stock/split-stock.component';
 import { SellBusinessComponent } from './features/actions/businesses/sell-business/sell-business.component';
+import { SessionLoanPayoffComponent } from './features/sessions/widgets/session-loan-payoff/session-loan-payoff.component';
 
 const dealRoutes: Routes = [
   {
@@ -367,10 +368,26 @@ const localeRoutes: Routes = [
               },
               {
                 path: 'payoff',
-                component: SessionExpensePayoffComponent,
+                component: RouteWrapperComponent,
                 data: {
-                  title: $localize`:@@Payoff:Payoff`
-                }
+                  title: $localize`:@@payoff:Payoff`
+                },
+                children: [
+                  {
+                    path: '',
+                    component: SessionExpensePayoffComponent,
+                    data: {
+                      title: $localize`:@@payoff:Payoff`
+                    }
+                  },
+                  {
+                    path: 'loans',
+                    component: SessionLoanPayoffComponent,
+                    data: {
+                      title: $localize`:@@payoffLoans:Payoff Loans`
+                    }
+                  }
+                ]
               },
               {
                 path: 'loan',
