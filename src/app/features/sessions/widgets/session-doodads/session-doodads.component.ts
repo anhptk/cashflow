@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { SessionCashSummaryComponent } from '../session-cash-summary/session-cash-summary.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-session-doodads',
@@ -22,7 +22,7 @@ export class SessionDoodadsComponent {
 
   constructor(
     private _sessionStore: SessionStoreService,
-    private _location: Location
+    private _router: Router
   ) {
     this.amountControl = new FormControl(null, [Validators.required, Validators.min(0)]);
   }
@@ -36,7 +36,7 @@ export class SessionDoodadsComponent {
     if (cf) {
       this._sessionStore.autoLoan(amount, () => {
         this._sessionStore.adjustCash(-amount);
-        this._location.back();
+        this._router.navigateByUrl(this._sessionStore.sessionUrl);
       });
     }
   }

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
-import { Location, CommonModule } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { DividerComponent } from '../../../../shared/ui/divider/divider.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { SessionCashSummaryComponent } from '../../../sessions/widgets/session-cash-summary/session-cash-summary.component';
@@ -10,6 +10,7 @@ import { filter, Observable } from 'rxjs';
 import { AssetItem } from '../../../../shared/models/database/session.db';
 import { HOUSE_TYPE_LABEL } from '../../../../shared/constants/houses.enum';
 import { DEAL_TYPE, DealType } from '../../../../shared/constants/deals.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buy-asset',
@@ -39,7 +40,7 @@ export class BuyAssetComponent implements OnInit {
 
   constructor(
     private _sessionStore: SessionStoreService,
-    private _location: Location
+    private _router: Router
   ) {
     this.isFastTrackAction$ = this._sessionStore.select(state => state.isFastTrackView);
   }
@@ -74,7 +75,7 @@ export class BuyAssetComponent implements OnInit {
       value: formValue.cost,
       downPayment: formValue.downPayment || 0,
       cashflow: formValue.cashFlow || 0,
-      isLiability: true,
+      isLiability: formValue.cost - formValue.downPayment != 0,
       assetType: this.assetType
     }
 
@@ -83,8 +84,8 @@ export class BuyAssetComponent implements OnInit {
     if (cf) {
       this._sessionStore.autoLoan(newAsset.downPayment, () => {
         this._sessionStore.addAsset(newAsset);
-        this._location.historyGo(-4);
-      })
+        this._router.navigateByUrl(this._sessionStore.sessionUrl);
+      });
     }
   }
 
@@ -108,7 +109,7 @@ export class BuyAssetComponent implements OnInit {
       }
 
       this._sessionStore.addFastTrackAsset(newAsset);
-      this._location.historyGo(-1);
+      this._router.navigateByUrl(this._sessionStore.sessionUrl);
     }
   }
 

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { Location } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { SessionCashSummaryComponent } from '../session-cash-summary/session-cash-summary.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-session-cash-adjustment',
@@ -21,7 +21,7 @@ export class SessionCashAdjustmentComponent {
 
   constructor(
     private _store: SessionStoreService,
-    private _location: Location
+    private _router: Router
   ) {}
 
   public submit(): void {
@@ -30,7 +30,7 @@ export class SessionCashAdjustmentComponent {
     if (cf) {
       this._store.adjustCash(amount);
       alert($localize`:@@cashAdjustmentSuccess: Cash adjustment successful.`);
-      this._location.back();
+      this._router.navigateByUrl(this._store.sessionUrl);
     }
   }
 }

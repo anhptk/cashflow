@@ -1,11 +1,19 @@
-<ng-container *ngIf="session$ | async as session">
-  <div class="flex justify-between items-center my-4 mx-2" *ngIf="session.children">
-    <span i18n="@@childSupport">Child support</span>
-    <span>$ {{childSupport * session.children}}</span>
-  </div>
+<div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@expenses">Expenses</div>
 
-  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let expense of session.expenses">
-    <span>{{expense.name}}</span>
-    <span>$ {{expense.cashflow}}</span>
-  </div>
+<ng-container *ngIf="session$ | async as session">
+  @if (session.children) {
+    <div class="flex justify-between items-center my-4 mx-2">
+      <span i18n="@@childSupport">Child support</span>
+      <span>$ {{childSupport * session.children}}</span>
+    </div>
+  }
+
+  @for (expense of session.expenses; track expense) {
+    @if (expense.cashflow) {
+      <div class="flex justify-between items-center my-4 mx-2">
+        <span>{{expense.name}}</span>
+        <span>$ {{expense.cashflow}}</span>
+      </div>
+    }
+  }
 </ng-container>

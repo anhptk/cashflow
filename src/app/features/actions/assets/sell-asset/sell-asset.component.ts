@@ -3,9 +3,8 @@ import { SessionCashSummaryComponent } from "../../../sessions/widgets/session-c
 import { DividerComponent } from "../../../../shared/ui/divider/divider.component";
 import { ButtonComponent } from "../../../../shared/ui/button/button.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
-import { Location } from '@angular/common';
 import { DEAL_TYPE, DealType } from '../../../../shared/constants/deals.enum';
 
 class AssetFormViewModel {
@@ -29,7 +28,7 @@ export class SellAssetComponent implements OnChanges {
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _sessionStore: SessionStoreService,
-    private _location: Location
+    private _router: Router
   ) {
     this._assetIndex = +this._activatedRoute.snapshot.params['assetIndex'];
     this._initializeForm();
@@ -63,7 +62,7 @@ export class SellAssetComponent implements OnChanges {
     const cf = confirm($localize`:@@sellAssetConfirm:Are you sure you want to sell asset at $${totalValue}?`);
     if (cf) {
       this._sessionStore.sellAsset(this._assetIndex, priceValue, this.mainForm.controls.volume?.value ?? 1);
-      this._location.historyGo(-5); // move back to the main session page
+      this._router.navigateByUrl(this._sessionStore.sessionUrl);
     }
   }
 

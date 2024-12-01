@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { DividerComponent } from '../../../../shared/ui/divider/divider.component';
 import { LOAN_INTEREST, LOAN_STEP } from '../../../../shared/constants/app.constant';
 import { FormsModule, ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 import { SessionCashSummaryComponent } from '../session-cash-summary/session-cash-summary.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-session-loan-request',
@@ -22,7 +23,7 @@ export class SessionLoanRequestComponent {
 
   constructor(
     private _store: SessionStoreService,
-    private _location: Location
+    private _router: Router
   ) {
     this.loanAmountControl = new FormControl(null, [Validators.required, Validators.min(1)]);
   }
@@ -33,7 +34,7 @@ export class SessionLoanRequestComponent {
     if (this.loanAmountControl.valid && amount % LOAN_STEP === 0) {
       this._store.loan(amount);
       alert($localize`:@@loanRequestSuccess: Loan request successful.`);
-      this._location.back();
+      this._router.navigateByUrl(this._store.sessionUrl);
 
     } else {
       alert($localize`:@@invalidLoanAmount: Invalid loan amount.`);

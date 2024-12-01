@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonComponent } from "../../../../shared/ui/button/button.component";
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { DividerComponent } from "../../../../shared/ui/divider/divider.component";
 import { SessionCashSummaryComponent } from "../../../sessions/widgets/session-cash-summary/session-cash-summary.component";
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { AssetItem } from '../../../../shared/models/database/session.db';
 import { DEAL_TYPE } from '../../../../shared/constants/deals.enum';
 import { BuyStocksForm } from '../../../../shared/models/forms/stocks-form';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buy-gold',
@@ -29,7 +30,7 @@ export class BuyGoldComponent {
 
   constructor(
     private _sessionStore: SessionStoreService,
-    private _location: Location
+    private _router: Router
   ) {
     this.mainForm = this._constructForm();
     this._calculateTotalCost();
@@ -69,7 +70,7 @@ export class BuyGoldComponent {
 
     this._sessionStore.autoLoan(this.totalCost, () => {
       this._sessionStore.addAsset(newAsset);
-      this._location.historyGo(-4);
+      this._router.navigateByUrl(this._sessionStore.sessionUrl);
     });
   }
 }

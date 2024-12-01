@@ -3,11 +3,12 @@ import { SessionCashSummaryComponent } from '../../../sessions/widgets/session-c
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BuyStocksForm } from '../../../../shared/models/forms/stocks-form';
 import { DividerComponent } from '../../../../shared/ui/divider/divider.component';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { AssetItem } from '../../../../shared/models/database/session.db';
 import { STOCK_LABELS, StockOptions, STOCKS } from '../../../../shared/constants/stocks.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-buy-stocks',
@@ -31,7 +32,7 @@ export class BuyStocksComponent {
 
   constructor(
     private _sessionStore: SessionStoreService,
-    private _location: Location
+    private _router: Router
   ) {
     this.mainForm = this._constructForm();
     this._calculateTotalCost();
@@ -76,7 +77,7 @@ export class BuyStocksComponent {
 
     this._sessionStore.autoLoan(this.totalCost, () => {
       this._sessionStore.addAsset(newAsset);
-      this._location.back();
+      this._router.navigateByUrl(this._sessionStore.sessionUrl);
     });
   }
 

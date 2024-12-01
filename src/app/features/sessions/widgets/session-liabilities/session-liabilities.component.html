@@ -1,0 +1,19 @@
+<div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@liabilities">Liabilities</div>
+
+@for (liability of expenseLiabilities(); track liability) {
+    @if (liability.value) {
+        <div class="flex justify-between items-center my-4 mx-2">
+            <span>{{liability.name}}</span>
+            <span class="w-1/2">$ {{liability.value}}</span>
+        </div>
+    }
+}
+
+@for (liability of incomeLiabilities(); track liability) {
+    @if (liability.value - liability.downPayment) {
+        <div class="flex justify-between items-center my-4 mx-2">
+            <span>{{liability.name}}</span>
+            <span class="w-1/2">$ {{liability.value - liability.downPayment}}</span>
+        </div>
+    }
+}

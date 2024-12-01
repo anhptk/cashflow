@@ -15,7 +15,7 @@ export const HOUSE_TYPE_LABEL = {
   TWO_BED_ONE_BATH: $localize`:@@twoBedOneBath:2Bd/1Ba`,
   THREE_BED_TWO_BATH: $localize`:@@threeBedTwoBath:3Bd/2Ba`,
   DUPLEX: $localize`:@@duplex:Duplex`,
-  FOURPLEX: $localize`:@@fourplex:4-Flex`,
+  FOURPLEX: $localize`:@@fourplex:4-Plex`,
   EIGHT_UNIT: $localize`:@@eightUnit:8-Unit`,
   TWELVE_UNIT: $localize`:@@twelveUnit:12-Unit`,
   TWENTY_FOUR_UNIT: $localize`:@@twentyFourUnit:24-Unit`,

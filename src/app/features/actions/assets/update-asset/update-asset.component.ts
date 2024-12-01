@@ -3,8 +3,8 @@ import { DividerComponent } from "../../../../shared/ui/divider/divider.componen
 import { SessionCashSummaryComponent } from "../../../sessions/widgets/session-cash-summary/session-cash-summary.component";
 import { ButtonComponent } from "../../../../shared/ui/button/button.component";
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { CommonModule, Location } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { AssetItem } from '../../../../shared/models/database/session.db';
 import { Observable } from 'rxjs';
@@ -25,7 +25,7 @@ export class UpdateAssetComponent {
   constructor(
     private _activatedRoute: ActivatedRoute,
     private _sessionStore: SessionStoreService,
-    private _location: Location
+    private _router: Router
   ) { 
     this._assetIndex = +this._activatedRoute.snapshot.params['assetIndex'];
     this.asset$ = this._sessionStore.select(state => state.session.assets[this._assetIndex]);
@@ -40,7 +40,7 @@ export class UpdateAssetComponent {
     const cf = confirm($localize`:@@updateCashflowConfirm:Are you sure you want to update cashflow to $${this.cashflowForm.value}?`);
     if (cf) {
       this._sessionStore.updateAssetCashflow(this._assetIndex, this.cashflowForm.value);
-      this._location.historyGo(-5); // move back to the main session page
+      this._router.navigateByUrl(this._sessionStore.sessionUrl);
     }
   }
 }
