@@ -35,7 +35,10 @@
   }
 
   <div class="my-6">
-    <app-button color="red" (click)="delete()"><span i18n="@@delete">Delete</span></app-button>
+    <app-button color="red" (click)="delete()">
+      <span class="icon-delete mr-1"></span>
+      <span i18n="@@delete">Delete</span>
+    </app-button>
   </div>
 
 </ng-container>

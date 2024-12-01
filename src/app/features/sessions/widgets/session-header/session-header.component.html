@@ -5,8 +5,14 @@
       <span>{{ session.cash | number }}</span>
     </div>
     <div class="flex items-center">
-      <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2" i18n="@@history">History</button>
-      <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded" routerLink="action" i18n="@@action">Action</button>
+      <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2" i18n="@@history">
+        <span class="icon-history"></span>
+        History
+      </button>
+      <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded" routerLink="action" i18n="@@action">
+        <span class="icon-add"></span>
+        Action
+      </button>
     </div>
   </div>
 } @else {
@@ -14,7 +20,7 @@
   <div class="flex items-center">
     <span class="mr-2">$</span>
     <span>{{ session.cash }}</span>
-    <span class="mx-2">👶</span>
+    <span class="icon-baby mr-2 ml-4"></span>
     <span>{{ session.children }}</span>
   </div>
   <div class="flex items-center">
@@ -22,10 +28,16 @@
       <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded mr-2" (click)="toggleFastTrackView(true)" i18n="@@fastTrack">Fast Track</button>
     }
     
-    <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded" i18n="@@history">History</button>
+    <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded" i18n="@@history">
+      <span class="icon-history"></span>
+      History
+    </button>
 
     @if (!(fastTrack$ | async)) {
-    <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded ml-2" routerLink="action" i18n="@@action">Action</button>
+    <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded ml-2" routerLink="action" i18n="@@action">
+      <span class="icon-add"></span>
+      Action
+    </button>
     }
   </div>
 </div>
