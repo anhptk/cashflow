@@ -20,8 +20,14 @@ export interface CashflowDB extends DBSchema {
     },
     logs: {
         key: number;
-        value: SessionLog;
+        value: SessionLogDb;
     }
+}
+
+
+export interface SessionLogDb {
+  id: number;
+  logs: SessionLog[];
 }
 
 export interface Profession extends TypedFormValue<FormGroup<ProfessionForm>> {

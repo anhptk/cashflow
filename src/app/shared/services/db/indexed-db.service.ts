@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { openDB, IDBPDatabase } from 'idb';
-import { CashflowDB, Profession } from '../../models/database/cashflow.db';
+import { CashflowDB } from '../../models/database/cashflow.db';
 import { DatabaseTable } from '../../constants/database-table.enum';
 
 
@@ -11,7 +11,7 @@ export class IndexedDbService {
   private dbPromise: Promise<IDBPDatabase<CashflowDB>>;
 
   constructor() {
-    this.dbPromise = openDB<CashflowDB>('cashflow', 1.1, {
+    this.dbPromise = openDB<CashflowDB>('cashflow', 1.2, {
       upgrade(db) {
         db.createObjectStore('professions', {
           keyPath: 'id',

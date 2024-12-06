@@ -34,6 +34,7 @@ import { SellLandComponent } from './features/actions/lands/sell-land/sell-land.
 import { SplitStockComponent } from './features/actions/stocks/split-stock/split-stock.component';
 import { SellBusinessComponent } from './features/actions/businesses/sell-business/sell-business.component';
 import { SessionLoanPayoffComponent } from './features/sessions/widgets/session-loan-payoff/session-loan-payoff.component';
+import { SessionHistoryComponent } from './features/sessions/widgets/session-history/session-history.component';
 
 const dealRoutes: Routes = [
   {
@@ -439,6 +440,13 @@ const localeRoutes: Routes = [
                 ]
               }
             ]
+          },
+          {
+            path: 'history',
+            component: SessionHistoryComponent,
+            data: {
+              title: $localize`:@@sessionHistory:Session History`
+            }
           }
         ]
       }

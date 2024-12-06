@@ -1,0 +1,20 @@
+<div class="w-full bg-white rounded-lg">
+    <div class="p-4">
+      <div class="space-y-1">
+        <div *ngFor="let log of sessionLogs$ | async" class="w-full">
+            <div class="flex items-center space-x-4">
+              <span class="text-sm font-mono text-gray-500">
+                {{ log.createdAt | date:DATE_FORMAT }}
+              </span>
+              <span class="px-2 py-1 text-sm font-medium rounded-md">
+                {{ log.logType }}
+              </span>
+            </div>
+            <div class="text-sm text-gray-600 mb-2 pl-4">
+              {{ log.data | json }}
+            </div>
+          <div class="border-b border-gray-200"></div>
+        </div>
+      </div>
+    </div>
+  </div>

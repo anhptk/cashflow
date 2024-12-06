@@ -5,7 +5,7 @@
       <span>{{ session.cash | number }}</span>
     </div>
     <div class="flex items-center">
-      <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2" i18n="@@history">
+      <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2" i18n="@@history" routerLink="history">
         <span class="icon-history"></span>
         History
       </button>
@@ -16,19 +16,19 @@
     </div>
   </div>
 } @else {
-<div class="flex justify-between items-center p-4" *ngIf="session$ | async as session">
+<div class="p-4" *ngIf="session$ | async as session">
   <div class="flex items-center">
     <span class="mr-2">$</span>
     <span>{{ session.cash }}</span>
     <span class="icon-baby mr-2 ml-4"></span>
     <span>{{ session.children }}</span>
   </div>
-  <div class="flex items-center">
+  <div class="text-right mt-2">
     @if (fastTrack$ | async) {
       <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded mr-2" (click)="toggleFastTrackView(true)" i18n="@@fastTrack">Fast Track</button>
     }
     
-    <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded" i18n="@@history">
+    <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded" i18n="@@history" routerLink="history">
       <span class="icon-history"></span>
       History
     </button>

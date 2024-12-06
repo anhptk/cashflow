@@ -7,6 +7,7 @@ import { FastTrackSessionService } from '../../../shared/services/db/fast-track-
 import { Session } from '../../../shared/models/database/session.db';
 import { filter, withLatestFrom } from 'rxjs';
 import { FAST_TRACK_WIN_CASHFLOW } from '../../../shared/constants/app.constant';
+import { SessionLogService } from '../../../shared/services/db/session-log.service';
 
 @Component({
   selector: 'app-session-details-wrapper',
@@ -23,9 +24,10 @@ export class SessionDetailsWrapperComponent {
     private sessionService: SessionService,
     private fastTrackService: FastTrackSessionService,
     private sessionStore: SessionStoreService,
+    private sessionLogService: SessionLogService,
     private route: ActivatedRoute
   ) {
-    this._sessionId = Number(this.route.snapshot.params['sessionId']);
+    this._sessionId = +this.route.snapshot.params['sessionId'];
   }
 
   ngOnInit() {
@@ -49,6 +51,8 @@ export class SessionDetailsWrapperComponent {
         } else {
           this._loadFastTrackSession(session);
         }
+
+        this._loadSessionLogs(session.logsDataId);
       });
   }
 
@@ -56,6 +60,13 @@ export class SessionDetailsWrapperComponent {
     this.fastTrackService.get(session.fastTrackId)
       .subscribe(fastTrack => {
         this.sessionStore.setFastTrackSession(session, fastTrack);
+      });
+  }
+
+  private _loadSessionLogs(logsDataId: number): void {
+    this.sessionLogService.get(logsDataId)
+      .subscribe(logs => {
+        this.sessionStore.setLogs(logs);
       });
   }
   

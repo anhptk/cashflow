@@ -1,4 +1,5 @@
 import { DealType } from '../../constants/deals.enum';
+import { SessionLogType } from '../../constants/session-log.enum';
 import { Profession } from './cashflow.db';
 
 export interface FinancialItem {
@@ -21,20 +22,27 @@ export interface AssetItem extends FinancialItem {
 }
 
 export interface SessionLog {
-  id: number;
-  sessionId: number;
-  message: string;
+  logType: SessionLogType;
+  data: SessionLogData;
   createdAt: Date;
+}
+
+export interface SessionLogData {
+  cash?: number;
+  cashflow?: number;
+  assetName?: string;
+  assetType?: DealType;
+  assetVolume?: number;
 }
 
 export class Session {
   id: number;
   profession: Profession;
-  logs: SessionLog[] = [];
+  logsDataId?: number;
   fastTrackId?: number;
 
   cash: number;
-  children: number;
+  children = 0;
 
   income: FinancialItem[] = [];
   expenses: ExpenseItem[] = [];

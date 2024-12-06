@@ -1,20 +1,23 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { SessionState } from '../../models/sessions/session-state';
-import { Session, AssetItem, ExpenseItem } from '../../models/database/session.db';
+import { Session, AssetItem, ExpenseItem, SessionLog } from '../../models/database/session.db';
 import { SessionService } from '../db/session.service';
 import { LOAN_INTEREST, LOAN_STEP } from '../../constants/app.constant';
 import { switchMap, tap } from 'rxjs';
 import { DEAL_TYPE } from '../../constants/deals.enum';
 import { FastTrackSessionService } from '../db/fast-track-session.service';
 import { FastTrackSession } from '../../models/database/fast-track-session.db';
+import { SessionLogService } from '../db/session-log.service';
+import { SESSION_LOG_TYPE } from '../../constants/session-log.enum';
 
 @Injectable()
 export class SessionStoreService extends ComponentStore<SessionState> {
 
   constructor(
     private sessionService: SessionService,
-    private fastTrackService: FastTrackSessionService
+    private fastTrackService: FastTrackSessionService,
+    private sessionLogService: SessionLogService
   ) {
     super();
   }
@@ -33,7 +36,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       expenseLiabilities: this._expenseLiabilities(session),
       totalIncome: this._calculateIncome(session),
       totalExpenses: this._calculateExpenses(session),
-      cashflow: this._calculateCashflow(session)
+      cashflow: this._calculateCashflow(session),
+      logs: []
     });
 
     this._updateSessionDb(this.select(state => state.session));
@@ -51,11 +55,23 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       expenseLiabilities: [],
       totalIncome: this._calculateIncome(fastTrack),
       totalExpenses: 0,
-      cashflow: this._calculateCashflow(fastTrack)
-  });
+      cashflow: this._calculateCashflow(fastTrack),
+      logs: []
+    });
 
-  this._updateFastTrackDb(this.select(state => state.fastTrack));
-}
+    this._updateFastTrackDb(this.select(state => state.fastTrack));
+  }
+
+  public setLogs(logs: SessionLog[]): void { 
+    this.patchState({logs});
+    this._updateLogsDb(this.select(state => state.logs));
+  }
+
+  public addLog(log: SessionLog): void {
+    this.patchState((state: SessionState) => ({
+      logs: state.logs.concat(log)
+    }));
+  }
 
   public toggleFastTrackView(isFastTrackView: boolean): void {
     this.patchState({isFastTrackView});
@@ -79,7 +95,9 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public payday(): void {
-    this.adjustCash(this.get(state => state.cashflow));
+    const cashflow = this.get(state => state.cashflow);
+    this.adjustCash(cashflow);
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.Payday, {cashflow}));
   }
 
   public downsize(): void {
@@ -368,7 +386,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   private _calculateExpenses(session: Session): number {
     if (!session) return 0;
 
-    const childSupport = session.profession.expenses.childSupport * session.children;
+    const childSupport = session.profession.expenses.childSupport * (session.children || 0);
 
     return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport);
   }
@@ -432,6 +450,14 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     return session$.pipe(
       tap((session:FastTrackSession) => {
         this.fastTrackService.update({...session});
+      })
+    );
+  });
+
+  private _updateLogsDb = this.effect<SessionLog[]>(logs$ => {
+    return logs$.pipe(
+      tap((logs:SessionLog[]) => {
+        this.sessionLogService.update(this.get(state => state.session.logsDataId), logs);
       })
     );
   });

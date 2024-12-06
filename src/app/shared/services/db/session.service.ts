@@ -1,8 +1,9 @@
 import { Injectable } from "@angular/core";
 import { IndexedDbService } from "./indexed-db.service";
-import { from, map, Observable } from "rxjs";
+import { from, map, Observable, switchMap } from "rxjs";
 import { Session, ExpenseItem } from '../../models/database/session.db';
 import { Profession } from '../../models/database/cashflow.db';
+import { SessionLogService } from "./session-log.service";
 
 @Injectable({
     providedIn: "root"
@@ -10,13 +11,18 @@ import { Profession } from '../../models/database/cashflow.db';
 
 export class SessionService {
     constructor(
-        private indexedDbService: IndexedDbService
+        private indexedDbService: IndexedDbService,
+        private sessionLogService: SessionLogService
     ) { }
 
     public add(profession: Profession): Observable<number> {
         const session = this._constructNewSession(profession);
 
-        return from(this.indexedDbService.addData("sessions", session));
+        return this.sessionLogService.add()
+            .pipe(switchMap(id => {
+                session.logsDataId = id;
+                return from(this.indexedDbService.addData("sessions", session));
+            }));
     }
 
     private _constructNewSession(profession: Profession): Partial<Session> {

@@ -1,6 +1,6 @@
 import { Profession } from '../database/cashflow.db';
 import { FastTrackSession } from '../database/fast-track-session.db';
-import { Session, AssetItem, ExpenseItem } from '../database/session.db';
+import { Session, AssetItem, ExpenseItem, SessionLog } from '../database/session.db';
 
 export interface SessionState {
   totalIncome: number;
@@ -14,4 +14,6 @@ export interface SessionState {
   profession: Profession;
   session: Session;
   fastTrack?: FastTrackSession;
+
+  logs: SessionLog[];
 }
