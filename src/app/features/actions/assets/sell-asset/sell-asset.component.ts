@@ -67,8 +67,8 @@ export class SellAssetComponent implements OnChanges {
   }
 
   private _setupVolumeForm(): void {
-    if (this.assetType !== DEAL_TYPE.STOCKS) return;
-
-    this.mainForm.addControl('volume', new FormControl(null, [Validators.required, Validators.min(0)]));
+    if (this.assetType === DEAL_TYPE.STOCKS || this.assetType === DEAL_TYPE.GOLD) {
+      this.mainForm.addControl('volume', new FormControl(null, [Validators.required, Validators.min(0)]));
+    }
   }
 }

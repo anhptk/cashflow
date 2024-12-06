@@ -3,6 +3,7 @@
 
   <select assetNameControl [formControl]="nameControl"
       class="w-1/2 p-2 rounded outline outline-1">
+    <option value="" disabled selected i18n="@@select">Select...</option>
     <option *ngFor="let houseType of houseTypes" [value]="houseType">{{ houseTypeLabel[houseType] }}</option>
   </select>
 </app-buy-asset>

@@ -5,8 +5,9 @@
         <div class="flex justify-between w-1/2">
             <label for="assetName" i18n="@@stockCD">Stock / CD</label>
         </div>
-        <select assetNameControl [formControl]="mainForm.controls.assetName"
+        <select [formControl]="mainForm.controls.assetName"
             class="p-2 rounded outline outline-1" [ngClass]="{'w-1/4': showOtherStockName, 'w-1/2': !showOtherStockName}">
+            <option value="" disabled selected i18n="@@select">Select...</option>
             @for (stock of stockOptions; track $index) {
             <option [value]="stock">{{stockLabels[stock]}}</option>
             }
