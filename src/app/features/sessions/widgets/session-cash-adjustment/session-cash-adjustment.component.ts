@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { SessionCashSummaryComponent } from '../session-cash-summary/session-cash-summary.component';
 import { Router } from '@angular/router';
@@ -17,18 +17,25 @@ import { Router } from '@angular/router';
   styleUrl: './session-cash-adjustment.component.scss'
 })
 export class SessionCashAdjustmentComponent {
-  cashAmountControl: FormControl<number> = new FormControl(null);
+  cashAmountControl: FormControl<number> = new FormControl(null, [Validators.required, Validators.min(0)]);
 
   constructor(
     private _store: SessionStoreService,
     private _router: Router
   ) {}
 
-  public submit(): void {
-    const amount = this.cashAmountControl.value || 0;
-    const cf = confirm($localize`:@@confirmCashAdjustment: Are you sure you want to adjust the cash by ${amount}?`);
+  public submit(isDecrease=false): void {
+    const amount = this.cashAmountControl.value ?? 0;
+    const sign = isDecrease ? '-' : '+';
+
+    const cf = confirm($localize`:@@confirmCashAdjustment: Are you sure you want to adjust the cash by ${sign}$${amount}?`);
     if (cf) {
-      this._store.adjustCash(amount);
+      if (isDecrease) {
+        this._store.autoLoan(amount, () => {this._store.adjustCash(-amount)});
+      } else {
+        this._store.adjustCash(amount);
+      }
+
       alert($localize`:@@cashAdjustmentSuccess: Cash adjustment successful.`);
       this._router.navigateByUrl(this._store.sessionUrl);
     }

@@ -1,13 +1,16 @@
 <app-session-cash-summary></app-session-cash-summary>
 
 <p class="p-2" i18n="@@action.adjustCash">
-  How much cash would you like to adjust? (Positive for increase, negative for decrease)
+  How much cash would you like to adjust?
+  <br>
+  (Possitive number)
 </p>
-<div class="flex items-center w-1/2">
+<div class="flex items-center w-full">
   <span class="mr-2">$</span>
   <input type="number" [formControl]="cashAmountControl" class="w-full p-2 rounded outline outline-1">
 </div>
 
-<div class="mt-10">
-  <app-button class="w-full" (click)="submit()" i18n="@@confirm">Confirm</app-button>
+<div class="flex mt-4">
+  <app-button class="w-full" color="green" [disabled]="cashAmountControl.invalid" (click)="submit()" i18n="@@increase">Increase</app-button>
+  <app-button class="w-full ml-2" color="red" [disabled]="cashAmountControl.invalid" (click)="submit(true)" i18n="@@decrease">Decrease</app-button>
 </div>
