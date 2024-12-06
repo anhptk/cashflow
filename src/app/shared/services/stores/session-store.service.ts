@@ -296,7 +296,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       }
 
       return {
-        session: newSession,
+        session: new Session(newSession),
         ...this._calculateDisplayData(newSession)
       }
     });
@@ -320,7 +320,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       }
 
       return {
-        session: newSession
+        session: new Session(newSession)
       }
     });
   }
@@ -343,14 +343,14 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       }
 
       return {
-        session: newSession
+        session: new Session(newSession)
       }
     });
   }
 
   public addChild(): void {
     this.patchState((state: SessionState) => {
-      const newSession = { ...state.session, children: state.session.children += 1 };
+      const newSession = new Session({ ...state.session, children: state.session.children += 1 });
       return {
         session: newSession,
         totalExpenses: this._calculateExpenses(newSession),
