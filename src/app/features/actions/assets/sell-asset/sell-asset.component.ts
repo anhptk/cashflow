@@ -6,6 +6,8 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router } from '@angular/router';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { DEAL_TYPE, DealType } from '../../../../shared/constants/deals.enum';
+import { Observable, take } from 'rxjs';
+import { AssetItem } from '../../../../shared/models/database/session.db';
 
 class AssetFormViewModel {
   public price: FormControl<number>;
@@ -20,10 +22,11 @@ class AssetFormViewModel {
   styleUrl: './sell-asset.component.scss'
 })
 export class SellAssetComponent implements OnChanges {
+  @Input() assetType: DealType;
+
   private _assetIndex: number;
   public mainForm: FormGroup<AssetFormViewModel>;
-
-  @Input() assetType: DealType;
+  public asset$: Observable<AssetItem>;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -31,6 +34,8 @@ export class SellAssetComponent implements OnChanges {
     private _router: Router
   ) {
     this._assetIndex = +this._activatedRoute.snapshot.params['assetIndex'];
+    this.asset$ = this._sessionStore.select(state => state.session.assets[this._assetIndex]);
+
     this._initializeForm();
   }
 
@@ -44,6 +49,13 @@ export class SellAssetComponent implements OnChanges {
     if (changes.assetType.currentValue) {
       this._setupVolumeForm();
     }
+  }
+
+  public maxVolume(): void {
+    this.asset$.pipe(take(1))
+    .subscribe(asset => {
+      this.mainForm.controls.volume.setValue(asset.volume);
+    });
   }
 
   public sell() {
@@ -68,7 +80,10 @@ export class SellAssetComponent implements OnChanges {
 
   private _setupVolumeForm(): void {
     if (this.assetType === DEAL_TYPE.STOCKS || this.assetType === DEAL_TYPE.GOLD) {
-      this.mainForm.addControl('volume', new FormControl(null, [Validators.required, Validators.min(0)]));
+      this.asset$.pipe(take(1))
+      .subscribe(asset => {
+        this.mainForm.addControl('volume', new FormControl(null, [Validators.required, Validators.min(0), Validators.max(asset.volume)]));
+      });
     }
   }
 }

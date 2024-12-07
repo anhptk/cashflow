@@ -12,4 +12,5 @@ export class ButtonComponent {
   @Input() color = 'blue';
   @Input() disabled = false;
   @Input({transform: numberAttribute}) paddingSize = 2;
+  @Input() className = '';
 }

@@ -16,11 +16,14 @@
 <div class="flex justify-between items-center my-4 mx-2">
   <div class="flex justify-between w-1/2">
     <label i18n="@@volume">Volume</label>
+    <app-button (click)="maxVolume()" color="green" class="mr-2">
+      <span i18n="@@max">Max</span>
+    </app-button>
   </div>
   <input type="number" [formControl]="mainForm.controls.volume" class="w-1/2 p-2 rounded outline outline-1">
 </div>
 }
 
 <div class="my-8">
-  <app-button (click)="sell()"><span i18n="@@confirm">Confirm</span></app-button>
+  <app-button [disabled]="mainForm.invalid" (click)="sell()"><span i18n="@@confirm">Confirm</span></app-button>
 </div>
