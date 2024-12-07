@@ -4,12 +4,14 @@ import { AssetItem } from '../../../../shared/models/database/session.db';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { CommonModule } from '@angular/common';
 import { DEAL_TYPE } from '../../../../shared/constants/deals.enum';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-session-assets',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   templateUrl: './session-assets.component.html',
   styleUrl: './session-assets.component.scss'

@@ -19,7 +19,7 @@
 <div class="p-4" *ngIf="session$ | async as session">
   <div class="flex items-center">
     <span class="mr-2">$</span>
-    <span>{{ session.cash }}</span>
+    <span>{{ session.cash | number }}</span>
     <span class="icon-baby mr-2 ml-4"></span>
     <span>{{ session.children }}</span>
   </div>

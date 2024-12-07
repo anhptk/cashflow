@@ -4,7 +4,7 @@
     @if (liability.value) {
         <div class="flex justify-between items-center my-4 mx-2">
             <span>{{liability.name}}</span>
-            <span class="w-1/2">$ {{liability.value}}</span>
+            <span class="w-1/2">${{liability.value | number}}</span>
         </div>
     }
 }
@@ -13,7 +13,7 @@
     @if (liability.value - liability.downPayment) {
         <div class="flex justify-between items-center my-4 mx-2">
             <span>{{liability.name}}</span>
-            <span class="w-1/2">$ {{liability.value - liability.downPayment}}</span>
+            <span class="w-1/2">${{liability.value - liability.downPayment | number}}</span>
         </div>
     }
 }

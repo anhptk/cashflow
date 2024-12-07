@@ -2,12 +2,12 @@
 
 <div class="flex justify-between items-center my-4 mx-2">
     <span i18n="@@salary">Salary</span>
-    <span>$ {{profession().income.salary}}</span>
+    <span>${{profession().income.salary | number}}</span>
 </div>
 
 @for (income of incomeLiabilities(); track income){
     <div class="flex justify-between items-center my-4 mx-2">
         <span>{{income.name}}</span>
-        <span>$ {{income.cashflow}}</span>
+        <span>${{income.cashflow | number}}</span>
     </div>
 }

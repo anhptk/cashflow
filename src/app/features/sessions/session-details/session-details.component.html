@@ -11,12 +11,12 @@
 
   <div class="flex justify-between items-center my-4 mx-2">
       <span i18n="@@passiveIncome2">Passive income</span>
-      <span>$ {{data.totalIncome}}</span>
+      <span>${{data.totalIncome | number}}</span>
   </div>
 
   <div class="flex justify-between items-center my-4 mx-2">
       <span i18n="@@monthlyCashFlow2">Monthly cash flow</span>
-      <span>$ {{data.cashflow}}</span>
+      <span>${{data.cashflow | number}}</span>
   </div>
 
   @if (!(isFastTrack$ | async)) {

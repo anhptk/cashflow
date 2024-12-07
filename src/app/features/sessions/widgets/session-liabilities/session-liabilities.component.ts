@@ -1,12 +1,11 @@
 import { Component, input } from '@angular/core';
-import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { AssetItem, ExpenseItem } from '../../../../shared/models/database/session.db';
-import { Observable } from 'rxjs';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-session-liabilities',
   standalone: true,
-  imports: [],
+  imports: [DecimalPipe],
   templateUrl: './session-liabilities.component.html',
   styleUrl: './session-liabilities.component.scss'
 })

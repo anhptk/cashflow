@@ -4,7 +4,7 @@
   @if (session.children) {
     <div class="flex justify-between items-center my-4 mx-2">
       <span i18n="@@childSupport">Child support</span>
-      <span>$ {{childSupport * session.children}}</span>
+      <span>${{childSupport * session.children | number}}</span>
     </div>
   }
 
@@ -12,7 +12,7 @@
     @if (expense.cashflow) {
       <div class="flex justify-between items-center my-4 mx-2">
         <span>{{expense.name}}</span>
-        <span>$ {{expense.cashflow}}</span>
+        <span>${{expense.cashflow | number}}</span>
       </div>
     }
   }

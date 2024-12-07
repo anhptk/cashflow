@@ -4,32 +4,32 @@
   <div class="flex justify-between items-center my-4 mx-2" *ngFor="let asset of fastTrackAssets$ | async">
     <span class="w-1/2">{{asset.name}}</span>
     <ng-container *ngTemplateOutlet="assetValue; context: {$implicit: asset}"></ng-container>
-    <span class="w-1/4 text-right">$ {{asset.cashflow}}</span>
+    <span class="w-1/4 text-right">${{asset.cashflow | number}}</span>
   </div>
 } @else {
-  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let asset of sessionAssets$ | async">
+  <div class="flex justify-between items-center my-4 mx-2 cursor-pointer" *ngFor="let asset of sessionAssets$ | async; let id = index" routerLink="assets/{{id}}">
     <span class="w-1/2">{{asset.name}}</span>
     <ng-container *ngTemplateOutlet="assetValue; context: {$implicit: asset}"></ng-container>
-    <span class="w-1/4 text-right">$ {{asset.cashflow}}</span>
+    <span class="w-1/4 text-right">${{asset.cashflow | number}}</span>
   </div>
 }
 
 <ng-template #assetValue let-asset>
   <ng-container [ngSwitch]="asset.assetType">
     <ng-container *ngSwitchCase="DEAL_TYPE.STOCKS">
-      <span class="w-1/4">$ {{asset.unitPrice}} x {{asset.volume}}</span>
+      <span class="w-1/4">${{asset.unitPrice | number}} x {{asset.volume | number}}</span>
     </ng-container>
 
     <ng-container *ngSwitchCase="DEAL_TYPE.GOLD">
-      <span class="w-1/4">$ {{asset.unitPrice}} x {{asset.volume}}</span>
+      <span class="w-1/4">${{asset.unitPrice | number}} x {{asset.volume | number}}</span>
     </ng-container>
 
     <ng-container *ngSwitchCase="DEAL_TYPE.HOUSING">
-      <span class="w-1/4">$ {{asset.downPayment}} / $ {{asset.value}}</span>
+      <span class="w-1/4">${{asset.downPayment | number}} / ${{asset.value | number}}</span>
     </ng-container>
 
     <ng-container *ngSwitchDefault>
-      <span class="w-1/4">$ {{asset.value}}</span>
+      <span class="w-1/4">${{asset.value | number}}</span>
     </ng-container>
   </ng-container>
 </ng-template>
