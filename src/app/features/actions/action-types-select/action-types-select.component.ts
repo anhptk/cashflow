@@ -4,6 +4,7 @@ import { ACTION_TYPE, ACTION_TYPE_LABEL, ActionType } from '../../../shared/cons
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { DEAL_TYPE, DealType } from '../../../shared/constants/deals.enum';
+import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 
 @Component({
   selector: 'app-action-types-select',
@@ -21,12 +22,28 @@ export class ActionTypesSelectComponent {
   ACTION_TYPE_LABEL = ACTION_TYPE_LABEL;
 
   private _dealType: DealType;
+  private _assetIndex: number;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
+    private _sessionStore: SessionStoreService
   ) {
     this._dealType = this._activatedRoute.snapshot.data['dealType'];
-    this.actionTypes = this._constructActionTypes();
+    this._assetIndex = +this._activatedRoute.snapshot.params['assetIndex'];
+    
+    this._setupActionTypes();
+  }
+
+  private _setupActionTypes(): void {
+    if (isNaN(this._assetIndex)) {
+      this.actionTypes = this._constructActionTypes();
+    } else {
+      this._sessionStore.select(state => state.session.assets[this._assetIndex])
+        .subscribe(asset => {
+          this._dealType = asset.assetType;
+          this.actionTypes = this._constructActionTypes().filter(action => action !== ACTION_TYPE.BUY);
+        });
+    }
   }
 
   private _constructActionTypes(): ActionType[] {

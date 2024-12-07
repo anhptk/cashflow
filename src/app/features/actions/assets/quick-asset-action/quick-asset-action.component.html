@@ -1,0 +1,52 @@
+@switch (actionType) {
+    @case (ActionType.SELL) {
+        @switch (assetType) {
+            @case (AssetType.STOCKS) {
+                <app-sell-stock></app-sell-stock>
+            } 
+            @case (AssetType.BUSINESS) {
+                <app-sell-business></app-sell-business>
+            }
+            @case (AssetType.GOLD) {
+                <app-sell-gold></app-sell-gold>
+            }
+            @case (AssetType.HOUSING) {
+                <app-sell-house></app-sell-house>
+            }
+            @case (AssetType.LAND) {
+                <app-sell-land></app-sell-land>
+            }
+        }
+    }
+
+    @case (ActionType.UPDATE) {
+        @switch (assetType) {
+            @case (AssetType.HOUSING) {
+                <app-update-asset></app-update-asset>
+            }
+            @case (AssetType.BUSINESS) {
+                <app-update-asset></app-update-asset>
+            }
+
+            @case (AssetType.LAND) {
+                <app-update-asset></app-update-asset>
+            }
+        }
+    }
+
+    @case (ActionType.SPLIT) {
+        @switch (assetType) {
+            @case (AssetType.STOCKS) {
+                <app-split-stock></app-split-stock>
+            }
+        }
+    }
+
+    @case (ActionType.REVERSE_SPLIT) {
+        @switch (assetType) {
+            @case (AssetType.STOCKS) {
+                <app-split-stock></app-split-stock>
+            }
+        }
+    }
+}

@@ -35,6 +35,8 @@ import { SplitStockComponent } from './features/actions/stocks/split-stock/split
 import { SellBusinessComponent } from './features/actions/businesses/sell-business/sell-business.component';
 import { SessionLoanPayoffComponent } from './features/sessions/widgets/session-loan-payoff/session-loan-payoff.component';
 import { SessionHistoryComponent } from './features/sessions/widgets/session-history/session-history.component';
+import { QuickAssetActionComponent } from './features/actions/assets/quick-asset-action/quick-asset-action.component';
+import { ACTION_TYPE } from './shared/constants/actions.enum';
 
 const dealRoutes: Routes = [
   {
@@ -446,6 +448,46 @@ const localeRoutes: Routes = [
             component: SessionHistoryComponent,
             data: {
               title: $localize`:@@sessionHistory:Session History`
+            }
+          },
+          {
+            path: 'assets/:assetIndex',
+            component: ActionTypesSelectComponent,
+            data: {
+              title: $localize`:@@quickAssetAction:Quick Asset Action`
+            },
+          },
+          {
+            path: 'assets/:assetIndex/sell',
+            component: QuickAssetActionComponent,
+            data: {
+              title: $localize`:@@quickSellAsset:Quick Sell Asset`,
+              actionType: ACTION_TYPE.SELL
+            }
+          },
+          {
+            path: 'assets/:assetIndex/update',
+            component: QuickAssetActionComponent,
+            data: {
+              title: $localize`:@@quickUpdateAsset:Quick Update Asset`,
+              actionType: ACTION_TYPE.UPDATE
+            }
+          },
+          {
+            path: 'assets/:assetIndex/split',
+            component: QuickAssetActionComponent,
+            data: {
+              title: $localize`:@@quickSplitAsset:Quick Split Asset`,
+              actionType: ACTION_TYPE.SPLIT
+            }
+          },
+          {
+            path: 'assets/:assetIndex/reverse-split',
+            component: QuickAssetActionComponent,
+            data: {
+              title: $localize`:@@quickReverseSplitAsset:Quick Reverse Split Asset`,
+              actionType: ACTION_TYPE.REVERSE_SPLIT,
+              isReverseSplit: true
             }
           }
         ]

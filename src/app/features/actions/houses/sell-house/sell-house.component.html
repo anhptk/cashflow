@@ -1,5 +1,5 @@
-<app-sell-asset>
-  <ng-container *ngIf="asset$ | async as asset">
+<app-sell-asset *ngIf="asset$ | async as asset" [asset]="asset">
+  <ng-container>
     <div class="flex justify-between items-center my-4 mx-2">
       <span i18n="@@housing">Housing</span>
       <span class="w-1/2">{{asset.name}}</span>

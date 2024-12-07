@@ -23,10 +23,10 @@ class AssetFormViewModel {
 })
 export class SellAssetComponent implements OnChanges {
   @Input() assetType: DealType;
+  @Input({required: true}) asset: AssetItem;
 
   private _assetIndex: number;
   public mainForm: FormGroup<AssetFormViewModel>;
-  public asset$: Observable<AssetItem>;
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -34,7 +34,6 @@ export class SellAssetComponent implements OnChanges {
     private _router: Router
   ) {
     this._assetIndex = +this._activatedRoute.snapshot.params['assetIndex'];
-    this.asset$ = this._sessionStore.select(state => state.session.assets[this._assetIndex]);
 
     this._initializeForm();
   }
@@ -46,16 +45,13 @@ export class SellAssetComponent implements OnChanges {
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.assetType.currentValue) {
+    if (changes.assetType?.currentValue) {
       this._setupVolumeForm();
     }
   }
 
   public maxVolume(): void {
-    this.asset$.pipe(take(1))
-    .subscribe(asset => {
-      this.mainForm.controls.volume.setValue(asset.volume);
-    });
+    this.mainForm.controls.volume.setValue(this.asset.volume);
   }
 
   public sell() {
@@ -80,10 +76,7 @@ export class SellAssetComponent implements OnChanges {
 
   private _setupVolumeForm(): void {
     if (this.assetType === DEAL_TYPE.STOCKS || this.assetType === DEAL_TYPE.GOLD) {
-      this.asset$.pipe(take(1))
-      .subscribe(asset => {
-        this.mainForm.addControl('volume', new FormControl(null, [Validators.required, Validators.min(0), Validators.max(asset.volume)]));
-      });
+      this.mainForm.addControl('volume', new FormControl(null, [Validators.required, Validators.min(0), Validators.max(this.asset.volume)]));
     }
   }
 }

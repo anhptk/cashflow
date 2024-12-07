@@ -1,5 +1,10 @@
-<app-sell-asset [assetType]="DEAL_TYPE.STOCKS">
-    <ng-container *ngIf="asset$ | async as asset">
+<app-sell-asset [assetType]="DEAL_TYPE.STOCKS" *ngIf="asset$ | async as asset" [asset]="asset">
+    <ng-container>
+      <div class="flex justify-between items-center my-4 mx-2">
+        <span i18n="@@name">Name</span>
+        <span class="w-1/2">{{asset.name}}</span>
+      </div>
+
       <div class="flex justify-between items-center my-4 mx-2">
         <span i18n="@@unitPrice">Unit price</span>
         <span class="w-1/2">$ {{asset.unitPrice}}</span>
