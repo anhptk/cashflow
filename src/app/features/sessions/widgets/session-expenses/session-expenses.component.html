@@ -16,4 +16,13 @@
       </div>
     }
   }
+
+  @for (expense of session.assets; track expense) {
+    @if (expense.cashflow < 0) {
+      <div class="flex justify-between items-center my-4 mx-2">
+        <span>{{expense.name}}</span>
+        <span>${{-expense.cashflow | number}}</span>
+      </div>
+    }
+  }
 </ng-container>

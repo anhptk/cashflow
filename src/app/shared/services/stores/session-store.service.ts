@@ -361,7 +361,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   private _incomeLiabilities(session: Session | FastTrackSession): AssetItem[] {
     if (!session) return [];
-    return session.assets.filter(asset => asset.isLiability);
+    return session.assets.filter(asset => asset.cashflow > 0);
   }
 
   private _expenseLiabilities(session: Session): ExpenseItem[] {
@@ -373,10 +373,10 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     if (!session) return 0;
 
     if (session instanceof Session) {
-      const liabilities = this._incomeLiabilities(session).filter(item => item.cashflow > 0);
-      const totalLiabilities = liabilities.reduce((acc, liability) => acc + liability.cashflow, 0);
+      const assets = session.assets.filter(item => item.cashflow > 0);
+      const assetsIncome = assets.reduce((acc, liability) => acc + liability.cashflow, 0);
 
-      return session.income.reduce((acc, income) => acc + income.cashflow, totalLiabilities);
+      return session.income.reduce((acc, income) => acc + income.cashflow, assetsIncome);
     } else {
       const assets = session.assets.filter(asset => asset.cashflow > 0);
       return assets.reduce((acc, asset) => acc + asset.cashflow, 0);
@@ -387,8 +387,11 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     if (!session) return 0;
 
     const childSupport = session.profession.expenses.childSupport * (session.children || 0);
+    
+    const expenseAssets = session.assets.filter(expense => expense.cashflow < 0);
+    const assetsExpenses = expenseAssets.reduce((acc, liability) => acc + liability.cashflow, 0);
 
-    return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport);
+    return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport + assetsExpenses);
   }
 
   private _calculateCashflow(session: Session | FastTrackSession): number {

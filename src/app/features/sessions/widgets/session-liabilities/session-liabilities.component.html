@@ -9,11 +9,11 @@
     }
 }
 
-@for (liability of incomeLiabilities(); track liability) {
-    @if (liability.value - liability.downPayment) {
+@for (asset of assets(); track asset) {
+    @if (asset.isLiability && asset.value - asset.downPayment) {
         <div class="flex justify-between items-center my-4 mx-2">
-            <span>{{liability.name}}</span>
-            <span class="w-1/2">${{liability.value - liability.downPayment | number}}</span>
+            <span>{{asset.name}}</span>
+            <span class="w-1/2">${{asset.value - asset.downPayment | number}}</span>
         </div>
     }
 }

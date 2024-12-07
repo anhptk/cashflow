@@ -1,8 +1,12 @@
 <app-session-cash-summary></app-session-cash-summary>
 
 <ng-container *ngIf="expenseLiabilities$ | async as expenseLiabilities">
-  <div class="bg-blue-300 p-4 rounded-lg my-2" *ngFor="let expenseLiability of expenseLiabilities" (click)="payoff(expenseLiability)">
-    <p class="text-lg font-bold">{{ expenseLiability.name }}: ${{ expenseLiability.value }}</p>
-    <p>Cashflow: ${{ expenseLiability.cashflow }}</p>
-  </div>
+  @for (expenseLiability of expenseLiabilities; track expenseLiability.name) {
+    @if (expenseLiability.value > 0) {
+      <div class="bg-blue-300 p-4 rounded-lg my-2" (click)="payoff(expenseLiability)">
+        <p class="text-lg font-bold">{{ expenseLiability.name }}: ${{ expenseLiability.value }}</p>
+        <p>Cashflow: ${{ expenseLiability.cashflow }}</p>
+      </div>
+    }
+  }
 </ng-container>

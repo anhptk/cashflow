@@ -11,6 +11,6 @@ import { DecimalPipe } from '@angular/common';
 })
 export class SessionLiabilitiesComponent {
   expenseLiabilities = input.required<ExpenseItem[]>();
-  incomeLiabilities = input.required<AssetItem[]>();
+  assets = input.required<AssetItem[]>();
 
 }

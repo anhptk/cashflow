@@ -30,7 +30,7 @@
   <app-session-assets></app-session-assets>
 
   @if (!(isFastTrack$ | async)) {
-    <app-session-liabilities [expenseLiabilities]="data.expenseLiabilities" [incomeLiabilities]="data.incomeLiabilities">
+    <app-session-liabilities [expenseLiabilities]="data.expenseLiabilities" [assets]="data.session.assets">
     </app-session-liabilities>
   }
 
