@@ -134,8 +134,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
     const cf = confirm($localize`:@@actions.getLoanConfirm: Insufficient cash. Get Loan: Cash +$${loanAmount}. Cashflow -$${cashflowReduction}`);
     if (cf) {
-      next();
       this.loan(loanAmount);
+      next();
     }
   }
 
@@ -247,11 +247,39 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public sellAsset(assetIndex: number, sellAtPrice: number, volume = 1): void {
+    const isFastTrack = this.get(state => state.isFastTrackView);
+      if (isFastTrack) {
+        return this._sellFastTrackAsset(assetIndex, sellAtPrice);
+      } else {
+        return this._sellSessionAsset(assetIndex, sellAtPrice, volume);
+      }
+  }
+
+  private _sellFastTrackAsset(assetIndex: number, sellAtPrice: number): void {
+    this.patchState((state: SessionState) => {
+      const newFastTrack = new FastTrackSession({
+        ...state.fastTrack,
+        cash: state.fastTrack.cash += sellAtPrice
+      });
+
+      newFastTrack.assets = state.fastTrack.assets.filter((_, index) => index !== assetIndex);
+
+      return {
+        fastTrack: newFastTrack,
+        ...this._calculateDisplayData(newFastTrack)
+      }
+    });
+  }
+
+  private _sellSessionAsset(assetIndex: number, sellAtPrice: number, volume: number): void {
     this.patchState((state: SessionState) => {
       const asset = state.session.assets[assetIndex];
 
       let profit = sellAtPrice * volume;
-      if (asset.downPayment > 0) {
+
+      if (asset.assetType === DEAL_TYPE.HOUSING 
+        || asset.assetType === DEAL_TYPE.BUSINESS 
+        || asset.assetType === DEAL_TYPE.LAND) {
         profit += asset.downPayment - asset.value;
       }
 
@@ -388,10 +416,11 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
     const childSupport = session.profession.expenses.childSupport * (session.children || 0);
     
-    const expenseAssets = session.assets.filter(expense => expense.cashflow < 0);
-    const assetsExpenses = expenseAssets.reduce((acc, liability) => acc + liability.cashflow, 0);
+    const expenseAssetExpenses = session.assets
+    .filter(expense => expense.cashflow < 0)
+    .reduce((acc, liability) => acc - liability.cashflow, 0);
 
-    return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport + assetsExpenses);
+    return session.expenses.reduce((acc, expense) => acc + expense.cashflow, childSupport + expenseAssetExpenses);
   }
 
   private _calculateCashflow(session: Session | FastTrackSession): number {
