@@ -9,7 +9,7 @@ import { SellGoldComponent } from "../../gold/sell-gold/sell-gold.component";
 import { SellHouseComponent } from "../../houses/sell-house/sell-house.component";
 import { SellLandComponent } from "../../lands/sell-land/sell-land.component";
 import { UpdateAssetComponent } from '../update-asset/update-asset.component';
-import { filter } from 'rxjs';
+import { filter, switchMap } from 'rxjs';
 import { SplitStockComponent } from "../../stocks/split-stock/split-stock.component";
 
 @Component({
@@ -33,18 +33,23 @@ export class QuickAssetActionComponent {
   ) {
     this.actionType = this.activatedRoute.snapshot.data['actionType'];
     this._assetIndex = +this.activatedRoute.snapshot.params['assetIndex'];
-
-    console.log(this.activatedRoute.snapshot);
     
     this._setupAssetType();
   }
 
   private _setupAssetType() {
-    this.sessionStore.select(state => state.session.assets[this._assetIndex])
-      .pipe(filter(Boolean))
-      .subscribe(asset => {
-        console.log(asset)
+    this.sessionStore.select(state => state.isFastTrackView)
+    .pipe(
+      switchMap(isFastTrack => {
+        if (isFastTrack) {
+          return this.sessionStore.select(state => state.fastTrack.assets[this._assetIndex]);
+        } else {
+          return this.sessionStore.select(state => state.session.assets[this._assetIndex]);
+        }
+      }),
+      filter(Boolean)
+    ).subscribe(asset => {
         this.assetType = asset.assetType;
-      });
+    });
   }
 }

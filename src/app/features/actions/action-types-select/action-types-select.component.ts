@@ -31,10 +31,21 @@ export class ActionTypesSelectComponent {
     this._dealType = this._activatedRoute.snapshot.data['dealType'];
     this._assetIndex = +this._activatedRoute.snapshot.params['assetIndex'];
     
-    this._setupActionTypes();
+    this._setupActions();
   }
 
-  private _setupActionTypes(): void {
+  private _setupActions(): void {
+    this._sessionStore.select(state => state.isFastTrackView)
+      .subscribe(isFastTrackView => {
+        if (isFastTrackView) {
+          this.actionTypes = [ACTION_TYPE.SELL];
+        } else {
+          this._setupSessionActions();
+        }
+      });
+  }
+
+  private _setupSessionActions(): void {
     if (isNaN(this._assetIndex)) {
       this.actionTypes = this._constructActionTypes();
     } else {

@@ -1,13 +1,15 @@
 <div class="bg-blue-800 p-2 mt-4 font-bold text-white" i18n="@@assets">Assets</div>
 
 @if (isFastTrackView$ | async) {
-  <div class="flex justify-between items-center my-4 mx-2" *ngFor="let asset of fastTrackAssets$ | async">
+  <div class="flex justify-between items-center my-4 mx-2 cursor-pointer" 
+    *ngFor="let asset of fastTrackAssets$ | async; let id = index" routerLink="assets/{{id}}">
     <span class="w-1/2">{{asset.name}}</span>
     <ng-container *ngTemplateOutlet="assetValue; context: {$implicit: asset}"></ng-container>
     <span class="w-1/4 text-right">${{asset.cashflow | number}}</span>
   </div>
 } @else {
-  <div class="flex justify-between items-center my-4 mx-2 cursor-pointer" *ngFor="let asset of sessionAssets$ | async; let id = index" routerLink="assets/{{id}}">
+  <div class="flex justify-between items-center my-4 mx-2 cursor-pointer" 
+    *ngFor="let asset of sessionAssets$ | async; let id = index" routerLink="assets/{{id}}">
     <span class="w-1/2">{{asset.name}}</span>
     <ng-container *ngTemplateOutlet="assetValue; context: {$implicit: asset}"></ng-container>
     <span class="w-1/4 text-right">${{asset.cashflow | number}}</span>
