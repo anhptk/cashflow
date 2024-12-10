@@ -308,23 +308,23 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   private _adjustFastTrackCash(amount: number, fastTrack: FastTrackSession): FastTrackSession {
-    return {...fastTrack, cash: fastTrack.cash += amount};
+    return new FastTrackSession({...fastTrack, cash: fastTrack.cash += amount});
   }
 
   public updateAssetCashflow(assetIndex: number, cashflow: number): void {
     this.patchState((state: SessionState) => {
-      const newSession = {
+      const newSession = new Session({
         ...state.session,
         assets: state.session.assets.map((asset, index) => {
           if (index === assetIndex) {
-            return { ...asset, cashflow: cashflow };
+            return { ...asset, cashflow };
           }
           return asset;
         })
-      }
+      });
 
       return {
-        session: new Session(newSession),
+        session: newSession,
         ...this._calculateDisplayData(newSession)
       }
     });
