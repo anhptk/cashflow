@@ -5,6 +5,7 @@ import { AsyncPipe, Location } from '@angular/common';
 import { FAST_TRACK_CHARITY_AMOUNT, MAX_CHILDREN, RAT_RACE_CHARITY_RATE } from '../../../shared/constants/app.constant';
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
+import { SESSION_LOG_TYPE } from '../../../shared/constants/session-log.enum';
 
 @Component({
   selector: 'app-actions-list',
@@ -73,7 +74,7 @@ export class ActionsListComponent {
     } else {
       const cf = confirm($localize`:@@actions.doCharityConfirm:Donate: Cash -$${charityAmount}`);
       if (cf) {
-        this._sessionStore.adjustCash(-charityAmount);
+        this._sessionStore.adjustCash(-charityAmount, SESSION_LOG_TYPE.Charity);
         this._location.back();
       }
     }
@@ -85,7 +86,7 @@ export class ActionsListComponent {
     } else {
       const cf = confirm($localize`:@@actions.doCharityConfirm:Donate: Cash -$${FAST_TRACK_CHARITY_AMOUNT}`);
       if (cf) {
-        this._sessionStore.adjustCash(-FAST_TRACK_CHARITY_AMOUNT);
+        this._sessionStore.adjustCash(-FAST_TRACK_CHARITY_AMOUNT, SESSION_LOG_TYPE.Charity);
         this._location.back();
       }
     }
@@ -95,7 +96,7 @@ export class ActionsListComponent {
     const lostCash = this._sessionStore.state().fastTrack.cash;
     const cf = confirm($localize`:@@actions.loseAllCashConfirm:Lose All Cash: Cash -$${lostCash}`);
     if (cf) {
-      this._sessionStore.adjustCash(-lostCash);
+      this._sessionStore.adjustCash(-lostCash, SESSION_LOG_TYPE.LoseCash);
       this._location.back();
     }
   }
@@ -104,7 +105,7 @@ export class ActionsListComponent {
     const lostCash = Math.round(this._sessionStore.state().fastTrack.cash / 2);
     const cf = confirm($localize`:@@actions.loseHalfCashConfirm:Lose Half Cash: Cash -$${lostCash}`);
     if (cf) {
-      this._sessionStore.adjustCash(-lostCash);
+      this._sessionStore.adjustCash(-lostCash, SESSION_LOG_TYPE.LoseCash);
       this._location.back();
     }
   }

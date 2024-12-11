@@ -20,7 +20,7 @@ export class UpdateAssetComponent {
   private _assetIndex: number;
   public asset$: Observable<AssetItem>;
 
-  cashflowForm: FormControl<number> = new FormControl<number>(null, [Validators.required]);
+  cashflowForm: FormControl<number> = new FormControl<number>(null, [Validators.required, Validators.min(0)]);
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -31,15 +31,15 @@ export class UpdateAssetComponent {
     this.asset$ = this._sessionStore.select(state => state.session.assets[this._assetIndex]);
   }
 
-  update() {
+  update(cashflow: number): void {
     if (this.cashflowForm.invalid) {
       alert($localize`:@@invalidPrice:Please enter a valid price.`);
       return;
     }
 
-    const cf = confirm($localize`:@@updateCashflowConfirm:Are you sure you want to update cashflow to $${this.cashflowForm.value}?`);
+    const cf = confirm($localize`:@@updateCashflowConfirm:Are you sure you want to update cashflow by ${cashflow}?`);
     if (cf) {
-      this._sessionStore.updateAssetCashflow(this._assetIndex, this.cashflowForm.value);
+      this._sessionStore.updateAssetCashflow(this._assetIndex, cashflow);
       this._router.navigateByUrl(this._sessionStore.sessionUrl);
     }
   }

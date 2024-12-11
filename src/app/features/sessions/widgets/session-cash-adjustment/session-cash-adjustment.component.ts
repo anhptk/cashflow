@@ -4,6 +4,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { SessionCashSummaryComponent } from '../session-cash-summary/session-cash-summary.component';
 import { Router } from '@angular/router';
+import { SESSION_LOG_TYPE } from '../../../../shared/constants/session-log.enum';
 
 @Component({
   selector: 'app-session-cash-adjustment',
@@ -31,9 +32,9 @@ export class SessionCashAdjustmentComponent {
     const cf = confirm($localize`:@@confirmCashAdjustment: Are you sure you want to adjust the cash by ${sign}$${amount}?`);
     if (cf) {
       if (isDecrease) {
-        this._store.autoLoan(amount, () => {this._store.adjustCash(-amount)});
+        this._store.autoLoan(amount, () => {this._store.adjustCash(-amount, SESSION_LOG_TYPE.CashAdjustment)});
       } else {
-        this._store.adjustCash(amount);
+        this._store.adjustCash(amount, SESSION_LOG_TYPE.CashAdjustment);
       }
 
       alert($localize`:@@cashAdjustmentSuccess: Cash adjustment successful.`);

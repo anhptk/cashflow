@@ -31,12 +31,13 @@
 
 <div class="flex justify-between items-center my-4 mx-2">
   <div class="flex justify-between w-1/2">
-    <label i18n="@@newCashflow">New Cashflow</label>
+    <label i18n="@@cashflowChangeBy">Cashflow change by</label>
     <span class="mr-2">$</span>
   </div>
   <input type="number" [formControl]="cashflowForm" class="w-1/2 p-2 rounded outline outline-1">
 </div>
 
-<div class="my-8">
-  <app-button (click)="update()"><span i18n="@@confirm">Confirm</span></app-button>
+<div class="flex mt-4">
+  <app-button class="w-full" color="green" [disabled]="cashflowForm.invalid" (click)="update(cashflowForm.value)" i18n="@@increase">Increase</app-button>
+  <app-button class="w-full ml-2" color="red" [disabled]="cashflowForm.invalid" (click)="update(-cashflowForm.value)" i18n="@@decrease">Decrease</app-button>
 </div>

@@ -84,9 +84,7 @@ export class SessionDetailsWrapperComponent {
         }
       });
   }
-
   
-
   private _checkFastTrackWon(income: number): void {
     const isWon = income >= FAST_TRACK_WIN_CASHFLOW;
 

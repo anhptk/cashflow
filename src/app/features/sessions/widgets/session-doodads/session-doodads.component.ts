@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { SessionCashSummaryComponent } from '../session-cash-summary/session-cash-summary.component';
 import { Router } from '@angular/router';
+import { SESSION_LOG_TYPE } from '../../../../shared/constants/session-log.enum';
 
 @Component({
   selector: 'app-session-doodads',
@@ -35,7 +36,7 @@ export class SessionDoodadsComponent {
     const cf = confirm($localize`:@@actions.doodadsConfirm: Cash -$${amount}`);
     if (cf) {
       this._sessionStore.autoLoan(amount, () => {
-        this._sessionStore.adjustCash(-amount);
+        this._sessionStore.adjustCash(-amount, SESSION_LOG_TYPE.Doodads);
         this._router.navigateByUrl(this._sessionStore.sessionUrl);
       });
     }

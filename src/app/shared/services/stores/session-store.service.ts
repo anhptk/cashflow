@@ -9,7 +9,7 @@ import { DEAL_TYPE } from '../../constants/deals.enum';
 import { FastTrackSessionService } from '../db/fast-track-session.service';
 import { FastTrackSession } from '../../models/database/fast-track-session.db';
 import { SessionLogService } from '../db/session-log.service';
-import { SESSION_LOG_TYPE } from '../../constants/session-log.enum';
+import { SESSION_LOG_TYPE, SessionLogType } from '../../constants/session-log.enum';
 
 @Injectable()
 export class SessionStoreService extends ComponentStore<SessionState> {
@@ -97,11 +97,13 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   public payday(): void {
     const cashflow = this.get(state => state.cashflow);
     this.adjustCash(cashflow);
-    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.Payday, {cashflow}));
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.Payday, {cash: cashflow}));
   }
 
   public downsize(): void {
-    this.adjustCash(-this.get(state => state.totalExpenses));
+    const expenses = this.get(state => state.totalExpenses);
+    this.adjustCash(-expenses);
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.Downsize, {cash: expenses}));
   }
 
   public loan(amount: number): void {
@@ -119,6 +121,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         cashflow: this._calculateCashflow(newSession)
       }
     });
+
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.Loan, {cash: amount, cashflow: -amount * LOAN_INTEREST}));
   }
 
   public autoLoan(expenseAmount: number, next: Function): void {
@@ -139,7 +143,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     }
   }
 
-  public adjustCash(amount: number): void {
+  public adjustCash(amount: number, logType?: SessionLogType): void {
     this.patchState((state: SessionState) => {
       if (state.isFastTrackView) {
         return {fastTrack: this._adjustFastTrackCash(amount, state.fastTrack)};
@@ -147,6 +151,10 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         return {session: this._adjustSessionCash(amount, state.session)};
       }
     });
+
+    if (logType) {
+      this.addLog(this.sessionLogService.createNewLog(logType, {cash: amount}));
+    }
   }
 
   public payoffExpense(expense: ExpenseItem): void {
@@ -169,6 +177,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         cashflow: this._calculateCashflow(newSession)
       }
     });
+
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.Payoff, {cash: -expense.value, cashflow: expense.cashflow, assetName: expense.name}));
   }
   
   public payoffLoan(amount: number): void {
@@ -206,6 +216,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       }
     });
   
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.Payoff, {cash: -amount, cashflow: amount * LOAN_INTEREST, assetName: 'Loans'}));
   }
 
   public addAsset(asset: AssetItem): void {
@@ -227,6 +238,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         ...this._calculateDisplayData(newSession)
       }
     });
+
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.BuyAsset, {cash: -payment, assetName: asset.name, assetType: asset.assetType, assetVolume: asset.volume}));
   }
 
   public addFastTrackAsset(asset: AssetItem): void {
@@ -243,7 +256,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       }
     });
 
-    this._updateFastTrackDb(this.select(state => state.fastTrack));
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.BuyAsset, {cash: -asset.value, assetName: asset.name, assetType: asset.assetType}));
   }
 
   public sellAsset(assetIndex: number, sellAtPrice: number, volume = 1): void {
@@ -257,6 +270,15 @@ export class SessionStoreService extends ComponentStore<SessionState> {
 
   private _sellFastTrackAsset(assetIndex: number, sellAtPrice: number): void {
     this.patchState((state: SessionState) => {
+      const selectedAsset = state.fastTrack.assets[assetIndex];
+      this.addLog(
+        this.sessionLogService.createNewLog(SESSION_LOG_TYPE.SellAsset, {
+          cash: sellAtPrice,
+          assetName: selectedAsset.name,
+          assetType: selectedAsset.assetType
+        })
+      );
+
       const newFastTrack = new FastTrackSession({
         ...state.fastTrack,
         cash: state.fastTrack.cash += sellAtPrice
@@ -287,6 +309,15 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         asset.volume = asset.volume < volume ? 0 : asset.volume - volume;
       }
 
+      this.addLog(
+        this.sessionLogService.createNewLog(SESSION_LOG_TYPE.SellAsset, {
+          cash: profit,
+          assetName: asset.name,
+          assetType: asset.assetType,
+          assetVolume: volume
+        })
+      );
+
       const newSession = new Session({
         ...state.session,
         cash: state.session.cash += profit
@@ -312,16 +343,50 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public updateAssetCashflow(assetIndex: number, cashflow: number): void {
+    const isFastTrack = this.get(state => state.isFastTrackView);
+    if (isFastTrack) {
+      return this._updateFastTrackAssetCashflow(assetIndex, cashflow);
+    } else {
+      return this._updateSessionAssetCashflow(assetIndex, cashflow);
+    }
+  }
+
+  private _updateFastTrackAssetCashflow(assetIndex: number, cashflow: number): void {
+    this.patchState((state: SessionState) => {
+      const newFastTrack = new FastTrackSession({
+        ...state.fastTrack,
+        assets: state.fastTrack.assets.map((asset, index) => {
+          if (index === assetIndex) {
+            return { ...asset, cashflow: asset.cashflow + cashflow };
+          }
+          return asset;
+        })
+      });
+
+      const asset = newFastTrack.assets[assetIndex];
+      this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.UpdateAsset, {assetName: asset.name, assetType: asset.assetType, cashflow}));
+
+      return {
+        fastTrack: newFastTrack,
+        ...this._calculateDisplayData(newFastTrack)
+      }
+    });
+  }
+
+  private _updateSessionAssetCashflow(assetIndex: number, cashflow: number): void {
     this.patchState((state: SessionState) => {
       const newSession = new Session({
         ...state.session,
         assets: state.session.assets.map((asset, index) => {
           if (index === assetIndex) {
-            return { ...asset, cashflow };
+            return { ...asset, cashflow: asset.cashflow + cashflow };
           }
           return asset;
         })
       });
+
+      const asset = newSession.assets[assetIndex];
+      this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.UpdateAsset, {assetName: asset.name, assetType: asset.assetType, cashflow}));
 
       return {
         session: newSession,
@@ -337,6 +402,12 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         assets: state.session.assets.map(asset => {
           if (asset.name === stockName && asset.assetType === DEAL_TYPE.STOCKS) {
             const volume = Math.ceil(asset.volume * splitRatio);
+            
+            this.addLog(this.sessionLogService.createNewLog(
+              SESSION_LOG_TYPE.SplitStock, 
+              {assetName: asset.name, assetType: asset.assetType, assetVolume: volume - asset.volume}
+            ));
+
             return {
               ...asset,
               volume,
@@ -360,6 +431,12 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         assets: state.session.assets.map(asset => {
           if (asset.name === stockName && asset.assetType === DEAL_TYPE.STOCKS) {
             const volume = Math.ceil(asset.volume / splitRatio);
+
+            this.addLog(this.sessionLogService.createNewLog(
+              SESSION_LOG_TYPE.ReverseSplitStock, 
+              {assetName: asset.name, assetType: asset.assetType, assetVolume: volume - asset.volume}
+            ));
+
             return {
               ...asset,
               volume,
@@ -379,6 +456,9 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   public addChild(): void {
     this.patchState((state: SessionState) => {
       const newSession = new Session({ ...state.session, children: state.session.children += 1 });
+
+      this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.NewBaby, {cashflow: -state.profession.expenses.childSupport}));
+      
       return {
         session: newSession,
         totalExpenses: this._calculateExpenses(newSession),
