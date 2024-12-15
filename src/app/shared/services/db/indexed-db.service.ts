@@ -12,7 +12,14 @@ export class IndexedDbService {
 
   constructor() {
     this.dbPromise = openDB<CashflowDB>('cashflow', 1.2, {
-      upgrade(db) {
+      upgrade(db, oldVersion, newVersion) {
+        if (oldVersion != newVersion) {
+          db.deleteObjectStore('professions');
+          db.deleteObjectStore('sessions');
+          db.deleteObjectStore('fastTrackSessions');
+          db.deleteObjectStore('logs');
+        }
+
         db.createObjectStore('professions', {
           keyPath: 'id',
           autoIncrement: true

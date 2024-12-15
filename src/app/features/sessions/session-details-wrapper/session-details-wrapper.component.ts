@@ -71,16 +71,16 @@ export class SessionDetailsWrapperComponent {
   }
   
   private _subscribeToIncomeChange(): void {
-    this.sessionStore.select(state => state.totalIncome)
+    this.sessionStore.select(state => state.totalIncome - state.totalExpenses)
       .pipe(
         withLatestFrom(this.sessionStore.select(state => state.session)),
-        filter(([income, _]) => !!income),
+        filter(([progress, _]) => !isNaN(progress))
       )
-      .subscribe(([income, session]) => {
+      .subscribe(([progress, session]) => {
         if (session.fastTrackId) {
-          this._checkFastTrackWon(income);
+          this._checkFastTrackWon(progress);
         } else {
-          this._checkRatRaceWon(income);
+          this._checkRatRaceWon(progress);
         }
       });
   }
@@ -93,8 +93,8 @@ export class SessionDetailsWrapperComponent {
     }
   }
 
-  private _checkRatRaceWon(income: number): void {
-    const isWon = income >= this.sessionStore.state().totalExpenses;
+  private _checkRatRaceWon(progress: number): void {
+    const isWon = progress >= 0;
 
     if (isWon) {
       alert($localize`:@@ratRaceWon:Congratulations! You have completed the Rat Race. You will now enter the Fast Track!`);
