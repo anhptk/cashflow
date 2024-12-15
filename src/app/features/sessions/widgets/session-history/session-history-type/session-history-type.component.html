@@ -1,0 +1,44 @@
+@switch (logType()) {
+    @case (LogType.Payday) {
+      <span i18n="@@payday">Payday!</span>
+    }
+    @case (LogType.Downsize) {
+      <span i18n="@@downsized">Downsized</span>
+    }
+    @case (LogType.Loan) {
+      <span i18n="@@loans">Loans</span>
+    }
+    @case (LogType.CashAdjustment) {
+      <span i18n="@@cashAdjustment">Cash adjustment</span>
+    }
+    @case (LogType.Payoff) {
+      <span i18n="@@payoff">Payoff</span>
+    }
+    @case (LogType.BuyAsset) {
+      <span i18n="@@buyAsset">Buy asset</span>
+    }
+    @case (LogType.SellAsset) {
+      <span i18n="@@sellAsset">Sell asset</span>
+    }
+    @case (LogType.UpdateAsset) {
+      <span i18n="@@updateAsset">Update asset</span>
+    }
+    @case (LogType.SplitStock) {
+      <span i18n="@@splitStock">Split stock</span>
+    }
+    @case (LogType.ReverseSplitStock) {
+      <span i18n="@@reverseSplitStock">Reverse split stock</span>
+    }
+    @case (LogType.NewBaby) {
+      <span i18n="@@newBaby">New baby</span>
+    }
+    @case (LogType.Doodads) {
+      <span i18n="@@doodads">Doodads</span>
+    }
+    @case (LogType.Charity) {
+      <span i18n="@@charity">Charity</span>
+    }
+    @case (LogType.LoseCash) {
+      <span i18n="@@loseCash">Lose cash</span>
+    }
+}

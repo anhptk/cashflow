@@ -82,14 +82,14 @@ const dealRoutes: Routes = [
         path: 'split',
         component: SplitStockComponent,
         data: {
-          title: $localize`:@@splitStock:Split Stock`
+          title: $localize`:@@splitStock:Split stock`
         }
       },
       {
         path: 'reverse-split',
         component: SplitStockComponent,
         data: {
-          title: $localize`:@@reverseSplitStock:Reverse Split Stock`,
+          title: $localize`:@@reverseSplitStock:Reverse split stock`,
           isReverseSplit: true
         }
       }

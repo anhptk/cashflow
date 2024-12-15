@@ -252,7 +252,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       }
     });
 
-    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.BuyAsset, {cash: -payment, assetName: asset.name, assetType: asset.assetType, assetVolume: asset.volume}));
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.BuyAsset, {cash: -payment, assetName: asset.name, assetType: asset.assetType, assetVolume: asset.volume, cashflow: asset.cashflow}));
   }
 
   public addFastTrackAsset(asset: AssetItem): void {
@@ -269,7 +269,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       }
     });
 
-    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.BuyAsset, {cash: -asset.value, assetName: asset.name, assetType: asset.assetType}));
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.BuyAsset, {cash: -asset.value, assetName: asset.name, assetType: asset.assetType, cashflow: asset.cashflow}));
   }
 
   public sellAsset(assetIndex: number, sellAtPrice: number, volume = 1): void {

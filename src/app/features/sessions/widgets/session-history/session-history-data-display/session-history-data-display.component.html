@@ -1,0 +1,52 @@
+@if (logType() === LogType.Payday || logType() === LogType.Downsize || logType() === LogType.CashAdjustment || logType() === LogType.Doodads || logType() === LogType.Charity || logType() === LogType.LoseCash) {
+    @if (data().cash >= 0) {
+        <span i18n="@@cashIncrease">Cash <b>+${{data().cash | number}}</b></span>
+    } @else {
+        <span i18n="@@cashDecrease">Cash <b>-${{-data().cash | number}}</b></span>
+    }
+
+} @else if (logType() === LogType.Loan) {
+    <span i18n="@@cashIncrease" class="block">Cash <b>+${{data().cash | number}}</b></span>
+    <span i18n="@@cashFlowDecrease">Cash flow <b>-${{-data().cashflow | number}}</b></span>
+
+} @else if (logType() === LogType.Payoff) {
+    <span i18n="@@cashDecrease" class="block">Cash <b>-${{-data().cash | number}}</b></span>
+    <span i18n="@@cashFlowIncrease">Cash flow <b>+${{data().cashflow | number}}</b></span>
+
+} @else if (logType() === LogType.NewBaby) {
+    <span i18n="@@cashFlowDecrease">Cash flow <b>-${{-data().cashflow | number}}</b></span>
+
+} @else if (logType() === LogType.SplitStock) {
+    <span i18n="@@stocksName" class="block">Stocks: <b>{{data().assetName}}</b></span>
+    <span i18n="@@volumeIncrease">Volume <b>+{{data().assetVolume | number}}</b></span>
+
+} @else if (logType() === LogType.ReverseSplitStock) {
+    <span i18n="@@stocksName" class="block">Stocks: <b>{{data().assetName}}</b></span>
+    <span i18n="@@volumeDecrease">Volume <b>{{data().assetVolume | number}}</b></span>
+
+} @else if (logType() === LogType.SellAsset) {
+    <span i18n="@@assetTypeAndName" class="block">Asset: [{{data().assetType}}] <b>{{data().assetName}}</b></span>
+    <span i18n="@@cashIncrease">Cash <b>+${{data().cash | number}}</b></span>
+    @if (!!data().assetVolume) {
+        <span i18n="@@volumeDecrease">Volume <b>{{data().assetVolume | number}}</b></span>
+    }
+} @else if (logType() === LogType.UpdateAsset) {
+    <span i18n="@@assetTypeAndName" class="block">Asset: [{{data().assetType}}] <b>{{data().assetName}}</b></span>
+    @if (data().cashflow >= 0) {
+        <span i18n="@@cashFlowIncrease">Cash flow <b>+${{data().cashflow | number}}</b></span>
+    } @else {
+        <span i18n="@@cashFlowDecrease">Cash flow <b>-${{-data().cashflow | number}}</b></span>
+    }
+
+} @else if (logType() === LogType.BuyAsset) {
+    <span i18n="@@assetTypeAndName" class="block">Asset: [{{data().assetType}}] <b>{{data().assetName}}</b></span>
+    <span i18n="@@cashDecrease" class="block">Cash <b>-${{-data().cash | number}}</b></span>
+    @if (!!data().assetVolume) {
+        <span i18n="@@volumeIncrease" class="block">Volume <b>+{{data().assetVolume | number}}</b></span>
+    }
+    @if (data().cashflow >= 0) {
+        <span i18n="@@cashFlowIncrease">Cash flow <b>+${{data().cashflow | number}}</b></span>
+    } @else {
+        <span i18n="@@cashFlowDecrease">Cash flow <b>-${{-data().cashflow | number}}</b></span>
+    }
+}

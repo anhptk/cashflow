@@ -3,15 +3,19 @@ import { SessionStoreService } from '../../../../shared/services/stores/session-
 import { SessionLog } from '../../../../shared/models/database/session.db';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { SESSION_LOG_TYPE } from '../../../../shared/constants/session-log.enum';
+import { SessionHistoryTypeComponent } from "./session-history-type/session-history-type.component";
+import { SessionHistoryDataDisplayComponent } from "./session-history-data-display/session-history-data-display.component";
 
 @Component({
   selector: 'app-session-history',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SessionHistoryTypeComponent, SessionHistoryDataDisplayComponent],
   templateUrl: './session-history.component.html',
   styleUrl: './session-history.component.scss'
 })
 export class SessionHistoryComponent {
+  public readonly LogType = SESSION_LOG_TYPE;
   public readonly DATE_FORMAT = 'dd/MM HH:mm:ss';
   
   sessionLogs$: Observable<SessionLog[]>;
