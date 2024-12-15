@@ -11,15 +11,8 @@ export class IndexedDbService {
   private dbPromise: Promise<IDBPDatabase<CashflowDB>>;
 
   constructor() {
-    this.dbPromise = openDB<CashflowDB>('cashflow', 1.2, {
-      upgrade(db, oldVersion, newVersion) {
-        if (oldVersion != newVersion) {
-          db.deleteObjectStore('professions');
-          db.deleteObjectStore('sessions');
-          db.deleteObjectStore('fastTrackSessions');
-          db.deleteObjectStore('logs');
-        }
-
+    this.dbPromise = openDB<CashflowDB>('cashflow', 2, {
+      upgrade(db) {
         db.createObjectStore('professions', {
           keyPath: 'id',
           autoIncrement: true

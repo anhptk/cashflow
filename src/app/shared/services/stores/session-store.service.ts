@@ -126,6 +126,17 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public autoLoan(expenseAmount: number, next: Function): void {
+    const isFastTrack = this.get(state => state.isFastTrackView);
+    if (isFastTrack) {
+      if (expenseAmount <= this.get(state => state.fastTrack.cash)) {
+        next();
+        return;
+      } else {
+        alert($localize`:@@insuffientCash: Insufficient cash.`);
+        return;
+      }
+    }
+    
     const missingAmount = expenseAmount - this.get(state => state.session.cash);
 
     if (missingAmount <= 0) {

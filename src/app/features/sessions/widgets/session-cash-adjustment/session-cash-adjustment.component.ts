@@ -32,13 +32,17 @@ export class SessionCashAdjustmentComponent {
     const cf = confirm($localize`:@@confirmCashAdjustment: Are you sure you want to adjust the cash by ${sign}$${amount}?`);
     if (cf) {
       if (isDecrease) {
-        this._store.autoLoan(amount, () => {this._store.adjustCash(-amount, SESSION_LOG_TYPE.CashAdjustment)});
+        this._store.autoLoan(amount, () => this.adjustCash(-amount));
       } else {
-        this._store.adjustCash(amount, SESSION_LOG_TYPE.CashAdjustment);
+        this.adjustCash(amount);
       }
-
-      alert($localize`:@@cashAdjustmentSuccess: Cash adjustment successful.`);
-      this._router.navigateByUrl(this._store.sessionUrl);
     }
+  }
+
+  private adjustCash(amount: number): void {
+    this._store.adjustCash(amount, SESSION_LOG_TYPE.CashAdjustment);
+
+    alert($localize`:@@cashAdjustmentSuccess: Cash adjustment successful.`);
+    this._router.navigateByUrl(this._store.sessionUrl);
   }
 }
