@@ -18,8 +18,8 @@
   
   @if (!(isFastTrackAction$ | async)) {
     <div class="flex justify-between items-center">
-      <div class="flex justify-between w-1/2">
-        <label i18n="@@downPayment">Down Payment</label>
+      <div class="flex justify-between w-1/2 capitalize">
+        <label i18n="@@downPayment">Down payment</label>
         <span class="mr-2">$</span>
       </div>
       <input type="number" formControlName="downPayment" class="w-1/2 p-2 rounded outline outline-1">
@@ -27,7 +27,7 @@
   }
 
   <div class="flex justify-between items-center">
-    <div class="flex justify-between w-1/2">
+    <div class="flex justify-between w-1/2 capitalize">
       <label i18n="@@cashFlow">Cash flow</label>
       <span class="mr-2">$</span>
     </div>

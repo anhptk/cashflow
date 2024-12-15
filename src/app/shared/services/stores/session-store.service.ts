@@ -107,10 +107,11 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   public loan(amount: number): void {
+    const loanLabel = $localize`:@@loans:Loans`;
     this.patchState((state: SessionState) => {
       const newSession = new Session({
         ...state.session,
-        expenses: state.session.expenses.filter(x => x.name !== 'Loans').concat(this._calculateLoan(state.session, amount)),
+        expenses: state.session.expenses.filter(x => x.name !== loanLabel).concat(this._calculateLoan(state.session, amount)),
         cash: state.session.cash += amount
       });
 
@@ -193,7 +194,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
   
   public payoffLoan(amount: number): void {
-    const loanItem = this.get(state => state.session.expenses.find(expense => expense.name === 'Loans'));
+    const loanLabel = $localize`:@@loans:Loans`;
+    const loanItem = this.get(state => state.session.expenses.find(expense => expense.name === loanLabel));
     
     if (!loanItem) {
       return;
@@ -214,7 +216,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
       const newSession = new Session({
         ...state.session,
         expenses: state.session.expenses
-        .filter(x => x.name !== 'Loans')
+        .filter(x => x.name !== loanLabel)
         .concat(newLoan),
         cash: state.session.cash -= amount
       });
@@ -525,10 +527,11 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   }
 
   private _calculateLoan(session: Session, amount: number): ExpenseItem {
-    const loan = session.expenses.find(expense => expense.name === 'Loans');
+    const loanLabel = $localize`:@@loans:Loans`;
+    const loan = session.expenses.find(expense => expense.name === loanLabel);
     if (!loan) {
       return {
-        name: 'Loans',
+        name: loanLabel,
         cashflow: amount * LOAN_INTEREST,
         value: amount,
         isLiability: true

@@ -54,7 +54,7 @@ export class SessionLoanPayoffComponent {
   private _subscribeToLoansBalance(): void {
     this.sessionStoreService.state$
     .pipe(
-      map(state => state.expenseLiabilities.find(e => e.name === 'Loans')),
+      map(state => state.expenseLiabilities.find(e => e.name === $localize`:@@loans:Loans`)),
       filter(e => !!e)
     )
     .subscribe(e => {

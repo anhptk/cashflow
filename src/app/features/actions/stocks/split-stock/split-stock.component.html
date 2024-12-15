@@ -45,13 +45,9 @@
 
 @if (mainForm.value.assetName) {
   <div class="flex justify-between items-center p-2 font-bold">
-    <div class="w-1/2" i18n="@@unitPrice">
-      Unit price
-    </div>
+    <div class="w-1/2" i18n="@@unitPrice">Unit price</div>
 
-    <div class="w-1/2" i18n="@@shares">
-      Shares
-    </div>
+    <div class="w-1/2" i18n="@@shares">Shares</div>
   </div>
     
     @for(stock of stock$ | async; track stock) {

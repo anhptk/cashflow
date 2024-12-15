@@ -27,7 +27,7 @@ export class SessionExpensePayoffComponent {
   }
 
   public payoff(expense: ExpenseItem): void {
-    if (expense.name === 'Loans') {
+    if (expense.name === $localize`:@@loans:Loans`) {
       this.router.navigateByUrl(`${this.router.url}/loans`);
       return;
     }

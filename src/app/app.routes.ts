@@ -183,7 +183,7 @@ const dealRoutes: Routes = [
             path: '',
             component: SelectLandComponent,
             data: {
-              title: $localize`:@@selectLand:Select Land For Sale`
+              title: $localize`:@@selectLandForSale:Select Land For Sale`
             }
           },
           {
@@ -203,7 +203,7 @@ const dealRoutes: Routes = [
             path: '',
             component: SelectLandComponent,
             data: {
-              title: $localize`:@@selectLand:Select Land To Update`
+              title: $localize`:@@selectLandToUpdate:Select Land To Update`
             }
           },
           {
@@ -264,7 +264,7 @@ const dealRoutes: Routes = [
             path: '',
             component: SelectBusinessComponent,
             data: {
-              title: $localize`:@@selectBusiness:Select Business To Update`
+              title: $localize`:@@selectBusinessToUpdate:Select Business To Update`
             }
           },
           {
