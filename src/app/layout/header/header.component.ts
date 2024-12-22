@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -24,7 +25,9 @@ export class HeaderComponent {
   }
 
   private _subscribeToNavigationEnd(): void {
-    this._router.events.subscribe(event => {
+    this._router.events
+      .pipe(takeUntilDestroyed())
+      .subscribe(event => {
       if (event instanceof NavigationEnd) {
         this._setRouteTitle();
       }

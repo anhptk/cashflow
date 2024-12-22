@@ -46,7 +46,7 @@ export class SessionDetailsComponent {
   ) {
     this.data$ = this._sessionStore.state$;
     this.isFastTrack$ = this._sessionStore.select(state => state.isFastTrackView);
-    this.sessionId = +_route.snapshot.params['sessionId'];
+    this.sessionId = +this._route.snapshot.params['sessionId'];
   }
 
   public delete(): void {

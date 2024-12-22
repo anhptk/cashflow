@@ -1,7 +1,7 @@
 <div class="p-4">
   @if (completed()) {
     <div class="mb-2" i18n="@@progressBarCompletedStatus">
-      ${{value | number}} / ${{maxValue | number}} (completed)
+      ${{value() | number}} / ${{maxValue() | number}} (completed)
     </div>
 
     <div class="bg-blue-600 h-2 w-full rounded">
@@ -9,7 +9,7 @@
     </div>
   } @else {
     <div class="mb-2" i18n="@@progressBarStatus">
-      ${{value | number}} / ${{maxValue | number}} (${{maxValue - value | number}} to go)
+      ${{value() | number}} / ${{maxValue() | number}} (${{maxValue() - value() | number}} to go)
     </div>
 
     <div class="bg-blue-600 h-2 w-full rounded">

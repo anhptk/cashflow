@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { SessionService } from '../../../shared/services/db/session.service';
@@ -8,6 +8,7 @@ import { Session } from '../../../shared/models/database/session.db';
 import { filter, withLatestFrom } from 'rxjs';
 import { FAST_TRACK_WIN_CASHFLOW } from '../../../shared/constants/app.constant';
 import { SessionLogService } from '../../../shared/services/db/session-log.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-session-details-wrapper',
@@ -17,7 +18,7 @@ import { SessionLogService } from '../../../shared/services/db/session-log.servi
   templateUrl: './session-details-wrapper.component.html',
   styleUrl: './session-details-wrapper.component.scss'
 })
-export class SessionDetailsWrapperComponent {
+export class SessionDetailsWrapperComponent implements OnInit {
   private _sessionId: number;
 
   constructor(
@@ -74,7 +75,8 @@ export class SessionDetailsWrapperComponent {
     this.sessionStore.select(state => state.totalIncome - state.totalExpenses)
       .pipe(
         withLatestFrom(this.sessionStore.select(state => state.session)),
-        filter(([progress, _]) => !isNaN(progress))
+        filter(([progress, _]) => !isNaN(progress)),
+        takeUntilDestroyed()
       )
       .subscribe(([progress, session]) => {
         if (session.fastTrackId) {

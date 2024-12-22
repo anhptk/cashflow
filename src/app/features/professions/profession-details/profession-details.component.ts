@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Profession } from '../../../shared/models/database/cashflow.db';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CreateNewProfessionComponent } from '../create-new-profession/create-new-profession.component';
@@ -16,7 +16,7 @@ import { SessionService } from '../../../shared/services/db/session.service';
   templateUrl: './profession-details.component.html',
   styleUrl: './profession-details.component.scss'
 })
-export class ProfessionDetailsComponent {
+export class ProfessionDetailsComponent implements OnInit {
   public profession?: Profession;
 
   private _professionId: number;
@@ -27,7 +27,7 @@ export class ProfessionDetailsComponent {
     private _sessionService: SessionService,
     private _router: Router
   ) {
-    this._professionId = Number(this._activatedRoute.snapshot.params['professionId']);
+    this._professionId = +this._activatedRoute.snapshot.params['professionId'];
   }
 
   ngOnInit(): void {

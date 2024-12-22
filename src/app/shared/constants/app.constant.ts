@@ -5,3 +5,4 @@ export const RAT_RACE_CHARITY_RATE = 0.1;
 export const FAST_TRACK_CHARITY_AMOUNT = 100000;
 export const FAST_TRACK_START_RATE = 100;
 export const FAST_TRACK_WIN_CASHFLOW = 50000;
+export const INPUT_DEBOUNCE_TIME = 200;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonComponent } from "../../../../shared/ui/button/button.component";
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { AssetItem } from '../../../../shared/models/database/session.db';
 import { DEAL_TYPE } from '../../../../shared/constants/deals.enum';
 import { BuyStocksForm } from '../../../../shared/models/forms/stocks-form';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-buy-gold',
@@ -24,7 +25,7 @@ import { Router } from '@angular/router';
   styleUrl: './buy-gold.component.scss'
 })
 export class BuyGoldComponent {
-  totalCost = 0;
+  totalCost = signal(0);
 
   mainForm: FormGroup<Omit<BuyStocksForm, 'assetName'>>;
 
@@ -44,9 +45,11 @@ export class BuyGoldComponent {
   }
   
   private _calculateTotalCost(): void {
-    this.mainForm.valueChanges.subscribe((value) => {
-      this.totalCost = value.unitPrice * value.quantity || 0;
-    });
+    this.mainForm.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((value) => {
+        this.totalCost.set(value.unitPrice * value.quantity || 0);
+      });
   }
 
   submit() {
@@ -61,14 +64,14 @@ export class BuyGoldComponent {
     const newAsset: AssetItem = {
       name: $localize`:@@gold:Gold`,
       cashflow: 0,
-      value: this.totalCost,
+      value: this.totalCost(),
       downPayment: 0,
       volume: this.mainForm.value.quantity,
       unitPrice: this.mainForm.value.unitPrice,
       assetType: DEAL_TYPE.GOLD
     }
 
-    this._sessionStore.autoLoan(this.totalCost, () => {
+    this._sessionStore.autoLoan(this.totalCost(), () => {
       this._sessionStore.addAsset(newAsset);
       this._router.navigateByUrl(this._sessionStore.sessionUrl);
     });

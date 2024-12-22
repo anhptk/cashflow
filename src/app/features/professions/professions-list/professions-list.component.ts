@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { Profession } from '../../../shared/models/database/cashflow.db';
 import { CommonModule } from '@angular/common';
@@ -16,7 +16,7 @@ import { ProfessionService } from '../../../shared/services/db/profession.servic
   templateUrl: './professions-list.component.html',
   styleUrl: './professions-list.component.scss'
 })
-export class ProfessionsListComponent {
+export class ProfessionsListComponent implements OnInit {
   public professions: Profession[] = [];
 
   constructor(

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, signal } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 import { CommonModule } from '@angular/common';
 import { DividerComponent } from '../../../../shared/ui/divider/divider.component';
@@ -11,6 +11,7 @@ import { AssetItem } from '../../../../shared/models/database/session.db';
 import { HOUSE_TYPE_LABEL } from '../../../../shared/constants/houses.enum';
 import { DEAL_TYPE, DealType } from '../../../../shared/constants/deals.enum';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-buy-asset',
@@ -26,15 +27,13 @@ import { Router } from '@angular/router';
   styleUrl: './buy-asset.component.scss'
 })
 export class BuyAssetComponent implements OnInit {
-  readonly DealType = DEAL_TYPE;
-
   @Input({required: true}) assetType: DealType;
   @Input({required: true}) nameControl: FormControl<string>;
 
-  mainForm: FormGroup<BuyAssetForm>;
+  public mainForm: FormGroup<BuyAssetForm>;
 
-  public totalPayment: number;
-  public mortgage: number;
+  public totalPayment = signal(0);
+  public mortgage = signal(0);
 
   public isFastTrackAction$: Observable<boolean>;
 
@@ -61,17 +60,19 @@ export class BuyAssetComponent implements OnInit {
 
   private _subscribeToFormChanges() {
     this.mainForm.valueChanges
-      .pipe(filter(() => this.mainForm.valid))
+      .pipe(filter(() => this.mainForm.valid), takeUntilDestroyed())
       .subscribe((formValue) => {
-        this.totalPayment = formValue.downPayment ?? formValue.cost;
-        this.mortgage = formValue.cost - formValue.downPayment;
+        this.totalPayment.set(formValue.downPayment ?? formValue.cost);
+        this.mortgage.set(formValue.cost - formValue.downPayment);
       });
   }
 
   public submit() {
     const formValue = this.mainForm.value;
+    const assetName = this.assetType === DEAL_TYPE.HOUSING ? HOUSE_TYPE_LABEL[formValue.assetName] : formValue.assetName;
+
     const newAsset: AssetItem = {
-      name: this.assetType === DEAL_TYPE.HOUSING ? HOUSE_TYPE_LABEL[formValue.assetName] : formValue.assetName,
+      name: assetName,
       value: formValue.cost,
       downPayment: formValue.downPayment || 0,
       cashflow: formValue.cashFlow || 0,

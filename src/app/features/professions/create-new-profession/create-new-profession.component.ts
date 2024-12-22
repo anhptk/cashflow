@@ -10,6 +10,7 @@ import { Observable, switchMap } from 'rxjs';
 import { SessionService } from '../../../shared/services/db/session.service';
 import { ProfessionService } from '../../../shared/services/db/profession.service';
 import { Router, RouterModule } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-create-new-profession',
@@ -26,7 +27,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class CreateNewProfessionComponent {
 
-  profession = input<Profession>(null);
+  profession = input<Profession>(undefined);
 
   professionForm: FormGroup<ProfessionForm>;
 
@@ -45,7 +46,7 @@ export class CreateNewProfessionComponent {
 
   private _buildForm(): FormGroup {
     return new FormGroup(<ProfessionForm>{
-      name: new FormControl<string>('', [Validators.required]),
+      name: new FormControl<string>(null, [Validators.required]),
       income: new FormGroup({
         salary: new FormControl<number>(null, [Validators.min(1)])
       }),
@@ -93,7 +94,8 @@ export class CreateNewProfessionComponent {
     this._upsertProfessionRequest()
     .pipe(
       switchMap((professionId) => this._professionService.get(professionId)),
-      switchMap(profession => this._sessionService.add(profession))
+      switchMap(profession => this._sessionService.add(profession)),
+      takeUntilDestroyed()
     ).subscribe((sessionId) => {
       alert($localize`:@@sessionAdded:Session added successfully!`);
       this._router.navigateByUrl(`/sessions/${sessionId}`);

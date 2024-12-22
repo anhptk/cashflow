@@ -1,5 +1,7 @@
 <section class="flex flex-col items-center justify-center p-4 space-y-4 sm:space-y-6">
-    <app-button *ngFor="let actionType of actionTypes" [color]="ACTION_TYPE_LABEL[actionType].color" paddingSize="4" class="w-full" [routerLink]="ACTION_TYPE_LABEL[actionType].link">
+  @for (actionType of actionTypes; track $index) {
+    <app-button [color]="ACTION_TYPE_LABEL[actionType].color" paddingSize="4" class="w-full" [routerLink]="ACTION_TYPE_LABEL[actionType].link">
         {{ACTION_TYPE_LABEL[actionType].label}}
     </app-button>
+  }
 </section>

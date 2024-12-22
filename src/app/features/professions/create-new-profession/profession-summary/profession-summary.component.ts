@@ -1,6 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ProfessionSummary, ProfessionForm } from '../../../../shared/models/forms/profession-form';
 import { FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs';
+import { INPUT_DEBOUNCE_TIME } from '../../../../shared/constants/app.constant';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TypedFormValue } from '../../../../shared/models/typed-fom-value';
 
 @Component({
   selector: 'app-profession-summary',
@@ -9,7 +13,7 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './profession-summary.component.html',
   styleUrl: './profession-summary.component.scss'
 })
-export class ProfessionSummaryComponent {
+export class ProfessionSummaryComponent implements OnInit {
   @Input() form!: FormGroup<ProfessionForm>;
 
   professionSummary: ProfessionSummary;
@@ -19,12 +23,14 @@ export class ProfessionSummaryComponent {
   }
 
   ngOnInit() {
-    this.form.valueChanges.subscribe((value) => {
-      this.professionSummary = this._calculateSummary(value);
-    });
+    this.form.valueChanges
+      .pipe(debounceTime(INPUT_DEBOUNCE_TIME), takeUntilDestroyed())
+      .subscribe((value) => {
+        this.professionSummary = this._calculateSummary(value);
+      });
   }
 
-  private _calculateSummary(formValue: any): ProfessionSummary {
+  private _calculateSummary(formValue: TypedFormValue<FormGroup<ProfessionForm>>): ProfessionSummary {
     const salary = formValue.income.salary;
     const passiveIncome = 0;
     const monthlyIncome = salary;

@@ -6,13 +6,13 @@
             <label for="assetName" i18n="@@stockCD">Stock / CD</label>
         </div>
         <select [formControl]="mainForm.controls.assetName"
-            class="p-2 rounded outline outline-1" [ngClass]="{'w-1/4': showOtherStockName, 'w-1/2': !showOtherStockName}">
+            class="p-2 rounded outline outline-1" [ngClass]="{'w-1/4': showOtherStockName(), 'w-1/2': !showOtherStockName()}">
             <option value="" disabled selected i18n="@@select">Select...</option>
             @for (stock of stockOptions; track $index) {
             <option [value]="stock">{{stockLabels[stock]}}</option>
             }
         </select>
-        @if (showOtherStockName) {
+        @if (showOtherStockName()) {
         <input id="assetName" type="text" formControlName="assetOtherName" class="w-1/2 p-2 rounded outline outline-1 ml-2">
         }
     </div>
@@ -49,7 +49,7 @@
         <span i18n="@@totalPayment">Total payment</span>
         <span class="mr-2">$</span>
     </div>
-    <div class="w-1/2">{{totalCost | number}}</div>
+    <div class="w-1/2">{{totalCost() | number}}</div>
 </div>
 
 <div class="my-4">

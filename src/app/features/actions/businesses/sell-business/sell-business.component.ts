@@ -28,12 +28,16 @@ export class SellBusinessComponent {
     this._assetIndex = +this._activatedRoute.snapshot.params['assetIndex'];
     
     this.asset$ = this._sessionStore.select(state => state.isFastTrackView)
-    .pipe(switchMap(isFastTrack => {
-      if (isFastTrack) {
-        return this._sessionStore.select(state => state.fastTrack.assets[this._assetIndex]);
-      } else {
-        return this._sessionStore.select(state => state.session.assets[this._assetIndex]);
-      }
-    }))
+    .pipe(
+      switchMap(isFastTrack => this._selectAssetItem(isFastTrack)),
+    );
+  }
+
+  private _selectAssetItem(isFastTrack: boolean): Observable<AssetItem> {
+    if (isFastTrack) {
+      return this._sessionStore.select(state => state.fastTrack.assets[this._assetIndex]);
+    } else {
+      return this._sessionStore.select(state => state.session.assets[this._assetIndex]);
+    }
   }
 }

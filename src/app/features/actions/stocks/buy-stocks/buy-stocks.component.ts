@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { SessionCashSummaryComponent } from '../../../sessions/widgets/session-cash-summary/session-cash-summary.component';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BuyStocksForm } from '../../../../shared/models/forms/stocks-form';
@@ -9,6 +9,9 @@ import { SessionStoreService } from '../../../../shared/services/stores/session-
 import { AssetItem } from '../../../../shared/models/database/session.db';
 import { STOCK_LABELS, StockOptions, STOCKS } from '../../../../shared/constants/stocks.enum';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { debounceTime } from 'rxjs';
+import { INPUT_DEBOUNCE_TIME } from '../../../../shared/constants/app.constant';
 
 @Component({
   selector: 'app-buy-stocks',
@@ -25,10 +28,11 @@ import { Router } from '@angular/router';
 })
 export class BuyStocksComponent {
   public mainForm: FormGroup<BuyStocksForm>;
-  public totalCost: number;
   public stockOptions = Object.keys(STOCKS) as StockOptions[];
   public stockLabels = STOCK_LABELS;
-  public showOtherStockName: boolean;
+
+  public showOtherStockName = signal(false);
+  public totalCost = signal(0);
 
   constructor(
     private _sessionStore: SessionStoreService,
@@ -49,10 +53,15 @@ export class BuyStocksComponent {
   }
 
   private _calculateTotalCost(): void {
-    this.mainForm.valueChanges.subscribe((value) => {
-      this.totalCost = value.unitPrice * value.quantity || 0;
+    this.mainForm.valueChanges
+      .pipe(
+        debounceTime(INPUT_DEBOUNCE_TIME),
+        takeUntilDestroyed()
+      )
+      .subscribe((value) => {
+      this.totalCost.set(value.unitPrice * value.quantity || 0);
 
-      this.showOtherStockName = value.assetName === STOCKS.Other;
+      this.showOtherStockName.set(value.assetName === STOCKS.Other);
     });
   }
 
@@ -68,14 +77,14 @@ export class BuyStocksComponent {
     const newAsset: AssetItem = {
       name: this._getAssetName(),
       cashflow: 0,
-      value: this.totalCost,
+      value: this.totalCost(),
       downPayment: 0,
       volume: this.mainForm.value.quantity,
       unitPrice: this.mainForm.value.unitPrice,
       assetType: 'STOCKS'
     }
 
-    this._sessionStore.autoLoan(this.totalCost, () => {
+    this._sessionStore.autoLoan(this.totalCost(), () => {
       this._sessionStore.addAsset(newAsset);
       this._router.navigateByUrl(this._sessionStore.sessionUrl);
     });

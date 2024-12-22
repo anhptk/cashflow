@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal, OnInit } from '@angular/core';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { NgForOf, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -10,7 +10,6 @@ import { SessionService } from '../../../shared/services/db/session.service';
   standalone: true,
   imports: [
     ButtonComponent,
-    NgForOf,
     RouterLink,
     DatePipe
   ],
@@ -18,7 +17,7 @@ import { SessionService } from '../../../shared/services/db/session.service';
   styleUrl: './sessions-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SessionsListComponent {
+export class SessionsListComponent implements OnInit {
   sessions = signal<Session[]>([])
 
   constructor(

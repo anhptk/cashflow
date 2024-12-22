@@ -42,7 +42,7 @@
     <span i18n="@@totalPayment">Total payment</span>
     <span class="mr-2">$</span>
   </div>
-  <div class="w-1/2">{{totalPayment | number}}</div>
+  <div class="w-1/2">{{totalPayment() | number}}</div>
 </div>
 
 @if (isFastTrackAction$ | async) {
@@ -55,7 +55,7 @@
       <span i18n="@@mortgage">Mortgage</span>
       <span class="mr-2">$</span>
     </div>
-    <div class="w-1/2">{{mortgage | number}}</div>
+    <div class="w-1/2">{{mortgage() | number}}</div>
   </div>
 
   <div class="my-4">

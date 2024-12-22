@@ -9,8 +9,10 @@ import { SellGoldComponent } from "../../gold/sell-gold/sell-gold.component";
 import { SellHouseComponent } from "../../houses/sell-house/sell-house.component";
 import { SellLandComponent } from "../../lands/sell-land/sell-land.component";
 import { UpdateAssetComponent } from '../update-asset/update-asset.component';
-import { filter, switchMap } from 'rxjs';
+import { filter, switchMap, Observable } from 'rxjs';
 import { SplitStockComponent } from "../../stocks/split-stock/split-stock.component";
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AssetItem } from '../../../../shared/models/database/session.db';
 
 @Component({
   selector: 'app-quick-asset-action',
@@ -40,16 +42,19 @@ export class QuickAssetActionComponent {
   private _setupAssetType() {
     this.sessionStore.select(state => state.isFastTrackView)
     .pipe(
-      switchMap(isFastTrack => {
-        if (isFastTrack) {
-          return this.sessionStore.select(state => state.fastTrack.assets[this._assetIndex]);
-        } else {
-          return this.sessionStore.select(state => state.session.assets[this._assetIndex]);
-        }
-      }),
-      filter(Boolean)
+      switchMap(isFastTrack => this._selectAssetItem(isFastTrack)),
+      filter(Boolean),
+      takeUntilDestroyed()
     ).subscribe(asset => {
         this.assetType = asset.assetType;
     });
+  }
+
+  private _selectAssetItem(isFastTrack: boolean): Observable<AssetItem> {
+    if (isFastTrack) {
+      return this.sessionStore.select(state => state.fastTrack.assets[this._assetIndex]);
+    } else {
+      return this.sessionStore.select(state => state.session.assets[this._assetIndex]);
+    }
   }
 }

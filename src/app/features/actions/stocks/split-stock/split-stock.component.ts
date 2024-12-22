@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { SessionCashSummaryComponent } from "../../../sessions/widgets/session-cash-summary/session-cash-summary.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SplitStockForm } from '../../../../shared/models/forms/stocks-form';
@@ -18,7 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './split-stock.component.html',
   styleUrl: './split-stock.component.scss'
 })
-export class SplitStockComponent {
+export class SplitStockComponent implements OnInit {
 
   readonly isReverseSplit = signal(false);
   readonly mainForm: FormGroup<SplitStockForm>;

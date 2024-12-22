@@ -6,6 +6,7 @@ import { ButtonComponent } from "../../../../shared/ui/button/button.component";
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { filter, map } from 'rxjs';
 import { Router } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-session-loan-payoff',
@@ -55,7 +56,8 @@ export class SessionLoanPayoffComponent {
     this.sessionStoreService.state$
     .pipe(
       map(state => state.expenseLiabilities.find(e => e.name === $localize`:@@loans:Loans`)),
-      filter(e => !!e)
+      filter(e => !!e),
+      takeUntilDestroyed()
     )
     .subscribe(e => {
       this.loansBalance = e.value;

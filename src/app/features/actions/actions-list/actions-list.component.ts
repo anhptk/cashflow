@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SessionState } from '../../../shared/models/sessions/session-state';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { AsyncPipe, Location } from '@angular/common';
@@ -6,6 +6,7 @@ import { FAST_TRACK_CHARITY_AMOUNT, MAX_CHILDREN, RAT_RACE_CHARITY_RATE } from '
 import { Router, RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SESSION_LOG_TYPE } from '../../../shared/constants/session-log.enum';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-actions-list',
@@ -14,9 +15,9 @@ import { SESSION_LOG_TYPE } from '../../../shared/constants/session-log.enum';
   templateUrl: './actions-list.component.html',
   styleUrl: './actions-list.component.scss'
 })
-export class ActionsListComponent {
-  data: SessionState;
-  isFastTrackView$: Observable<boolean>;
+export class ActionsListComponent implements OnInit {
+  public data: SessionState;
+  public isFastTrackView$: Observable<boolean>;
 
   constructor(
     private _sessionStore: SessionStoreService,
@@ -27,7 +28,9 @@ export class ActionsListComponent {
   }
 
   ngOnInit(): void {
-    this._sessionStore.state$.subscribe((data) => {
+    this._sessionStore.state$
+      .pipe(takeUntilDestroyed())
+      .subscribe((data) => {
       this.data = data;
     });
   }
@@ -58,12 +61,12 @@ export class ActionsListComponent {
     if (maxChildrenReached) {
       alert($localize`:@@actions.maxChildrenReached:You have reached the maximum number of children (${MAX_CHILDREN}).`);
       return;
-    } else {
-      const cf = confirm($localize`:@@actions.addBabyConfirm:Add Baby: Cashflow -$${this.data.profession.expenses.childSupport}`);
-      if (cf) {
-        this._sessionStore.addChild();
-        this._location.back();
-      }
+    }
+
+    const cf = confirm($localize`:@@actions.addBabyConfirm:Add Baby: Cashflow -$${this.data.profession.expenses.childSupport}`);
+    if (cf) {
+      this._sessionStore.addChild();
+      this._location.back();
     }
   }
 
@@ -71,29 +74,31 @@ export class ActionsListComponent {
     const charityAmount = (this.data.cashflow + this.data.totalExpenses) * RAT_RACE_CHARITY_RATE;
     if (this.data.session.cash < charityAmount) {
       alert($localize`:@@actions.canNotDonate:Insufficient cash. Can not donate.`);
-    } else {
-      const cf = confirm($localize`:@@actions.doCharityConfirm:Donate: Cash -$${charityAmount}`);
-      if (cf) {
-        this._sessionStore.adjustCash(-charityAmount, SESSION_LOG_TYPE.Charity);
-        this._location.back();
-      }
+      return;
+    }
+
+    const cf = confirm($localize`:@@actions.doCharityConfirm:Donate: Cash -$${charityAmount}`);
+    if (cf) {
+      this._sessionStore.adjustCash(-charityAmount, SESSION_LOG_TYPE.Charity);
+      this._location.back();
     }
   }
 
   public doFastTrackCharity(): void {
     if (this.data.fastTrack.cash < FAST_TRACK_CHARITY_AMOUNT) {
       alert($localize`:@@actions.canNotDonate:Insufficient cash. Can not donate.`);
-    } else {
-      const cf = confirm($localize`:@@actions.doCharityConfirm:Donate: Cash -$${FAST_TRACK_CHARITY_AMOUNT}`);
-      if (cf) {
-        this._sessionStore.adjustCash(-FAST_TRACK_CHARITY_AMOUNT, SESSION_LOG_TYPE.Charity);
-        this._location.back();
-      }
+      return;
+    }
+
+    const cf = confirm($localize`:@@actions.doCharityConfirm:Donate: Cash -$${FAST_TRACK_CHARITY_AMOUNT}`);
+    if (cf) {
+      this._sessionStore.adjustCash(-FAST_TRACK_CHARITY_AMOUNT, SESSION_LOG_TYPE.Charity);
+      this._location.back();
     }
   }
 
   public loseAllCash(): void {
-    const lostCash = this._sessionStore.state().fastTrack.cash;
+    const lostCash = this.data.fastTrack.cash;
     const cf = confirm($localize`:@@actions.loseAllCashConfirm:Lose All Cash: Cash -$${lostCash}`);
     if (cf) {
       this._sessionStore.adjustCash(-lostCash, SESSION_LOG_TYPE.LoseCash);
@@ -102,7 +107,8 @@ export class ActionsListComponent {
   }
 
   public loseHalfCash(): void {
-    const lostCash = Math.round(this._sessionStore.state().fastTrack.cash / 2);
+    const lostCash = Math.round(this.data.fastTrack.cash / 2);
+
     const cf = confirm($localize`:@@actions.loseHalfCashConfirm:Lose Half Cash: Cash -$${lostCash}`);
     if (cf) {
       this._sessionStore.adjustCash(-lostCash, SESSION_LOG_TYPE.LoseCash);
@@ -111,7 +117,7 @@ export class ActionsListComponent {
   }
 
   public switchRatRace(): void {
-    this._router.navigateByUrl(this._sessionStore.sessionUrl);
     this._sessionStore.toggleFastTrackView(false);
+    this._router.navigateByUrl(this._sessionStore.sessionUrl);
   }
 }

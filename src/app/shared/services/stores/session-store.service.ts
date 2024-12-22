@@ -131,11 +131,11 @@ export class SessionStoreService extends ComponentStore<SessionState> {
     if (isFastTrack) {
       if (expenseAmount <= this.get(state => state.fastTrack.cash)) {
         next();
-        return;
       } else {
         alert($localize`:@@insuffientCash: Insufficient cash.`);
-        return;
       }
+
+      return;
     }
     
     const missingAmount = expenseAmount - this.get(state => state.session.cash);
@@ -560,8 +560,8 @@ export class SessionStoreService extends ComponentStore<SessionState> {
         totalIncome: this._calculateIncome(session),
         totalExpenses: this._calculateExpenses(session),
         cashflow: this._calculateCashflow(session)
-      };
-    };
+      }
+    }
   }
 
   private _updateSessionDb = this.effect<Session>(session$ => {
