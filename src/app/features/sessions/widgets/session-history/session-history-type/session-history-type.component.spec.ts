@@ -13,6 +13,7 @@ describe('SessionHistoryTypeComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(SessionHistoryTypeComponent);
+    fixture.componentRef.setInput('logType', 'Payday');
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

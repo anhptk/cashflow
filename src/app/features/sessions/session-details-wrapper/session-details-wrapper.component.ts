@@ -29,11 +29,11 @@ export class SessionDetailsWrapperComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this._sessionId = +this.route.snapshot.params['sessionId'];
+    this._subscribeToIncomeChange();
   }
 
   ngOnInit() {
     this._loadSession();
-    this._subscribeToIncomeChange();
   }
 
   private _loadSession(): void {

@@ -4,6 +4,7 @@ import { SellBusinessComponent } from './sell-business.component';
 import { RouterModule } from '@angular/router';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
+import { CommonModule } from '@angular/common';
 
 describe('SellBussinessComponent', () => {
   let component: SellBusinessComponent;
@@ -13,6 +14,7 @@ describe('SellBussinessComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         SellBusinessComponent,
+        CommonModule,
         RouterModule.forRoot([])
       ],
       providers: [

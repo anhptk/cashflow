@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SellGoldComponent } from './sell-gold.component';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
 
@@ -16,7 +16,8 @@ describe('SellGoldComponent', () => {
         RouterModule.forRoot([])
       ],
       providers: [
-        {provide: SessionStoreService, useValue: new MockSessionStoreService()}
+        {provide: SessionStoreService, useValue: new MockSessionStoreService()},
+        {provide: ActivatedRoute, useValue: {snapshot: {params: {assetIndex: 0}}}}
       ]
     })
     .compileComponents();

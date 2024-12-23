@@ -7,22 +7,22 @@
 
     <div class="flex justify-between items-center my-4 mx-2">
       <span i18n="@@cost">Cost</span>
-      <span class="w-1/2">${{asset.value}}</span>
+      <span class="w-1/2">${{asset.value | number}}</span>
     </div>
 
     <div class="flex justify-between items-center my-4 mx-2 capitalize">
       <span i18n="@@downPayment">Down payment</span>
-      <span class="w-1/2">${{asset.downPayment}}</span>
+      <span class="w-1/2">${{asset.downPayment | number}}</span>
     </div>
 
     <div class="flex justify-between items-center my-4 mx-2 capitalize">
       <span i18n="@@cashFlow">Cash flow</span>
-      <span class="w-1/2">${{asset.cashflow}}</span>
+      <span class="w-1/2">${{asset.cashflow | number}}</span>
     </div>
 
     <div class="flex justify-between items-center my-4 mx-2">
       <span i18n="@@mortgage">Mortgage</span>
-      <span class="w-1/2">${{asset.value - asset.downPayment}}</span>
+      <span class="w-1/2">${{(asset.value - asset.downPayment) | number}}</span>
     </div>
   </ng-container>
 </app-sell-asset>

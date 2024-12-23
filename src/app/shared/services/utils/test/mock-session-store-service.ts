@@ -1,10 +1,6 @@
 import { SessionStoreService } from '../../stores/session-store.service';
 import { of } from 'rxjs';
-import { Session } from '../../../models/database/session.db';
 
-const mockSession: Partial<Session> = {
-  id: 1
-}
 export class MockSessionStoreService implements Partial<jasmine.SpyObj<SessionStoreService>> {
   setSession = jasmine.createSpy('setSession');
   payday = jasmine.createSpy('payday');
@@ -23,6 +19,6 @@ export class MockSessionStoreService implements Partial<jasmine.SpyObj<SessionSt
   state$ = of(null)
 
   constructor() {
-    this.select.and.returnValue(of(mockSession));
+    this.select.and.returnValue(of(null));
   }
 }

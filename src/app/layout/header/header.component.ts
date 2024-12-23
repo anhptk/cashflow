@@ -18,9 +18,7 @@ export class HeaderComponent {
     private _activatedRoute: ActivatedRoute,
     private _router: Router,
     private _location: Location
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     this._subscribeToNavigationEnd();
   }
 

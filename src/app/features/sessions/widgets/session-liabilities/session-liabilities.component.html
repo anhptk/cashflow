@@ -10,10 +10,10 @@
 }
 
 @for (asset of assets(); track asset) {
-    @if (asset.isLiability && asset.value - asset.downPayment) {
+    @if (asset.isLiability && (asset.value - asset.downPayment)) {
         <div class="flex justify-between items-center my-4 mx-2">
             <span>{{asset.name}}</span>
-            <span class="w-1/2">${{asset.value - asset.downPayment | number}}</span>
+            <span class="w-1/2">${{(asset.value - asset.downPayment) | number}}</span>
         </div>
     }
 }

@@ -13,6 +13,8 @@ describe('SessionHistoryDataDisplayComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(SessionHistoryDataDisplayComponent);
+    fixture.componentRef.setInput('logType', 'Payday');
+    fixture.componentRef.setInput('data', { cash: 1000 });
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

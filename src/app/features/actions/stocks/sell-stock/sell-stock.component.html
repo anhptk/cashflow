@@ -7,17 +7,17 @@
 
       <div class="flex justify-between items-center my-4 mx-2">
         <span i18n="@@unitPrice">Unit price</span>
-        <span class="w-1/2">$ {{asset.unitPrice}}</span>
+        <span class="w-1/2">$ {{asset.unitPrice | number}}</span>
       </div>
   
       <div class="flex justify-between items-center my-4 mx-2">
         <span class="capitalize" i18n="@@shares">Shares</span>
-        <span class="w-1/2">{{asset.volume}}</span>
+        <span class="w-1/2">{{asset.volume | number}}</span>
       </div>
   
       <div class="flex justify-between items-center my-4 mx-2  font-bold">
         <span i18n="@@value">Value</span>
-          <span class="w-1/2">$ {{asset.value}}</span>
+          <span class="w-1/2">$ {{asset.value | number}}</span>
       </div>
     </ng-container>
   </app-sell-asset>

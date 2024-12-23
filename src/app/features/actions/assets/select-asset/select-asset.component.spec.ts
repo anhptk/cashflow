@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SelectAssetComponent } from './select-asset.component';
 import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
 import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
+import { DEAL_TYPE } from '../../../../shared/constants/deals.enum';
 
 describe('SelectAssetComponent', () => {
   let component: SelectAssetComponent;
@@ -19,6 +20,7 @@ describe('SelectAssetComponent', () => {
 
     fixture = TestBed.createComponent(SelectAssetComponent);
     component = fixture.componentInstance;
+    component.assetType = DEAL_TYPE.HOUSING;
     fixture.detectChanges();
   });
 

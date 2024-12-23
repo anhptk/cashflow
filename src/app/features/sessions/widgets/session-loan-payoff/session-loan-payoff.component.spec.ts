@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SessionLoanPayoffComponent } from './session-loan-payoff.component';
+import { SessionStoreService } from '../../../../shared/services/stores/session-store.service';
+import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
+import { RouterModule } from '@angular/router';
 
 describe('SessionLoanPayoffComponent', () => {
   let component: SessionLoanPayoffComponent;
@@ -8,7 +11,13 @@ describe('SessionLoanPayoffComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SessionLoanPayoffComponent]
+      imports: [
+        SessionLoanPayoffComponent,
+        RouterModule.forRoot([])
+      ],
+      providers: [
+        { provide: SessionStoreService, useValue: new MockSessionStoreService()}
+      ]
     })
     .compileComponents();
 

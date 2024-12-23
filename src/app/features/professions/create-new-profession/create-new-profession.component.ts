@@ -10,7 +10,6 @@ import { Observable, switchMap } from 'rxjs';
 import { SessionService } from '../../../shared/services/db/session.service';
 import { ProfessionService } from '../../../shared/services/db/profession.service';
 import { Router, RouterModule } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-create-new-profession',
@@ -94,8 +93,7 @@ export class CreateNewProfessionComponent {
     this._upsertProfessionRequest()
     .pipe(
       switchMap((professionId) => this._professionService.get(professionId)),
-      switchMap(profession => this._sessionService.add(profession)),
-      takeUntilDestroyed()
+      switchMap(profession => this._sessionService.add(profession))
     ).subscribe((sessionId) => {
       alert($localize`:@@sessionAdded:Session added successfully!`);
       this._router.navigateByUrl(`/sessions/${sessionId}`);

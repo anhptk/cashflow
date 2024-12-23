@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ProfessionSummary, ProfessionForm } from '../../../../shared/models/forms/profession-form';
 import { FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs';
@@ -13,16 +13,19 @@ import { TypedFormValue } from '../../../../shared/models/typed-fom-value';
   templateUrl: './profession-summary.component.html',
   styleUrl: './profession-summary.component.scss'
 })
-export class ProfessionSummaryComponent implements OnInit {
+export class ProfessionSummaryComponent {
   @Input() form!: FormGroup<ProfessionForm>;
 
   professionSummary: ProfessionSummary;
 
   constructor() {
     this.professionSummary = this._buildSummary();
+    this._subscribeToFormChanges();
   }
 
-  ngOnInit() {
+  private _subscribeToFormChanges() {
+    if (!this.form) return;
+
     this.form.valueChanges
       .pipe(debounceTime(INPUT_DEBOUNCE_TIME), takeUntilDestroyed())
       .subscribe((value) => {

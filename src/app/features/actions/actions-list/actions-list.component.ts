@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { SessionState } from '../../../shared/models/sessions/session-state';
 import { SessionStoreService } from '../../../shared/services/stores/session-store.service';
 import { AsyncPipe, Location } from '@angular/common';
@@ -15,7 +15,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './actions-list.component.html',
   styleUrl: './actions-list.component.scss'
 })
-export class ActionsListComponent implements OnInit {
+export class ActionsListComponent {
   public data: SessionState;
   public isFastTrackView$: Observable<boolean>;
 
@@ -25,9 +25,10 @@ export class ActionsListComponent implements OnInit {
     private _router: Router
   ) {
     this.isFastTrackView$ = this._sessionStore.select(state => state.isFastTrackView);
+    this._setupData();
   }
 
-  ngOnInit(): void {
+  private _setupData(): void {
     this._sessionStore.state$
       .pipe(takeUntilDestroyed())
       .subscribe((data) => {

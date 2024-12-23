@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, signal } from '@angular/core';
+import { Component, Input, OnInit, signal, DestroyRef } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/ui/button/button.component';
 import { CommonModule } from '@angular/common';
 import { DividerComponent } from '../../../../shared/ui/divider/divider.component';
@@ -39,7 +39,8 @@ export class BuyAssetComponent implements OnInit {
 
   constructor(
     private _sessionStore: SessionStoreService,
-    private _router: Router
+    private _router: Router,
+    private _destroyRef: DestroyRef
   ) {
     this.isFastTrackAction$ = this._sessionStore.select(state => state.isFastTrackView);
   }
@@ -60,7 +61,7 @@ export class BuyAssetComponent implements OnInit {
 
   private _subscribeToFormChanges() {
     this.mainForm.valueChanges
-      .pipe(filter(() => this.mainForm.valid), takeUntilDestroyed())
+      .pipe(filter(() => this.mainForm.valid), takeUntilDestroyed(this._destroyRef))
       .subscribe((formValue) => {
         this.totalPayment.set(formValue.downPayment ?? formValue.cost);
         this.mortgage.set(formValue.cost - formValue.downPayment);

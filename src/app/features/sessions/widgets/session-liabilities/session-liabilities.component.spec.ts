@@ -13,6 +13,8 @@ describe('SessionLiabilitiesComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(SessionLiabilitiesComponent);
+    fixture.componentRef.setInput('expenseLiabilities', []);
+    fixture.componentRef.setInput('assets', []);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
