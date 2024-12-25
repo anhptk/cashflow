@@ -1,16 +1,17 @@
 {
-    "routes": [
+    "rewrites": [
         {
-            "src": "/en/(.*)",
-            "dest": "/en/$1"
+            "source": "/en/:path*",
+            "destination": "/en/:path*"
         },
         {
-            "src": "/vi/(.*)",
-            "dest": "/vi/$1"
+            "source": "/vi/:path*",
+            "destination": "/vi/:path*"
         },
         {
-            "src": "/(.*)",
-            "dest": "/en/$1"
+            "source": "/:path*",
+            "destination": "/en/:path*"
         }
-    ]
+    ],
+    "cleanUrls": true
 }

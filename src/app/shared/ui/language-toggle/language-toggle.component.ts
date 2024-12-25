@@ -15,6 +15,6 @@ export class LanguageToggleComponent {
   public toggleLanguage() {
     const currentLocale = this.getCurrentLocale();
     const targetLocale = currentLocale === 'en' ? 'vi' : 'en';
-    window.location.href = `/${targetLocale}${window.location.pathname.slice(3)}/`;
+    window.location.href = `/${targetLocale}${window.location.pathname.slice(3)}`;
   }
 }
