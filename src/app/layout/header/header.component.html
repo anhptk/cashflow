@@ -1,5 +1,5 @@
 <header class="sticky top-0 bg-blue-500 text-white p-4 shadow-md">
-  <div class="container mx-auto flex items-center justify-center">
+  <div class="container mx-auto flex items-center justify-center relative">
 
     @if (showBackButton) {
     <!-- Back button -->
@@ -14,5 +14,8 @@
     <!-- Page title -->
     <h1 class="text-xl font-bold capitalize">{{ title }}</h1>
 
+    <div class="absolute top-0 right-0">
+      <app-language-toggle></app-language-toggle>
+    </div>
   </div>
 </header>
