@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, NavigationEnd } from '@angular/router';
 import { Location } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { LanguageToggleComponent } from "../../shared/ui/language-toggle/language-toggle.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, LanguageToggleComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
