@@ -36,7 +36,7 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "localize": false
+            "localize": true
           },
           "configurations": {
             "production": {
@@ -53,7 +53,7 @@
                 }
               ],
               "outputHashing": "all",
-              "localize": false
+              "localize": true
             },
             "development": {
               "optimization": false,
@@ -109,7 +109,19 @@
           "builder": "angular-cli-ghpages:deploy",
           "options": {
             "dir": "dist/cashflow",
-            "localize": false
+            "localize": true
+          }
+        }
+      },
+      "i18n": {
+        "sourceLocale": {
+          "code": "en",
+          "baseHref": "en"
+        },
+        "locales": {
+          "vi": {
+            "translation": "src/locale/messages.vi.json",
+            "baseHref": "vi"
           }
         }
       }
