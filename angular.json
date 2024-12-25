@@ -53,7 +53,7 @@
                 }
               ],
               "outputHashing": "all",
-              "localize": true
+              "localize": ["en", "vi"]
             },
             "development": {
               "optimization": false,
@@ -114,14 +114,10 @@
         }
       },
       "i18n": {
-        "sourceLocale": {
-          "code": "en",
-          "baseHref": "en"
-        },
+        "sourceLocale": "en",
         "locales": {
           "vi": {
-            "translation": "src/locale/messages.vi.json",
-            "baseHref": "vi"
+            "translation": "src/locale/messages.vi.json"
           }
         }
       }

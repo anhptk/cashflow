@@ -1,26 +1,16 @@
 {
-    "rewrites": [
+    "routes": [
         {
-            "source": "/:path((?!vi/).*)",
-            "has": [
-                {
-                    "type": "header",
-                    "key": "accept-language",
-                    "value": "vi"
-                }
-            ],
-            "destination": "/vi/:path"
+            "src": "/en/(.*)",
+            "dest": "/en/$1"
         },
         {
-            "source": "/:path((?!en/).*)",
-            "has": [
-                {
-                    "type": "header",
-                    "key": "accept-language",
-                    "value": "en"
-                }
-            ],
-            "destination": "/en/:path"
+            "src": "/vi/(.*)",
+            "dest": "/vi/$1"
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/en/$1"
         }
     ]
 }
