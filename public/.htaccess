@@ -1,13 +1,14 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
-
-  # Redirect to the correct locale based on the URL
-  RewriteCond %{REQUEST_URI} ^/(en|vi)/ [NC]
-  RewriteRule ^ %1/index.html [L]
-
-  # Fallback to index.html for other routes
+  RewriteRule ^../index\.html$ - [L]
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^ en/index.html [L]
+
+  RewriteRule (..) $1/index.html [L]
+  RewriteCond %{HTTP:Accept-Language} ^vi [NC]
+  RewriteRule ^$ /vi/ [R]
+
+  RewriteCond %{HTTP:Accept-Language} !^vi [NC]
+  RewriteRule ^$ /en/ [R]
 </IfModule>
