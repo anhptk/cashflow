@@ -1,6 +1,6 @@
 <section class="flex flex-col items-center justify-center p-4 space-y-4 sm:space-y-6">
     <app-button color="purple" class="w-full" *ngFor="let prof of professions" routerLink="/professions/{{prof.id}}">
-        <span class="icon-work mr-1"></span>
+        <span class="material-symbols-outlined mr-1">work</span>
         <span>{{prof.name}} - ${{ prof.income.salary}}</span>
     </app-button>
 </section>

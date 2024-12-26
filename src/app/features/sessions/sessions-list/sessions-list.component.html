@@ -2,9 +2,9 @@
   @for(session of sessions(); track session.id) {
     <app-button color="green" class="w-full" routerLink="/sessions/{{session.id}}">
       @if (session.fastTrackId) {
-        <span class="icon-fast mr-2"></span>
+        <span class="material-symbols-outlined mr-1">bolt</span>
       } @else {
-        <span class="icon-session mr-2"></span>
+        <span class="material-symbols-outlined mr-1">list_alt</span>
       }
       <span i18n="@@sessionCreatedAt">Session at</span> {{session.createdAt | date: 'short'}}
     </app-button>

@@ -6,11 +6,11 @@
     </div>
     <div class="flex items-center">
       <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded mr-2" i18n="@@history" routerLink="history">
-        <span class="icon-history"></span>
+        <span class="material-symbols-outlined text-sm mr-1">schedule</span>
         History
       </button>
       <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded" routerLink="action" i18n="@@action">
-        <span class="icon-add"></span>
+        <span class="material-symbols-outlined mr-1">add</span>
         Action
       </button>
     </div>
@@ -20,7 +20,8 @@
   <div class="flex items-center">
     <span class="mr-2">$</span>
     <span>{{ session.cash | number }}</span>
-    <span class="icon-baby mr-2 ml-4"></span>
+    <span class="material-symbols-outlined mr-1 ml-4">child_care</span>
+
     <span>{{ session.children }}</span>
   </div>
   <div class="text-right mt-2">
@@ -29,13 +30,13 @@
     }
     
     <button class="bg-gray-500 text-white uppercase px-4 py-2 rounded" i18n="@@history" routerLink="history">
-      <span class="icon-history"></span>
+      <span class="material-symbols-outlined text-sm mr-1">schedule</span>
       History
     </button>
 
     @if (!(fastTrack$ | async)) {
     <button class="bg-blue-600 text-white uppercase px-4 py-2 rounded ml-2" routerLink="action" i18n="@@action">
-      <span class="icon-add"></span>
+      <span class="material-symbols-outlined mr-1">add</span>
       Action
     </button>
     }
