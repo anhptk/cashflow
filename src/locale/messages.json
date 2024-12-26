@@ -1,5 +1,5 @@
 {
-  "locale": "en-US",
+  "locale": "en",
   "translations": {
     "stocks-Actions": "Stocks - Select actions",
     "buyStocks": "Buy Stocks",
@@ -92,7 +92,6 @@
     "decrease": "Decrease",
     "updateCashflowConfirm": "Are you sure you want to update cashflow by {$PH}?",
     "businessName": "Business name",
-    "bussiness": "Bussiness",
     "stockCD": "Stock / CD",
     "housing": "Housing",
     "land": "Land",
@@ -136,7 +135,7 @@
     "savings": "Savings",
     "liabilities": "Liabilities",
     "homeMortgage": "Home mortgage",
-    "schoolLoan": "School Loans",
+    "schoolLoans": "School loans",
     "carLoan": "Car Loans",
     "creditCard": "Credit Cards",
     "retailDebt": "Retail debt",
@@ -211,7 +210,6 @@
     "other": "Other",
     "carLoans": "Car loans",
     "creditCards": "Credit cards",
-    "schoolLoans": "School loans",
     "otherPayments": "Other payments",
     "insuffientCash": " Insufficient cash.",
     "actions.getLoanConfirm": " Insufficient cash. Get Loan: Cash +${$PH}. Cashflow -${$PH_1}",

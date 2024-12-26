@@ -61,9 +61,7 @@
               "sourceMap": true
             },
             "vi": {
-              "localize": [
-                "vi-VN"
-              ]
+              "localize": ["vi"]
             }
           },
           "defaultConfiguration": "production"

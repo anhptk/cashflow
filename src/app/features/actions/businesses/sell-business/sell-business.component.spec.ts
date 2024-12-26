@@ -6,7 +6,7 @@ import { SessionStoreService } from '../../../../shared/services/stores/session-
 import { MockSessionStoreService } from '../../../../shared/services/utils/test/mock-session-store-service';
 import { CommonModule } from '@angular/common';
 
-describe('SellBussinessComponent', () => {
+describe('SellBusinessComponent', () => {
   let component: SellBusinessComponent;
   let fixture: ComponentFixture<SellBusinessComponent>;
 
