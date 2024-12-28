@@ -1,21 +1,28 @@
-<header class="sticky top-0 bg-blue-500 text-white p-4 shadow-md">
-  <div class="container mx-auto flex items-center justify-center relative">
+<header class="sticky top-0 shadow-md">
+  <div class="container mx-auto flex items-center justify-between relative  bg-blue-500 text-white px-4 py-2">
 
-    @if (showBackButton) {
     <!-- Back button -->
-    <button class="p-2 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 absolute left-2.5"
-            (click)="navigateBack()">
+    <button class="p-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+            (click)="navigateBack()" [ngClass]="{'invisible': !showBackButton}">
             <span class="material-symbols-outlined px-1 text-lg">arrow_back</span>
     </button>
-    } @else {
-      <div></div>
-    }
 
     <!-- Page title -->
-    <h1 class="text-xl font-bold capitalize">{{ title }}</h1>
+    <h1 class="text-lg font-bold capitalize">{{ title }}</h1>
 
-    <div class="absolute top-0 right-0">
-      <app-language-toggle></app-language-toggle>
-    </div>
+    <button (click)="toggleMenu()"
+      class="text-white hover:bg-blue-600 rounded transition-colors text-xl p-2">
+      @if (menuExpanded()) {
+        <span class="material-symbols-outlined">close</span>
+      } @else {
+        <span class="material-symbols-outlined">menu</span>
+      }
+    </button>
   </div>
+
+  @if (menuExpanded()){
+    <div class="bg-white shadow-lg border-t">
+      <app-menu [currentLocale]="currentLocale"></app-menu>
+    </div>
+  }
 </header>

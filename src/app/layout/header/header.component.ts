@@ -1,19 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule, NavigationEnd } from '@angular/router';
-import { Location } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { LanguageToggleComponent } from "../../shared/ui/language-toggle/language-toggle.component";
+import { MenuComponent } from "../menu/menu.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, LanguageToggleComponent],
+  imports: [RouterModule, CommonModule, MenuComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   public title= '';
   public showBackButton = false;
+  public menuExpanded = signal(false);
+  public currentLocale = 'en';
 
   constructor(
     private _activatedRoute: ActivatedRoute,
@@ -29,6 +31,7 @@ export class HeaderComponent {
       .subscribe(event => {
       if (event instanceof NavigationEnd) {
         this._setRouteTitle();
+        this._setLocale();
       }
     });
   }
@@ -43,7 +46,16 @@ export class HeaderComponent {
     this.showBackButton = !route.snapshot.data['hideBackButton'];
   }
 
+  private _setLocale(): void {
+    this.currentLocale = window.location.pathname.split('/')[1] || 'en';
+  }
+
   public navigateBack(): void {
     this._location.back();
   }
+
+  public toggleMenu(): void {
+    this.menuExpanded.set(!this.menuExpanded());
+  }
+
 }
