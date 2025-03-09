@@ -1,16 +1,19 @@
 {
-    "routes": [
-        {
-            "src": "/en/(.*)",
-            "dest": "/en/$1"
-        },
-        {
-            "src": "/vi/(.*)",
-            "dest": "/vi/$1"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/en/$1"
-        }
+    "redirects": [
+      {
+        "source": "/en/*",
+        "destination": "/en/index.html",
+        "statusCode": 301
+      },
+      {
+        "source": "/vi/*",
+        "destination": "/vi/index.html",
+        "statusCode": 301
+      },
+      {
+        "source": "/*",
+        "destination": "/en/index.html",
+        "statusCode": 301
+      }
     ]
-}
+  }
