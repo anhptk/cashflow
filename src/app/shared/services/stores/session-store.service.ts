@@ -103,7 +103,7 @@ export class SessionStoreService extends ComponentStore<SessionState> {
   public downsize(): void {
     const expenses = this.get(state => state.totalExpenses);
     this.adjustCash(-expenses);
-    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.Downsize, {cash: expenses}));
+    this.addLog(this.sessionLogService.createNewLog(SESSION_LOG_TYPE.Downsize, {cash: -expenses}));
   }
 
   public loan(amount: number): void {

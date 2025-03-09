@@ -2,25 +2,25 @@
 
 <div class="flex justify-between items-center my-4">
   <span i18n="@@salary">Salary</span>
-  <span class="w-1/2">$ {{ professionSummary.salary }}</span>
+  <span class="w-1/2">$ {{ professionSummary.salary | number }}</span>
 </div>
 
 <div class="flex justify-between items-center my-4 capitalize">
   <span i18n="@@passiveIncome">Passive income</span>
-  <span class="w-1/2">$ {{ professionSummary.passiveIncome }}</span>
+  <span class="w-1/2">$ {{ professionSummary.passiveIncome | number }}</span>
 </div>
 
 <div class="flex justify-between items-center my-4">
   <span i18n="@@monthlyIncome">Monthly Income</span>
-  <span class="w-1/2">$ {{ professionSummary.monthlyIncome }}</span>
+  <span class="w-1/2">$ {{ professionSummary.monthlyIncome | number }}</span>
 </div>
 
 <div class="flex justify-between items-center my-4">
   <span i18n="@@totalExpenses">Total Expenses</span>
-  <span class="w-1/2">$ {{ professionSummary.totalExpenses }}</span>
+  <span class="w-1/2">$ {{ professionSummary.totalExpenses | number }}</span>
 </div>
 
 <div class="flex justify-between items-center my-4 capitalize">
   <span i18n="@@monthlyCashFlow">Monthly cash flow</span>
-  <span class="w-1/2">$ {{ professionSummary.monthlyCashFlow }}</span>
+  <span class="w-1/2">$ {{ professionSummary.monthlyCashFlow | number }}</span>
 </div>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, effect, input } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { ButtonComponent } from '../../../shared/ui/button/button.component';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ProfessionForm } from '../../../shared/models/forms/profession-form';
@@ -22,7 +22,6 @@ import { Router, RouterModule } from '@angular/router';
   ],
   templateUrl: './create-new-profession.component.html',
   styleUrl: './create-new-profession.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateNewProfessionComponent {
 
@@ -55,7 +54,7 @@ export class CreateNewProfessionComponent {
         schoolLoan: new FormControl<number>(null),
         carLoan: new FormControl<number>(null),
         creditCard: new FormControl<number>(null),
-        retail: new FormControl<number>(0),
+        retail: new FormControl<number>(null),
         other: new FormControl<number>(null),
         childSupport: new FormControl<number>(null, Validators.min(1))
       }),
@@ -67,7 +66,7 @@ export class CreateNewProfessionComponent {
         schoolLoan: new FormControl<number>(null),
         carLoan: new FormControl<number>(null),
         creditCard: new FormControl<number>(null),
-        retail: new FormControl<number>(0)
+        retail: new FormControl<number>(null)
       }),
     });
   }
