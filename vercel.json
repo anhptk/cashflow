@@ -1,19 +1,16 @@
 {
-    "redirects": [
+    "rewrites": [
       {
-        "source": "/en/*",
-        "destination": "/en/index.html",
-        "statusCode": 301
+        "source": "/en/(.*)",
+        "destination": "/en/index.html"
       },
       {
-        "source": "/vi/*",
-        "destination": "/vi/index.html",
-        "statusCode": 301
+        "source": "/vi/(.*)",
+        "destination": "/vi/index.html"
       },
       {
-        "source": "/*",
-        "destination": "/en/index.html",
-        "statusCode": 301
+        "source": "/(.*)",
+        "destination": "/en/index.html"
       }
     ]
   }
