@@ -13,6 +13,6 @@ export class ProgressBarComponent {
   public value = input(0);
   public maxValue = input(100);
 
-  public progress = 0;
-  public completed = computed(() => Math.round(this.value()/this.maxValue()) >= 1);
+  public progress = computed(() => Math.round(this.value() / this.maxValue() * 100));
+  public completed = computed(() => this.value() >= this.maxValue());
 }
